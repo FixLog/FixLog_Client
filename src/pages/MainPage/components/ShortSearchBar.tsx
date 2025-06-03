@@ -19,7 +19,7 @@ const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
                 placeholder="검색어입력"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500"
+                className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
                 />
             </div>
         <button>
