@@ -19,7 +19,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
+    // "erasableSyntaxOnly": true, // 오류로 주석 처리
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
