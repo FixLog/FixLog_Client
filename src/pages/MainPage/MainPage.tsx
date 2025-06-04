@@ -4,6 +4,7 @@ import ShortSearchBar from "./components/ShortSearchBar";
 import TagSelect from "../../components/common/TagSelect";
 import { Tags } from "../../mocks/MockTags"
 import MainPagePosts from "./components/MainPagePosts";
+import PageNavigator from "../../components/common/PageNavigator";
 
 function MainPage() {
   const [query, setQuery] = useState<string>("");
@@ -18,7 +19,7 @@ function MainPage() {
         <MainPagePosts />
       </div>
     </div>
-
+    <PageNavigator totalPageNumber={13}/>
     </>
   );
 }
