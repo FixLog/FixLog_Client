@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { mockPosts } from "../../../mocks/mockPosts";
+import DefaultPost from "./DefaultPost";
 
 function MainPagePosts () {
     const [activeTab, setActiveTab] = useState<"latest" | "popular">("latest");
@@ -36,6 +38,21 @@ function MainPagePosts () {
                     <button className="flex text-[16px] mt-[23px] text-gray-500 items-center ">
                             전체보기 ›
                     </button>
+                </div>
+            </div>
+            <div className="flex justify-center">
+                <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[40px] items-start">
+                {mockPosts.map((post) => (
+                    <DefaultPost
+                    key={post.post_id}
+                    id={post.post_id}
+                    title={post.post_title}
+                    img={post.image_url}
+                    tag={post.post_tag}
+                    nickname={post.nickname}
+                    createdAt={post.created_at}
+                    />
+                ))}
                 </div>
             </div>
         </div>
