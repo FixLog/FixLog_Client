@@ -18,7 +18,7 @@ const App: React.FC = () => {
         <Route
           element={
             <RouteGuard isLoggedIn={isLoggedIn}>
-              <Outlet />   
+              <Outlet />
             </RouteGuard>
           }
         >
@@ -28,10 +28,7 @@ const App: React.FC = () => {
         </Route>
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}
-        <Route
-          path="/login-page"
-          element={<LoginPage />}
-        />
+        <Route path="/login-page" element={<LoginPage />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
