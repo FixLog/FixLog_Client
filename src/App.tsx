@@ -1,4 +1,6 @@
 import "./App.css";
+import Header from "./components/Header";
+
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
