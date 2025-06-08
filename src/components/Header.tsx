@@ -1,5 +1,5 @@
 // Header.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 // 아이콘 import (경로는 프로젝트에 맞게 조정 필요)
 // import AlarmIcon from '../assets/icons/Alarm.svg';
 // import WriteIcon from '../assets/icons/Write.svg';
