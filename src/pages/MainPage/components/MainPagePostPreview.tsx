@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 interface DefaultPostProps {
   id: string;
   title: string;
-  img: string;
+  img?: string;
   tag: string;
   nickname: string;
   createdAt: string;

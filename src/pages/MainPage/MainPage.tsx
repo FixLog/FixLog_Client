@@ -3,8 +3,7 @@ import { useState } from "react";
 import ShortSearchBar from "./components/ShortSearchBar";
 import TagSelect from "../../components/common/TagSelect";
 import { Tags } from "../../mocks/MockTags"
-import MainPagePosts from "./components/MainPagePosts";
-import PageNavigator from "../../components/common/PageNavigator";
+import MainPosts from "./components/MainPosts";
 
 function MainPage() {
   const [query, setQuery] = useState<string>("");
@@ -16,10 +15,9 @@ function MainPage() {
         <TagSelect Tags = {Tags} />
       </div>
       <div className="w-full">
-        <MainPagePosts />
+        <MainPosts />
       </div>
     </div>
-    <PageNavigator totalPageNumber={13}/>
     </>
   );
 }

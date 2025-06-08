@@ -1,9 +1,17 @@
 import { useState } from "react";
 import { mockPosts } from "../../../mocks/mockPosts";
-import DefaultPost from "./DefaultPost";
+import MainPagePostPreview from "./MainPagePostPreview";
+import { useNavigate } from "react-router-dom";
 
-function MainPagePosts () {
+function MainPosts () {
     const [activeTab, setActiveTab] = useState<"latest" | "popular">("latest");
+
+    const navigate = useNavigate();
+
+    const handleViewAllClick = () => {
+        navigate(`/view-all/${activeTab}`);
+      };
+      
 
     return (
         <div>
@@ -35,19 +43,21 @@ function MainPagePosts () {
             </div>
             <div className="flex justify-center">
                 <div className="flex w-[1200px] justify-end">
-                    <button className="flex text-[16px] mt-[23px] text-gray-500 items-center ">
+                    <button className="flex text-[16px] mt-[23px] text-gray-500 items-center "
+                        onClick = {handleViewAllClick}
+                        >
                             전체보기 ›
                     </button>
                 </div>
             </div>
             <div className="flex justify-center">
-                <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[40px] items-start">
+                <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[40px] mb-[69px] items-start">
                 {mockPosts.map((post) => (
-                    <DefaultPost
+                    <MainPagePostPreview
                     key={post.post_id}
                     id={post.post_id}
                     title={post.post_title}
-                    img={post.image_url}
+                    img={post.image_url} 
                     tag={post.post_tag}
                     nickname={post.nickname}
                     createdAt={post.created_at}
@@ -60,4 +70,4 @@ function MainPagePosts () {
     )
 }
 
-export default MainPagePosts;
+export default MainPosts;
