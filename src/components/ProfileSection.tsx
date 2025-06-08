@@ -77,31 +77,31 @@ const ProfileSection = ({
   return (
     <div className="flex items-start gap-4 p-4">
       <div className="relative w-24 h-24 rounded-full object-cover justify-center bg-blue-300 border-black">
-        {/* <img
+        <img
           src={profileData.profileImage}
           alt="프로필 이미지"
           className="w-24 h-24 rounded-full object-cover"
-        /> */}
+        />
       </div>
       <div className="flex-1 flex flex-col">
         <div className="flex justify-between items-start">
           <div>
             <div className="text-2xl font-bold">
               사용자 닉네임
-              {/* {profileData.nickname} */}
+              {profileData.nickname}
             </div>
             <div className="text-gray-600 text-sm">
               사용자 이메일
-              {/* {profileData.email} */}
+              {profileData.email}
             </div>
             <div className="flex gap-4 mt-2 text-sm">
               <div>
                 팔로워 20
-                {/* {profileData.followers} */}
+                {profileData.followers}
               </div>
               <div>
                 팔로잉 20
-                {/* {profileData.following} */}
+                {profileData.following}
               </div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const ProfileSection = ({
           <p className="text-sm text-gray-700">
             {" "}
             소개글 3줄 이상 작성??
-            {/* {profileData.bio} */}
+            {profileData.bio}
           </p>
         </div>
       </div>
