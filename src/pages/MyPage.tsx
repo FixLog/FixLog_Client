@@ -2,7 +2,7 @@
 // 작성자: 이서연
 // 마지막 수정 일자: 2025.06.02
 
-import React from "react";
+// import React from "react";
 import Header from "../components/Header";
 // import ProfileSection from '../compoents/ProfileSection'; // 나중에 만들 컴포넌트
 // import NavigationTabs from '../compoents/NavigationTabs'; // 나중에 만들 컴포넌트
