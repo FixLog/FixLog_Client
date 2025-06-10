@@ -172,7 +172,6 @@ function SignupPage() {
             <path d="M1 1.5L6.29289 6.79289C6.68342 7.18342 6.68342 7.81658 6.29289 8.20711L1 13.5" stroke="#2F2F2F" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
-        <></>
       </div>
     </div>
   );
