@@ -6,8 +6,13 @@ import Header from "../components/Header";
 import ProfileSection from "../components/ProfileSection";
 import MyPageNavTabs from "../components/MyPageNavTabs";
 import ArticleCard from "../components/ArticleCard"; // 나중에 만들 컴포넌트
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<"bookmarks" | "likes" | "mywrites" | "forks">("mywrites");
+
   // TODO: isLogin 상태 관리 로직 추가
   const isLogin = true; // 일단 로그인 상태로 가정
 
@@ -21,6 +26,10 @@ const MyPage = () => {
   const tags = ["tags"];
   const date = "date";
 
+  const handleViewAllClick = () => {
+    navigate(`/view-all/${activeTab}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray100">
       <Header isLogin={isLogin} />
@@ -32,7 +41,16 @@ const MyPage = () => {
           isLogin={isLogin}
         />
         {/* 네비게이션 탭 컴포넌트 */}
-        <MyPageNavTabs />
+        <MyPageNavTabs onTabChange={setActiveTab} />
+        {/* 전체보기 버튼 */}
+        <div className="flex justify-end mt-4">
+          <button 
+            onClick={handleViewAllClick}
+            className="text-gray-500 hover:text-gray-700 text-sm flex items-center"
+          >
+            전체보기 ›
+          </button>
+        </div>
         {/* 게시글 목록 섹션 */}
         <div className="mt-8 space-y-6">
           <ArticleCard
