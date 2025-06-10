@@ -2,6 +2,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
+import SignupPage from "./pages/SignupPage";
+import SignupSuccessPage from "./pages/SignupSuccessPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
 import RouteGuard from "./components/router/RouteGuard";
@@ -16,7 +18,7 @@ const App: React.FC = () => {
         <Route
           element={
             <RouteGuard isLoggedIn={isLoggedIn}>
-              <Outlet />   
+              <Outlet />
             </RouteGuard>
           }
         >
@@ -26,10 +28,9 @@ const App: React.FC = () => {
         </Route>
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}
-        <Route
-          path="/login-page"
-          element={<LoginPage />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup-success" element={<SignupSuccessPage />} />
         <Route path="/" element={<MainPage />} />
       </Routes>
     </BrowserRouter>
