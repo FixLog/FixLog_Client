@@ -5,11 +5,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import UserListModal from "./UserListModal";
 
 interface ProfileSectionProps {
   userId: string;
   currentUserId: string;
   isLogin: boolean;
+}
+
+interface User {
+  id: string;
+  nickname: string;
+  isFollowing: boolean;
 }
 
 const ProfileSection = ({
@@ -28,6 +35,35 @@ const ProfileSection = ({
   });
   const [isFollowing, setIsFollowing] = useState(false);
   const isMyProfile = userId === currentUserId;
+
+  // 모달 상태 관리
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+
+  // TODO: 실제 팔로워/팔로잉 데이터로 대체해야 함
+  // const [followersData, setFollowersData] = useState<User[]>([
+  //   { id: "1", nickname: "팔로워1", isFollowing: true },
+  //   { id: "2", nickname: "팔로워2", isFollowing: false },
+  //   { id: "3", nickname: "팔로워3", isFollowing: true }
+  // ]);
+  // 린터 오류 때문에 상수로 일단 데이터 작성
+  const followersData: User[] = [
+    { id: "1", nickname: "팔로워1", isFollowing: true },
+    { id: "2", nickname: "팔로워2", isFollowing: false },
+    { id: "3", nickname: "팔로워3", isFollowing: true }
+  ];
+
+  // const [followingData, setFollowingData] = useState<User[]>([
+  //   { id: "4", nickname: "팔로잉1", isFollowing: true },
+  //   { id: "5", nickname: "팔로잉2", isFollowing: true },
+  //   { id: "6", nickname: "팔로잉3", isFollowing: false }
+  // ]);
+
+  const followingData: User[] = [
+    { id: "4", nickname: "팔로잉1", isFollowing: true },
+    { id: "5", nickname: "팔로잉2", isFollowing: true },
+    { id: "6", nickname: "팔로잉3", isFollowing: false }
+  ];
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -64,15 +100,23 @@ const ProfileSection = ({
       if (isFollowing) {
         await axios.delete(`/follow`);
         setProfileData((prev) => ({ ...prev, followers: prev.followers - 1 }));
+        // TODO: 팔로워/팔로잉 데이터도 업데이트
       } else {
         await axios.post(`/follow/unfollow`);
         setProfileData((prev) => ({ ...prev, followers: prev.followers + 1 }));
+        // TODO: 팔로워/팔로잉 데이터도 업데이트
       }
       setIsFollowing(!isFollowing);
     } catch (error) {
       console.error("팔로우/언팔로우 중 오류 발생:", error);
     }
   };
+
+  const handleShowFollowers = () => setShowFollowersModal(true);
+  const handleCloseFollowersModal = () => setShowFollowersModal(false);
+
+  const handleShowFollowing = () => setShowFollowingModal(true);
+  const handleCloseFollowingModal = () => setShowFollowingModal(false);
 
   return (
     <div className="flex items-start gap-4 p-4">
@@ -95,14 +139,18 @@ const ProfileSection = ({
               {profileData.email}
             </div>
             <div className="flex gap-4 mt-2 text-sm">
-              <div>
-                팔로워 20
-                {profileData.followers}
-              </div>
-              <div>
-                팔로잉 20
-                {profileData.following}
-              </div>
+              <button
+                onClick={handleShowFollowers}
+                className="cursor-pointer hover:underline"
+              >
+                팔로워 3{profileData.followers}
+              </button>
+              <button
+                onClick={handleShowFollowing}
+                className="cursor-pointer hover:underline"
+              >
+                팔로잉 3{profileData.following}
+              </button>
             </div>
           </div>
           {isMyProfile ? (
@@ -135,6 +183,22 @@ const ProfileSection = ({
           </p>
         </div>
       </div>
+
+      {/* 팔로워 모달 */}
+      <UserListModal
+        isOpen={showFollowersModal}
+        onClose={handleCloseFollowersModal}
+        title="팔로워"
+        users={followersData}
+      />
+
+      {/* 팔로잉 모달 */}
+      <UserListModal
+        isOpen={showFollowingModal}
+        onClose={handleCloseFollowingModal}
+        title="팔로잉"
+        users={followingData}
+      />
     </div>
   );
 };
