@@ -54,6 +54,7 @@ function DeleteAccountPage() {
                     <p className="font-normal text-left text-[15px] text-gray-750">비밀번호 확인</p>
                     <input 
                         type="password" 
+                        autoFocus
                         className="bg-gray-150 text-gray-900 w-[348px] h-[54px] rounded-[8px] p-[15px] my-[8px] border border-transparent outline-none focus:bg-white focus:border-gray-800"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
