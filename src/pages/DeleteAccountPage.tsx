@@ -38,41 +38,8 @@ function DeleteAccountPage() {
     const [showModal, setShowModal] = useState(false);
     const [password, setPassword] = useState('');
 
-    const DeleteAccountModal = () => (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-            <div className="flex flex-col items-center justify-center w-[400px] h-[500px] bg-white rounded-[8px] px-[26px] text-center shadow-lg font-pretendard">
-                <svg xmlns="http://www.w3.org/2000/svg" width="105" height="105" viewBox="0 0 105 105" fill="none">
-                    <path d="M52.5 96.25C28.3369 96.25 8.75 76.6631 8.75 52.5C8.75 28.3369 28.3369 8.75 52.5 8.75C76.6631 8.75 96.25 28.3369 96.25 52.5C96.25 76.6631 76.6631 96.25 52.5 96.25ZM48.125 48.125V74.375H56.875V48.125H48.125ZM48.125 30.625V39.375H56.875V30.625H48.125Z" fill="#F74E4E"/>
-                </svg>
-
-                <p className="font-medium text-[16px] text-gray-750 leading-[24px] my-[34px] cursor-default">
-                    회원 탈퇴 시, 이용 기록 및 저장된 정보가<br/>
-                    모두 삭제되며 복구가 불가능합니다.
-                </p>
-
-                <div className="w-[348px] mb-[20px] cursor-default">
-                    <p className="font-normal text-left text-[15px] text-gray-750">비밀번호 확인</p>
-                    <input 
-                        type="password" 
-                        autoFocus
-                        className="bg-gray-150 text-gray-900 w-[348px] h-[54px] rounded-[8px] p-[15px] my-[8px] border border-transparent outline-none focus:bg-white focus:border-gray-800"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <p className="font-normal text-left text-[12px] text-gray-400">* 보안을 위해 비밀번호를 입력해주세요.</p>
-                </div>
-
-                <Button 
-                    onClick={handleDelete}
-                    text="탈퇴하기" width="w-[348px]" fontSize="text-[18px]" bgColor="bg-point" textColor="text-gray-100"
-                />
-            </div>
-        </div>
-    );
-
     return(
-        <div className="flex flex-col items-center font- font-pretendard mb-[60px]">
+        <div className="flex flex-col items-center font-pretendard mb-[60px]">
             <Header/>
             <div className="w-[588px] my-[56px]">
                 <p className="font-semibold text-gray-900 text-[38px] cursor-default">회원 탈퇴</p>
@@ -85,23 +52,23 @@ function DeleteAccountPage() {
             </div>
             <div className="w-[588px] flex flex-col gap-[14px]">
                 <label className="flex items-center cursor-pointer">
-                    <input type="checkBox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
+                    <input type="checkbox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
                     더 이상 사용하지 않음
                 </label>
                 <label className="flex items-center cursor-pointer">
-                    <input type="checkBox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
+                    <input type="checkbox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
                     사용하기 불편함
                 </label>
                 <label className="flex items-center cursor-pointer">
-                    <input type="checkBox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
+                    <input type="checkbox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
                     원하는 정보를 찾을 수 없음
                 </label>
                 <label className="flex items-center cursor-pointer">
-                    <input type="checkBox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
+                    <input type="checkbox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
                     보안이 걱정됨
                 </label>
                 <label className="flex items-center cursor-pointer">
-                    <input type="checkBox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
+                    <input type="checkbox" className="w-[16px] h-[16px] mr-[13px] accent-gray-500 border-gray-500"/>
                     기타
                 </label>
             </div>
@@ -164,7 +131,37 @@ function DeleteAccountPage() {
             <Button onClick={handleSubmit} text="탈퇴하기" fontSize="text-[18px]" width="w-[296px]"/>
 
             {/*탈퇴하기 모달*/}
-            {showModal && <DeleteAccountModal/>}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+                    <div className="flex flex-col items-center justify-center w-[400px] h-[500px] bg-white rounded-[8px] px-[26px] text-center shadow-lg font-pretendard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="105" height="105" viewBox="0 0 105 105" fill="none">
+                            <path d="M52.5 96.25C28.3369 96.25 8.75 76.6631 8.75 52.5C8.75 28.3369 28.3369 8.75 52.5 8.75C76.6631 8.75 96.25 28.3369 96.25 52.5C96.25 76.6631 76.6631 96.25 52.5 96.25ZM48.125 48.125V74.375H56.875V48.125H48.125ZM48.125 30.625V39.375H56.875V30.625H48.125Z" fill="#F74E4E"/>
+                        </svg>
+
+                        <p className="font-medium text-[16px] text-gray-750 leading-[24px] my-[34px] cursor-default">
+                            회원 탈퇴 시, 이용 기록 및 저장된 정보가<br/>
+                            모두 삭제되며 복구가 불가능합니다.
+                        </p>
+
+                        <div className="w-[348px] mb-[20px] cursor-default">
+                            <p className="font-normal text-left text-[15px] text-gray-750">비밀번호 확인</p>
+                            <input 
+                                type="password" 
+                                className="bg-gray-150 text-gray-900 w-[348px] h-[54px] rounded-[8px] p-[15px] my-[8px] border border-transparent outline-none focus:bg-white focus:border-gray-800"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <p className="font-normal text-left text-[12px] text-gray-400">* 보안을 위해 비밀번호를 입력해주세요.</p>
+                        </div>
+
+                        <Button 
+                            onClick={handleDelete}
+                            text="탈퇴하기" width="w-[348px]" fontSize="text-[18px]" bgColor="bg-point" textColor="text-gray-100"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
