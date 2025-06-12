@@ -7,18 +7,37 @@ import FixlogLogo from "../assets/img/FixlogLogo.png";
 
 function LoginPage () {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   // 아이디·비밀번호 찾기
   const handleFind = () => {
     navigate('/');
   };
 
-  // 로그인 버튼
-  const handleLogin = () => {
-    if (email !== "test" || password !== "1234") {
+  // 로그인 버튼 (API)
+  const handleLogin = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("로그인 성공");
+        navigate('/');
+      } else {
+        console.log("로그인 실패");
+        setShowModal(true);
+      }
+    } catch {
+      console.log("로그인 실패");
       setShowModal(true);
-    } else {
-      navigate('/');
     }
   };
 

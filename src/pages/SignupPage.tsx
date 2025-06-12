@@ -7,18 +7,118 @@ import FixlogLogo from "../assets/img/FixlogLogo.png";
 
 function SignupPage() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
-  // 이메일 중복확인
-  const handleEmail = () => {
+  // 이메일 중복 확인 (API)
+  const handleEmail = async () => {
+    if (email.trim() === '') {
+      alert('이메일을 입력하세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/members/check-email?email=${encodeURIComponent(email)}`);
+      const data = await response.json();
+
+      if (response.ok && data.success && !data.data.is_duplicate) {
+        alert(data.message); // 사용 가능한 이메일입니다
+        setCheckEmail(true);
+      } else {
+        alert(data.message); // 이미 사용 중인 이메일입니다
+        setCheckEmail(false);
+      }
+    } catch (error) {
+      console.error('이메일 중복 확인 실패:', error);
+      alert('이메일 중복 확인 중 오류가 발생했습니다.');
+      setCheckEmail(false);
+    }
   };
 
-  // 닉네임 중복확인
-  const handleNickname = () => {
+  // 닉네임 중복 확인 (API)
+  const handleNickname = async () => {
+    if (nickname.trim() === '') {
+      alert('닉네임을 입력하세요.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/members/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+      const data = await response.json();
+
+      if (response.ok && data.success && !data.data.is_duplicate) {
+        alert(data.message); // 사용 가능한 닉네임입니다
+        setCheckNickname(true);
+      } else {
+        alert(data.message); // 이미 사용 중인 닉네임입니다
+        setCheckNickname(false);
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 실패:', error);
+      alert('닉네임 중복 확인 중 오류가 발생했습니다.');
+      setCheckNickname(false);
+    }
   };
 
-  // 회원가입 버튼
-  const handleSignup = () => {
-    navigate('/signup-success');
+  // 회원가입 버튼 (API)
+  const handleSignup = async () => {
+    if (email.trim() === '') {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+    if (!checkEmail) {
+      alert("이메일 중복 확인을 해주세요.");
+      return;
+    }
+    if (nickname.trim() === '') {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+    if (!checkNickname) {
+      alert("닉네임 중복 확인을 해주세요.");
+      return;
+    }
+    if (password.trim() === '') {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+    if (checkPassword.trim() === '') {
+      alert("비밀번호를 한 번 더 입력해주세요.");
+      return;
+    }
+    if (password !== checkPassword) {
+      alert("입력하신 비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    if (!agree) {
+      alert("개인정보 제공에 동의해주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/members/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          nickname
+        })
+      });
+
+      if (response.ok) {
+        console.log("회원가입 성공");
+        navigate('/signup-success');
+      } else {
+        const error = await response.json();
+        console.error("회원가입 실패:", error.message);
+        alert(`회원가입 실패: ${error.message}`);
+      }
+    } catch (error) {
+      console.error("네트워크 오류:", error);
+      alert("네트워크 오류 발생");
+    }
   };
 
   // Github 계정으로 회원가입 버튼
@@ -36,6 +136,9 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [agree, setAgree] = useState(false);
+
+  const [checkEmail, setCheckEmail] = useState(false);
+  const [checkNickname, setCheckNickname] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
