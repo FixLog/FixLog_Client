@@ -13,7 +13,13 @@ const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
     const navigate = useNavigate();
 
     const handleSearchClick = () => {
-        navigate("/search-result");
+        navigate(`/search-result?query=${encodeURIComponent(query)}`);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleSearchClick();
+        }
     };
 
     return (
@@ -27,6 +33,7 @@ const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
                     placeholder="검색어입력"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
                     />
                 </div>
