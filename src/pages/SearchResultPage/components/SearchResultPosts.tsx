@@ -2,6 +2,7 @@ import PostPreview from "../../../components/common/PostPreview";
 import { mockPosts } from "../../../mocks/mockPosts";
 import { useState } from "react";
 
+
 function SearchResultPosts() {
   const [sortOption, setSortOption] = useState<"latest" | "popular">("latest");
 
