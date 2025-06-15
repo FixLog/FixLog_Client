@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Accordion from "../../components/write/Accordion";
-import SectionEditor from "../../components/write/SectionEditor";
+import Accordion from "./components/Accordion";
+import SectionEditor from "./components/SectionEditor";
 
 const sections = [
   { title: "문제 상황", key: "problem" },
