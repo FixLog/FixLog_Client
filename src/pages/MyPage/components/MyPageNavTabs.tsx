@@ -1,7 +1,3 @@
-// MyPageNavTabs.tsx
-// 작성자: 이서연
-// 마지막 수정 일자: 2025.06.08
-
 import { useState } from "react";
 
 type TabType = "bookmarks" | "likes" | "mywrites" | "forks";

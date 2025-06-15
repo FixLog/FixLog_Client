@@ -21,7 +21,7 @@ function EditProfilePage() {
   const [profileData, setProfileData] = useState<ProfileData | null>(
     initialProfileData ?? null
   );
-  const [loading, setLoading] = useState(!initialProfileData);
+  // const [loading, setLoading] = useState(!initialProfileData);
   const [previewUrl, setPreviewUrl] = useState(
     profileData?.profileImageUrl ?? ""
   );
@@ -37,7 +37,7 @@ function EditProfilePage() {
         } catch (err) {
           console.error("회원정보 불러오기 실패:", err);
         } finally {
-          setLoading(false);
+          // setLoading(false);
         }
       };
       fetchProfile();
