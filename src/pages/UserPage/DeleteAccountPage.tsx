@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../components/Header";
-import Button from "../components/Button";
+import Header from "../../components/Header";
+import Button from "../../components/Button";
 
 function DeleteAccountPage() {
     const navigate = useNavigate();

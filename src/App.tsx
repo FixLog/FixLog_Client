@@ -2,11 +2,11 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import MainPage from "./pages/MainPage";
-import SignupPage from "./pages/SignupPage";
-import SignupSuccessPage from "./pages/SignupSuccessPage";
-import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/UserPage/SignupPage";
+import SignupSuccessPage from "./pages/UserPage/SignupSuccessPage";
+import LoginPage from "./pages/UserPage/LoginPage";
+import DeleteAccountPage from "./pages/UserPage/DeleteAccountPage";
 import MyPage from "./pages/MyPage";
-import DeleteAccountPage from "./pages/DeleteAccountPage";
 import RouteGuard from "./components/router/RouteGuard";
 import PostingPage from "./pages/PostingPage";
 import TagCollectionPage from "./pages/TagPage/TagCollectionPage";
