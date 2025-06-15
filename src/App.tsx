@@ -4,14 +4,13 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage";
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/MyPage/MyPage";
 import RouteGuard from "./components/router/RouteGuard";
 import PostingPage from "./pages/PostingPage";
-import EditProfilePage from "./pages/EditProfilePage";
+import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import SearchResultPage from "./pages/SearchResultPage/SearchResultPage";
 import ViewAllPage from "./pages/ViewAllPage/ViewAllPage";
 import WritePage from "./pages/WritePage/WritePage";
-
 
 const App: React.FC = () => {
   const isLoggedIn = true; // TODO: 이후 토큰 존재 여부 검사해서 수정
@@ -37,7 +36,7 @@ const App: React.FC = () => {
         <Route path="/login-page" element={<LoginPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/search-result" element={<SearchResultPage />} />
-        <Route path="/view-all/:type" element={<ViewAllPage  />} />
+        <Route path="/view-all/:type" element={<ViewAllPage />} />
       </Routes>
     </BrowserRouter>
   );

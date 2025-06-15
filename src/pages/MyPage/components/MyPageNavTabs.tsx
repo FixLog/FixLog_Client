@@ -33,7 +33,7 @@ function MyPageNavTabs({ onTabChange }: MyPageNavTabsProps) {
         const isActive = activeTab === tab.value;
         const baseClass =
           "px-4 py-2 text-sm font-medium transition-colors duration-150";
-        const activeClass = "border-b-2 border-black text-black";
+        const activeClass = "border-b-2 border-main text-black";
         const inactiveClass = "text-gray-500 hover:text-black";
 
         return (

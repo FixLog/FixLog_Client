@@ -1,12 +1,9 @@
-// Header.tsx
-// 작성자: 이서연
-// 마지막 수정 일자: 2025.06.08
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import LogoIcon from "../assets/icons/Logo.svg";
-import AlarmIcon from "../assets/icons/Alarm.svg";
-import WriteIcon from "../assets/icons/Write.svg";
-import ProfileIcon from "../assets/icons/Profile.svg";
+import LogoIcon from "../../assets/icons/Logo.svg";
+import AlarmIcon from "../../assets/icons/Alarm.svg";
+import WriteIcon from "../../assets/icons/Write.svg";
+import ProfileIcon from "../../assets/icons/Profile.svg";
 
 interface HeaderProps {
   isLogin: boolean;

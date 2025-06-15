@@ -1,17 +1,15 @@
-// src/pages/MyPage.tsx
-// 작성자: 이서연
-// 마지막 수정 일자: 2025.06.08
-
-import Header from "../components/Header";
-import ProfileSection from "../components/ProfileSection";
-import MyPageNavTabs from "../components/MyPageNavTabs";
-import ArticleCard from "../components/ArticleCard"; // 나중에 만들 컴포넌트
+import Header from "../../components/common/Header";
+import ProfileSection from "./components/ProfileSection";
+import MyPageNavTabs from "./components/MyPageNavTabs";
+import ArticleCard from "./components/ArticleCard";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const MyPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"bookmarks" | "likes" | "mywrites" | "forks">("mywrites");
+  const [activeTab, setActiveTab] = useState<
+    "bookmarks" | "likes" | "mywrites" | "forks"
+  >("mywrites");
 
   // TODO: isLogin 상태 관리 로직 추가
   const isLogin = true; // 일단 로그인 상태로 가정
@@ -44,7 +42,7 @@ const MyPage = () => {
         <MyPageNavTabs onTabChange={setActiveTab} />
         {/* 전체보기 버튼 */}
         <div className="flex justify-end mt-4">
-          <button 
+          <button
             onClick={handleViewAllClick}
             className="text-gray-500 hover:text-gray-700 text-sm flex items-center"
           >
@@ -52,7 +50,7 @@ const MyPage = () => {
           </button>
         </div>
         {/* 게시글 목록 섹션 */}
-        <div className="mt-8 space-y-6">
+        <div className="space-y-6">
           <ArticleCard
             title={title}
             summary={summary}
