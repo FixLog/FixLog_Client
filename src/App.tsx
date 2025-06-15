@@ -6,6 +6,7 @@ import SignupPage from "./pages/SignupPage";
 import SignupSuccessPage from "./pages/SignupSuccessPage";
 import LoginPage from "./pages/LoginPage";
 import MyPage from "./pages/MyPage";
+import DeleteAccountPage from "./pages/DeleteAccountPage";
 import RouteGuard from "./components/router/RouteGuard";
 import PostingPage from "./pages/PostingPage";
 
@@ -25,6 +26,7 @@ const App: React.FC = () => {
           {/* 로그인 후에 접근 가능한 페이지들은 여기에 추가! */}
           <Route path="/my-page" element={<MyPage />} />
           <Route path="/posting-page" element={<PostingPage />} />
+          <Route path="/delete-account" element={<DeleteAccountPage />} />
         </Route>
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}
