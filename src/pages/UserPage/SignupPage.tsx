@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../components/Header";
-import Button from "../components/Button";
-import FixlogLogo from "../assets/img/FixlogLogo.png";
+import Header from "../../components/common/Header";
+import Button from "../../components/common/Button";
+import FixlogLogo from "../../assets/img/FixlogLogo.png";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -140,8 +140,8 @@ function SignupPage() {
   const [checkEmail, setCheckEmail] = useState(false);
   const [checkNickname, setCheckNickname] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCheckPassword, setShowCheckPassword] = useState(false);
+  //const [showPassword, setShowPassword] = useState(false);
+  //const [showCheckPassword, setShowCheckPassword] = useState(false);
 
   const isFormValid =
     email.trim() !== "" &&
