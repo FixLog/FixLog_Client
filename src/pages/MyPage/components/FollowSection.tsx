@@ -17,9 +17,7 @@ interface FollowListSectionProps {
 
 const FollowListSection = ({
   followers = [],
-  following = [],
-  followersCount,
-  followingCount
+  following = []
 }: FollowListSectionProps) => {
   const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
