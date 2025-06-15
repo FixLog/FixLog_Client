@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-import Header from "../../components/Header";
-import TagCard from "../../components/tag/TagCard";
+import Header from "../../components/common/Header";
+import TagCard from "./components/TagCard";
 
 function TagCollectionPage() {
 

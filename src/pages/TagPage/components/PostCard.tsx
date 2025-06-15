@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import PostDefaultImage from "../../assets/img/PostDefaultImage.png";
+import PostDefaultImage from "../../../assets/img/PostDefaultImage.png";
 
-function PostCard({ post }) {
+function PostCard({ post } : { post: { id: number, title: string, content: string } }) {
     const navigate = useNavigate();
 
     return (

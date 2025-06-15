@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function TagCard({ tag } : { tag: { id: number, name: string } }) {
+function TagCard({ tag } : { tag: { id: number, name: string, content: string } }) {
     const navigate = useNavigate();
 
     return (

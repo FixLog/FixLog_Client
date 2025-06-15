@@ -112,12 +112,16 @@ const Header = ({ isLogin }: HeaderProps) => {
         ) : (
           // 비로그인 상태
           <div className="flex gap-2">
-            <button className="text-sm text-main border border-main px-4 py-1 rounded hover:bg-main hover:text-white transition-colors ">
-              로그인
-            </button>
-            <button className="text-sm text-white bg-main px-4 py-1 rounded hover:bg-sub1 hover:text-main transition-colors ">
-              회원가입
-            </button>
+            <Link to="/login">
+              <button className="text-sm text-main border border-main px-4 py-1 rounded hover:bg-main hover:text-white transition-colors ">
+                로그인
+              </button>
+            </Link>
+            <Link to="/signup">
+              <button className="text-sm text-white bg-main px-4 py-1 rounded hover:bg-sub1 hover:text-main transition-colors ">
+                회원가입
+              </button>
+            </Link>
           </div>
         )}
       </div>

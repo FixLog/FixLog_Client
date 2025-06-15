@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Header from "../../components/Header";
-import PostCard from "../../components/tag/PostCard";
+import Header from "../../components/common/Header";
+import PostCard from "./components/PostCard";
 
 function TagDetailPage() {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function TagDetailPage() {
     const PAGES_PER_GROUP = 5;
 
     // code for test
-    const postData = Array.from({ length: 40 }, (_, i) => ({
+    const postData = Array.from({ length: 50 }, (_, i) => ({
         id: i,
         title: `Post Title ${i + 1}`,
         content: `Post content ${i + 1}`,
