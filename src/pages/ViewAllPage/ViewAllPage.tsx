@@ -41,7 +41,7 @@ function ViewAllPage() {
               id={post.post_id}
               title={post.post_title}
               img={post.image_url}
-              tag={post.post_tag}
+              tags={post.post_tag}
               nickname={post.nickname}
               createdAt={post.created_at}
             />

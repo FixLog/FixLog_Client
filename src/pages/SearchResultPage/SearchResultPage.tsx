@@ -5,8 +5,11 @@ import SearchResultPosts from "./components/SearchResultPosts";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/common/Header";
+<<<<<<< HEAD
 import { fetchSearchResults } from "../../api/search";
 import type { Post } from "../../api/search";
+=======
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
 
 
 function SearchResultPage() {
@@ -42,8 +45,21 @@ function SearchResultPage() {
   }, [query, selectedTags]);
   
 
+<<<<<<< HEAD
   return (
     <>
+=======
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialQuery = queryParams.get("query") || "";
+
+    useEffect(() => {
+      setQuery(initialQuery);
+    }, [initialQuery]);
+
+    return (
+      <>
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
       <Header isLogin={false} />
       <div className="w-[1200px] mx-auto mt-[55px] mb-[70px]">
         <div className="font-pretendard flex items-start text-[38px] font-semibold text-black">
@@ -61,8 +77,13 @@ function SearchResultPage() {
           />
         </div>
       </div>
+<<<<<<< HEAD
     </>
   );
+=======
+      </>
+    );
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
 }
 
 export default SearchResultPage;

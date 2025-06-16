@@ -79,7 +79,11 @@ const DropdownTagButton = ({
       <button
         onClick={toggleDropdown}
         className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
+<<<<<<< HEAD
           ${selectedInCategory ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
+=======
+          ${selectedTag !== defaultLabel ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
         `}
       >
         <span>{labelToShow}</span>

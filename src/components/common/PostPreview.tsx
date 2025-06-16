@@ -32,6 +32,7 @@ function PostPreview({ id, title, summary, img, tags, date, author }: PostPrevie
       <div className="flex flex-col justify-between px-5 py-3 w-full text-left">
         <div>
           <h2 className="font-pretendard text-[23px] font-semibold text-gray-900 mb-1">{title}</h2>
+<<<<<<< HEAD
           <p className="font-pretendard text-[18px] text-gray-600 line-clamp-2">
             {summary}
           </p>
@@ -43,6 +44,10 @@ function PostPreview({ id, title, summary, img, tags, date, author }: PostPrevie
           )}
 
           <div className="flex flex-wrap gap-2 mt-[12px]">
+=======
+          <p className="font-pretendard text-[18px] text-gray-600 line-clamp-2">{summary}</p>
+          <div className="flex flex-wrap gap-2 mt-[20px]">
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
             {tags.map((tag) => (
               <span
                 key={tag}
@@ -53,11 +58,16 @@ function PostPreview({ id, title, summary, img, tags, date, author }: PostPrevie
             ))}
           </div>
         </div>
+<<<<<<< HEAD
 
         <p className="font-pretendard text-[14px] text-gray-500 mt-2 text-right self-end">
           {date}
         </p>
       </div>
+=======
+        <p className="font-pretendard text-[14px] text-gray-500 mt-2 text-right self-end">{date}</p>
+        </div>
+>>>>>>> 5d9f64e (fix : font pretendard 로 수정)
     </button>
   );
 }
