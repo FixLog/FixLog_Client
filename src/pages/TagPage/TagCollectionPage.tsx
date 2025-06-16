@@ -16,6 +16,7 @@ function TagCollectionPage() {
     const tagData = Array.from({ length: 100 }, (_, i) => ({
         id: i,
         name: `tag-name ${i + 1}`,
+        content: `태그 설명 ${i + 1} 개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다. 관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.`,
     }));
 
     // 태그 검색
@@ -44,7 +45,8 @@ function TagCollectionPage() {
 
     return(
         <div className="flex flex-col items-center font-pretendard">
-            <Header/>
+            {/* <Header /> */}
+            <Header isLogin={true} />
             <div className="w-[1204px] mb-[54px]">
                 <p className="font-semibold text-[38px] mt-[57px] mb-[27px] cursor-default">태그 모음</p>
                 

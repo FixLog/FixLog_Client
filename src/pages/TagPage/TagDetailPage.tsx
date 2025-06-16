@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
 import Header from "../../components/common/Header";
 import PostCard from "./components/PostCard";
 
 function TagDetailPage() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [page, setPage] = useState(1);
     const [pageGroup, setPageGroup] = useState(0);
@@ -33,7 +33,7 @@ function TagDetailPage() {
 
     return(
         <div className="flex flex-col items-center font-pretendard">
-            <Header/>
+            <Header isLogin = {true}/>
             <div className="w-[1167px] my-[74px]">
                 {/*태그명*/}
                 <p className="text-[38px] font-semibold mb-[20px] cursor-default">tag-name</p>

@@ -15,13 +15,20 @@ const ProfileSection = ({
   currentUserId,
   isLogin
 }: ProfileSectionProps) => {
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<{
+    email: string;
+    nickname: string;
+    profileImageUrl: string;
+    bio: string;
+    socialType: string;
+  }>({
     email: "Loading...",
     nickname: "Loading...",
     profileImageUrl: "Loading",
     bio: "Loading...",
-    socialType: "Loading"
+    socialType: "Loading",
   });
+  
   const [followersData, setFollowersData] = useState<User_Follower[]>([]);
   const [followingData, setFollowingData] = useState<User_Following[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);

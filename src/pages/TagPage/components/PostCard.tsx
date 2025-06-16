@@ -5,6 +5,8 @@ import PostDefaultImage from "../../../assets/img/PostDefaultImage.png";
 function PostCard({ post } : { post: { id: number, title: string, content: string } }) {
     const navigate = useNavigate();
 
+    console.log(post); // 빌드 오류 해결 용 (실제 배포 시 제거)
+
     return (
         <div 
             className="flex w-[1167px] h-[168px] font-pretendard cursor-pointer"

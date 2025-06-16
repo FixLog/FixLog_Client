@@ -1,7 +1,19 @@
 import { useNavigate } from "react-router-dom";
 
-function TagCard({ tag } : { tag: { id: number, name: string, content: string } }) {
+interface Tag {
+    id: number;
+    name: string;
+    content: string;
+  }
+  
+  interface TagCardProps {
+    tag: Tag;
+  }
+
+function TagCard({ tag } : TagCardProps) {
     const navigate = useNavigate();
+
+    console.log(tag); // 빌드 오류 해결 용 (실제 배포 시 제거)
 
     return (
         <div 

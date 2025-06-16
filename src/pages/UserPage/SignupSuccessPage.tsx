@@ -14,7 +14,7 @@ function SignupSuccessPage() {
 
   return (
     <div className="flex flex-col items-center font-pretendard mb-[146px]">
-      <Header />
+      <Header isLogin = {true}/>
       <img src={FixlogLogo} className="h-[60px] w-auto mt-[146px] mb-[40px]" />
       <p className="font-semibold text-[28px] text-gray-800 cursor-default">회원가입이 완료되었습니다</p>
       <p className="text-center font-normal text-[20px] text-gray-600 mt-[20px] mb-[60px] leading-[30px] cursor-default">

@@ -49,7 +49,7 @@ function SignupPage() {
 
   return (
     <div className="flex flex-col items-center font-pretendard mb-[128px]">
-      <Header/>
+      <Header isLogin={true}/>
       <img src={FixlogLogo} className="h-[60px] w-auto mt-[89px] mb-[20px]" />
       <p className="text-2xl font-semibold text-gray-600 mb-[90px] cursor-default">
         개발자들의 트러블슈팅 커뮤니티 가입하기
