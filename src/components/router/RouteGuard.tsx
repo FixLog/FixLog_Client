@@ -10,7 +10,7 @@ const RouteGuard = ({ isLoggedIn, children }: RouteGuardProps) => {
   const location = useLocation();
  
   if (!isLoggedIn) {
-    return <Navigate to="/login-page" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;
