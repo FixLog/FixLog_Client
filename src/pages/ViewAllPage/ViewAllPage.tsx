@@ -2,6 +2,7 @@ import PageNavigator from "../../components/common/PageNavigator";
 import { mockPosts } from "../../mocks/mockPosts";
 import DefaultPost from "../MainPage/components/MainPagePostPreview";
 import { useParams } from "react-router-dom";
+import Header from "../../components/common/Header";
 
 function ViewAllPage() {
   const { type } = useParams();
@@ -26,8 +27,10 @@ function ViewAllPage() {
   };
 
   return (
+    <>
+    <Header isLogin={true} />
     <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
-      <div className="flex items-start text-[38px] font-semibold text-black">
+      <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
         {getPageTitle()}
       </div>
       <div className="flex justify-center">
@@ -47,6 +50,7 @@ function ViewAllPage() {
       </div>
       <PageNavigator totalPageNumber={13} />
     </div>
+    </>
   );
 }
 

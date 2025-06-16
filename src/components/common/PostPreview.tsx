@@ -29,20 +29,20 @@ function PostPreview({ id, title, summary, img, tags, date }: PostPreviewProps) 
 
       <div className="flex flex-col justify-between px-5 py-3 w-full text-left">
         <div>
-          <h2 className="text-[23px] font-semibold text-gray-900 mb-1">{title}</h2>
-          <p className="text-[18px] text-gray-600 line-clamp-2">{summary}</p>
+          <h2 className="font-pretendard text-[23px] font-semibold text-gray-900 mb-1">{title}</h2>
+          <p className="font-pretendard text-[18px] text-gray-600 line-clamp-2">{summary}</p>
           <div className="flex flex-wrap gap-2 mt-[20px]">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="bg-gray-100 text-gray-800 text-[14px] px-2 py-[2px] rounded-md"
+                className="font-pretendard bg-gray-100 text-gray-800 text-[14px] px-2 py-[2px] rounded-md"
               >
                 {tag}
               </span>
             ))}
           </div>
         </div>
-        <p className="text-[14px] text-gray-500 mt-2 text-right self-end">{date}</p>
+        <p className="font-pretendard text-[14px] text-gray-500 mt-2 text-right self-end">{date}</p>
         </div>
     </button>
   );

@@ -48,7 +48,7 @@ function PageNavigator({ totalPageNumber }: PageNavigatorProps) {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`font-bold ${currentPage === page ? "text-main" : "text-gray-800"}`}
+              className={`font-bold font-pretendard font-[16px] ${currentPage === page ? "text-main" : "text-gray-800"}`}
             >
               {page}
             </button>

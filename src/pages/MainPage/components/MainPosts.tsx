@@ -20,7 +20,7 @@ function MainPosts () {
                     <div className="flex gap-[8px]">
                         <button
                             onClick={() => setActiveTab("latest")}
-                            className={`pb-2 w-[85px] h-[45px] text-[24px] ${
+                            className={`pb-2 w-[85px] h-[45px] font-pretendard text-[24px] ${
                             activeTab === "latest"
                                 ? "text-gray-750 font-semibold border-b-2 border-black"
                                 : "text-gray-400"
@@ -30,7 +30,7 @@ function MainPosts () {
                         </button>
                         <button
                             onClick={() => setActiveTab("popular")}
-                            className={`pb-2 w-[85px] h-[45px] text-[24px] ${
+                            className={`pb-2 w-[85px] h-[45px] font-pretendard text-[24px] ${
                             activeTab === "popular"
                                 ? "text-gray-750 font-semibold border-b-2 border-black"
                                 : "text-gray-400"

@@ -34,7 +34,7 @@ const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
+                    className="w-full font-pretendard bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
                     />
                 </div>
             <button

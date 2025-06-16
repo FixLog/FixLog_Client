@@ -5,6 +5,7 @@ import SearchResultPosts from "./components/SearchResultPosts";
 import { Tags } from "../../mocks/MockTags";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Header from "../../components/common/Header";
 
 
 function SearchResultPage() {
@@ -20,8 +21,10 @@ function SearchResultPage() {
     }, [initialQuery]);
 
     return (
+      <>
+      <Header isLogin={false} />
       <div className="w-[1200px] mx-auto mt-[55px] mb-[70px]">
-        <div className="flex items-start text-[38px] font-semibold text-black">
+        <div className="font-pretendard flex items-start text-[38px] font-semibold text-black">
           검색 결과
         </div>
         <div className="w-[1199px]">
@@ -33,6 +36,7 @@ function SearchResultPage() {
             <PageNavigator totalPageNumber={13} />
         </div>
       </div>
+      </>
     );
 }
 export default SearchResultPage;

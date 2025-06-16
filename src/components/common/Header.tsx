@@ -39,7 +39,7 @@ const Header = ({ isLogin }: HeaderProps) => {
       </Link>
 
       {/* 네비게이션 (로그인/비로그인 공통) */}
-      <nav className="flex gap-6 items-center text-sm text-gray700 font-semibold">
+      <nav className="flex gap-6 items-center text-[16px] text-gray700 font-semibold">
         {navTabs.map((tab) => {
           const isActive = activeTab === tab.value;
           const baseClass = "px-4 py-2 transition-colors duration-150";
@@ -67,7 +67,7 @@ const Header = ({ isLogin }: HeaderProps) => {
           <>
             {/* 작성하기 버튼 */}
             <Link to="/posting-page">
-              <button className="flex items-center gap-1 text-sm text-gray700 hover:text-black transition-colors ">
+              <button className="flex items-center gap-1 text-[16px] text-gray700 hover:text-black transition-colors ">
                 <img src={WriteIcon} alt="작성하기" className="h-4 w-4" />
                 작성하기
               </button>

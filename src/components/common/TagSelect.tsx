@@ -43,7 +43,7 @@ const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) =>
     <div className="relative inline-block">
       <button
         onClick={toggleDropdown}
-        className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
+        className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
           ${selectedTag !== defaultLabel ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
         `}
       >
@@ -54,7 +54,7 @@ const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) =>
       {isOpen && (
         <div className="absolute z-20 top-[0px] left-0 w-[760px] h-[214px] bg-white border-[1.5px] border-gray-300 rounded-xl overflow-y-auto">
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100">
-            <span className="text-gray-700">{defaultLabel}</span>
+            <span className="font-pretendard text-gray-700">{defaultLabel}</span>
             <button onClick={() => setIsOpen(false)}>
               <img src={CloseIcon} alt="닫기" className="w-[16px] h-[16px]" />
             </button>
@@ -64,7 +64,7 @@ const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) =>
               <li
                 key={option}
                 onClick={() => handleSelect(option)}
-                className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
+                className="flex items-center gap-2 px-4 py-3 font-pretendard text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
               >
                 <img src={PythonIcon} className="w-[20px] h-[20px]" />
                 <span>{option}</span>
