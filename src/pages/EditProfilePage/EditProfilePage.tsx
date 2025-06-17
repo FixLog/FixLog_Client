@@ -53,13 +53,11 @@ function EditProfilePage() {
   return (
     <div>
       <HeaderSection isLogin={isLogin} />
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">회원 정보 수정</h1>
+      <main className="max-w-[900px] mx-auto px-8 pt-12">
+        <h1 className="text-2xl font-bold mb-10">회원 정보 수정</h1>
         <AccountSection
           email={profileData.email}
-          // email="test@test.com"
           nickname={profileData.nickname}
-          // nickname="nickname"
         />
         <PhotoAndBioSection
           previewUrl={previewUrl}
@@ -67,9 +65,8 @@ function EditProfilePage() {
           imageFile={imageFile}
           setImageFile={setImageFile}
           bio={profileData.bio ?? ""}
-          // bio="test 소개글"
         />
-      </div>
+      </main>
     </div>
   );
 }

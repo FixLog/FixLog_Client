@@ -25,7 +25,7 @@ const MyPage = () => {
   return (
     <div className="min-h-screen bg-gray100">
       <Header isLogin={isLogin} />
-      <main className="container mx-auto py-8 px-4">
+      <main className="max-w-[900px] mx-auto px-8 pt-12">
         {/* 프로필 섹션 컴포넌트 */}
         <ProfileSection
           userId={userId}
@@ -35,7 +35,7 @@ const MyPage = () => {
         {/* 네비게이션 탭 컴포넌트 */}
         <MyPageNavTabs onTabChange={setActiveTab} />
         {/* 전체보기 버튼 */}
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-6 mb-2">
           <button
             onClick={handleViewAllClick}
             className="text-gray-500 hover:text-gray-700 text-sm flex items-center"
