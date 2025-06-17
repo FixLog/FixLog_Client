@@ -22,11 +22,13 @@ interface MyPageArticleListProps {
   activeTab: "mywrites" | "bookmarks" | "likes" | "forks";
 }
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const API_ENDPOINTS = {
-  mywrites: "/mypage/posts",
-  bookmarks: "/mypage/bookmarks", // 수정 필요함
-  likes: "/mypage/likes",
-  forks: "/mypage/forks" // 아직 구현 안하는걸로
+  mywrites: `${apiUrl}/mypage/posts`,
+  bookmarks: `${apiUrl}/mypage/bookmarks`, // 수정 필요함
+  likes: `${apiUrl}/mypage/likes`,
+  forks: `${apiUrl}/mypage/forks` // 아직 구현 안하는걸로
 };
 
 const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {

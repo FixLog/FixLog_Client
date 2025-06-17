@@ -7,6 +7,8 @@ interface AccountSectionProps {
 }
 
 const AccountSection = ({ email, nickname }: AccountSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [nicknameValue, setNicknameValue] = useState(nickname);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -16,7 +18,7 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
   const handleUpdateNickname = async () => {
     try {
       await axios.patch(
-        "/mypage/members/nickname",
+        `${apiUrl}/mypage/members/nickname`,
         { nickname: nicknameValue },
         {
           headers: {
@@ -52,7 +54,7 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
 
     try {
       await axios.patch(
-        "/mypage/members/password",
+        `${apiUrl}/mypage/members/password`,
         { currentPassword, newPassword },
         {
           headers: {

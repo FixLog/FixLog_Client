@@ -15,6 +15,8 @@ const ProfileSection = ({
   setImageFile,
   bio
 }: ProfileSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -28,7 +30,7 @@ const ProfileSection = ({
 
     try {
       const presignRes = await axios.get(
-        `/mypage/members/profile-image/presign?filename=${imageFile.name}`,
+        `${apiUrl}/mypage/members/profile-image/presign?filename=${imageFile.name}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`
@@ -40,7 +42,7 @@ const ProfileSection = ({
         headers: { "Content-Type": imageFile.type }
       });
       await axios.patch(
-        "/mypage/members/profile-image",
+        `${apiUrl}/mypage/members/profile-image`,
         { imageUrl: fileUrl },
         {
           headers: {
@@ -60,7 +62,7 @@ const ProfileSection = ({
     const newBio = (document.getElementById("bio") as HTMLTextAreaElement)
       .value;
     try {
-      await axios.patch("/mypage/members/bio", { bio: newBio });
+      await axios.patch(`${apiUrl}/mypage/members/bio`, { bio: newBio });
       alert("소개글이 수정되었습니다!");
     } catch (err) {
       console.error("소개글 수정 실패", err);
