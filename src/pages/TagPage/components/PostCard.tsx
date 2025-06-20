@@ -16,7 +16,7 @@ function PostCard({ post } : { post: { id: number, title: string, content: strin
             <div className="flex flex-col">
                 <div className="flex flex-row items-center mb-[8px]">
                     {/*프로필 사진*/}
-                    <img src={ProfileImage} className="w-[32px] h-[32px] mr-[12px]" />
+                    <img src={ProfileImage} className="w-[32px] h-[32px] mr-[12px] rounded-full" />
 
                     {/*프로필 닉네임*/}
                     <p className="font-medium text-[16px] text-gray-600 mr-[23px]">픽스로그</p>
