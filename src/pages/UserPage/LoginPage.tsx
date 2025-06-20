@@ -29,14 +29,23 @@ function LoginPage () {
       });
 
       if (response.ok) {
+        const loginData = await response.json();
+        const accessToken = loginData.data.accessToken;
+
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          console.log("Access Token 저장:", accessToken);
+        }
         console.log("로그인 성공");
         navigate('/');
+
       } else {
-        console.log("로그인 실패");
+        console.error("로그인 실패");
         setShowModal(true);
       }
-    } catch {
-      console.log("로그인 실패");
+
+    } catch (error) {
+      console.error("로그인 실패: ", error);
       setShowModal(true);
     }
   };

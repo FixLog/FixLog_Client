@@ -109,15 +109,39 @@ function SignupPage() {
 
       if (response.ok) {
         console.log("회원가입 성공");
-        navigate('/signup-success');
+
+        // 회원가입 후 바로 로그인
+        const login = await fetch(`${apiUrl}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        });
+
+        if (login.ok) {
+          const loginData = await login.json();
+
+          localStorage.setItem('accessToken', loginData.data.accessToken);
+          console.log("Access Token 저장:", loginData.data.accessToken);
+
+          navigate('/signup-success');
+        } else {
+          alert('회원가입 성공, 로그인 실패.');
+          navigate('/login');
+        }
+        
       } else {
-        const error = await response.json();
-        console.error("회원가입 실패:", error.message);
-        alert(`회원가입 실패: ${error.message}`);
+        console.error("회원가입 실패");
+        alert("회원가입 실패");
       }
+
     } catch (error) {
-      console.error("네트워크 오류:", error);
-      alert("네트워크 오류 발생");
+      console.error("회원가입 실패: ", error);
+      alert("회원가입 실패");
     }
   };
 
