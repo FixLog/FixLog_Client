@@ -1,7 +1,19 @@
 import { useNavigate } from "react-router-dom";
 
-function TagCard({ tag } : { tag: { id: number, name: string, content: string } }) {
+interface Tag {
+    id: number;
+    name: string;
+    content: string;
+  }
+  
+  interface TagCardProps {
+    tag: Tag;
+  }
+
+function TagCard({ tag } : TagCardProps) {
     const navigate = useNavigate();
+
+    console.log(tag); // 빌드 오류 해결 용 (실제 배포 시 제거)
 
     return (
         <div 
@@ -10,7 +22,7 @@ function TagCard({ tag } : { tag: { id: number, name: string, content: string } 
         >
             {/*태그명*/}
             <span 
-                className="bg-sub2 text-[14px] font-semibold rounded-[8px] px-[8px] py-[4px]"
+                className="bg-sub2 text-[18px] font-semibold rounded-[8px] px-[8px] py-[4px]"
                 style={{ color: '#6EAB0C' }}
             >
                 tag-name
@@ -22,7 +34,7 @@ function TagCard({ tag } : { tag: { id: number, name: string, content: string } 
             </p>
 
             {/*포스팅 수*/}
-            <div className="flex items-center text-gray-600 text-[16px]">
+            <div className="flex items-center text-gray-600 text-[14px]">
                 <p className="mr-[17px]">포스팅</p>
                 <p>nnnnn개</p>
             </div>

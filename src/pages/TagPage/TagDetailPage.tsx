@@ -1,20 +1,32 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
 import Header from "../../components/common/Header";
 import PostCard from "./components/PostCard";
 
 function TagDetailPage() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
+    // 정렬
+    const sortOption = ['최신순', '인기순'];
+
+    const [dropdownView, setDropdownView] = useState(false);
+    const [selectOption, setSelectOption] = useState(sortOption[0]);
+
+    const handleClickOption = (option: string) => {
+        setSelectOption(option);
+        setDropdownView(false);
+    };
+
+    // 페이지네이션
     const [page, setPage] = useState(1);
     const [pageGroup, setPageGroup] = useState(0);
 
-    const CARDS_PER_PAGE = 6;
+    const CARDS_PER_PAGE = 10;
     const PAGES_PER_GROUP = 5;
 
     // code for test
-    const postData = Array.from({ length: 50 }, (_, i) => ({
+    const postData = Array.from({ length: 100 }, (_, i) => ({
         id: i,
         title: `Post Title ${i + 1}`,
         content: `Post content ${i + 1}`,
@@ -33,25 +45,69 @@ function TagDetailPage() {
 
     return(
         <div className="flex flex-col items-center font-pretendard">
-            <Header/>
-            <div className="w-[1167px] my-[74px]">
-                {/*태그명*/}
-                <p className="text-[38px] font-semibold mb-[20px] cursor-default">tag-name</p>
-                
-                {/*태그 설명*/}
-                <p className="text-gray-700 text-[16px] cursor-default">
-                    개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다. 관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.
+            <Header isLogin = {true}/>
+            <div className="w-[1200px] mb-[100px]">
+                <p className="font-semibold text-gray-750 text-[38px] mt-[47px] mb-[56px] cursor-default">태그 모음</p>
+                <p className="text-gray-700 text-[18px] leading-[27px] cursor-default">
+                    개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다.<br/>
+                    관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.
                 </p>
 
+                <div className="flex justify-between mt-[100px] mb-[48px]">
+                    {/*태그명*/}
+                    <p className="text-gray-800 text-[28px] font-bold cursor-default">
+                        tag-name
+                    </p>
+                    
+                    {/*정렬*/}
+                    <div className="relative">
+                        <div 
+                            onClick={() => setDropdownView((prev) => !prev)}
+                            className="flex justify-between items-center text-gray-700 text-[16px] w-[108px] h-[40px] rounded-[100px] px-[15px] py-[7px] gap-[6px] border border-gray-300 cursor-pointer"
+                        >
+                            {selectOption}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+                                <path d="M1 1.33329L6.67692 6.53839C6.71836 6.57887 6.76841 6.61113 6.82397 6.63319C6.87954 6.65525 6.93945 6.66663 7 6.66663C7.06055 6.66663 7.12046 6.65525 7.17603 6.63319C7.23159 6.61113 7.28164 6.57887 7.32308 6.53839L13 1.33329" stroke="#14161D" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        {dropdownView && (
+                            <div className="flex flex-col space-y-[16px] absolute top-[49px] z-10 w-[108px] px-[15px] py-[18px] bg-white border border-gray-300 rounded-[8px] shadow-md">
+                                {sortOption
+                                    .filter(option => option !== selectOption)
+                                    .map((option) => (
+                                        <div
+                                            key={option}
+                                            onClick={() => handleClickOption(option)}
+                                            className="text-gray-700 text-[16px] text-center hover:bg-gray-100 cursor-pointer"
+                                        >
+                                            {option}
+                                        </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 {/*포스트 컴포넌트*/}
-                <div className="flex flex-col mt-[68px] gap-[32px]">
-                    {paginatedPosts.map(post => (
-                        <PostCard key={post.id} post={post} />
+                <div className="flex flex-col">
+                    {paginatedPosts.map((post, idx) => (
+                        <div key={post.id} className="flex flex-col">
+                            <PostCard post={post} />
+
+                            {idx < paginatedPosts.length - 1 && (
+                                <>
+                                <div className="my-[40px]">
+                                    <hr className="border-gray-300" />
+                                </div>
+                                </>
+                            )}
+                        </div>
                     ))}
                 </div>
 
                 {/*페이지네이션*/}
-                <div className="flex justify-center items-center gap-x-[20px] mt-[98px]">
+                <div className="flex justify-center items-center gap-x-[20px] mt-[72px]">
                     {/*이전 페이지 그룹*/}
                     <button
                         disabled={pageGroup === 0}

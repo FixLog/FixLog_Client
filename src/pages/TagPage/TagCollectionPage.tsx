@@ -4,8 +4,21 @@ import Header from "../../components/common/Header";
 import TagCard from "./components/TagCard";
 
 function TagCollectionPage() {
-
+    // 검색
     const [search, setSearch] = useState('');
+
+    // 정렬
+    const sortOption = ['오름차순', '내림차순', '인기순'];
+
+    const [dropdownView, setDropdownView] = useState(false);
+    const [selectOption, setSelectOption] = useState(sortOption[0]);
+
+    const handleClickOption = (option: string) => {
+        setSelectOption(option);
+        setDropdownView(false);
+    };
+
+    // 페이지네이션
     const [page, setPage] = useState(1);
     const [pageGroup, setPageGroup] = useState(0); // 0: 1~5, 1: 6~10 ···
 
@@ -16,6 +29,7 @@ function TagCollectionPage() {
     const tagData = Array.from({ length: 100 }, (_, i) => ({
         id: i,
         name: `tag-name ${i + 1}`,
+        content: `태그 설명 ${i + 1} 개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다. 관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.`,
     }));
 
     // 태그 검색
@@ -44,26 +58,60 @@ function TagCollectionPage() {
 
     return(
         <div className="flex flex-col items-center font-pretendard">
-            <Header/>
-            <div className="w-[1204px] mb-[54px]">
-                <p className="font-semibold text-[38px] mt-[57px] mb-[27px] cursor-default">태그 모음</p>
+            <Header isLogin={true} />
+            <div className="w-[1200px] mb-[100px]">
+                <p className="font-semibold text-gray-750 text-[38px] mt-[47px] mb-[56px] cursor-default">태그 모음</p>
+                <p className="text-gray-700 text-[18px] leading-[27px] cursor-default">
+                    개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다.<br/>
+                    관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.
+                </p>
                 
-                {/*검색창*/}
-                <div className="flex items-center w-[260px] h-[40px] px-[14px] py-[8px] mb-[20px] bg-gray-150 rounded-[100px] border border-transparent focus-within:bg-white focus-within:border-gray-150">
-                    <input
-                        type="text"
-                        placeholder="태그를 검색해 보세요."
-                        className="flex-1 bg-transparent text-gray-900 outline-none"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none"
-                        className="ml-[4px] mr-[16px] w-[16px] h-[16px] shrink-0"
-                    >
-                        <path d="M6.80078 0.998047C10.0036 0.998302 12.6004 3.59505 12.6006 6.79785C12.6006 10.0008 10.0038 12.5974 6.80078 12.5977C3.59757 12.5977 1 10.001 1 6.79785C1.00023 3.59489 3.59771 0.998047 6.80078 0.998047Z" stroke="#878787" strokeWidth="1.2"/>
-                        <path d="M11.2012 11.1992L15.6013 15.5995" stroke="#878787" strokeWidth="1.2" strokeLinecap="round"/>
-                    </svg>
+                <div className="flex justify-between mt-[44px] mb-[24px]">
+                    {/*검색창*/}
+                    <div className="flex justify-center items-center w-[260px] h-[40px] px-[14px] py-[8px] gap-[4px] bg-gray-150 rounded-[100px] border border-transparent focus-within:bg-white focus-within:border-gray-150">
+                        <input
+                            type="text"
+                            className="flex-1 bg-transparent text-gray-900 outline-none"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <svg 
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none"
+                            className="w-[16px] h-[16px] shrink-0"
+                        >
+                            <path d="M6.80078 0.998047C10.0036 0.998302 12.6004 3.59505 12.6006 6.79785C12.6006 10.0008 10.0038 12.5974 6.80078 12.5977C3.59757 12.5977 1 10.001 1 6.79785C1.00023 3.59489 3.59771 0.998047 6.80078 0.998047Z" stroke="#878787" strokeWidth="1.2"/>
+                            <path d="M11.2012 11.1992L15.6013 15.5995" stroke="#878787" strokeWidth="1.2" strokeLinecap="round"/>
+                        </svg>
+                    </div>
+
+                    {/*정렬*/}
+                    <div className="relative">
+                        <div 
+                            onClick={() => setDropdownView((prev) => !prev)}
+                            className="flex justify-between items-center text-gray-700 text-[16px] w-[108px] h-[40px] rounded-[100px] px-[15px] py-[7px] gap-[6px] border border-gray-300 cursor-pointer"
+                        >
+                            {selectOption}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="8" viewBox="0 0 14 8" fill="none">
+                                <path d="M1 1.33329L6.67692 6.53839C6.71836 6.57887 6.76841 6.61113 6.82397 6.63319C6.87954 6.65525 6.93945 6.66663 7 6.66663C7.06055 6.66663 7.12046 6.65525 7.17603 6.63319C7.23159 6.61113 7.28164 6.57887 7.32308 6.53839L13 1.33329" stroke="#14161D" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        {dropdownView && (
+                            <div className="flex flex-col space-y-[16px] absolute top-[49px] z-10 w-[108px] px-[15px] py-[18px] bg-white border border-gray-300 rounded-[8px] shadow-md">
+                                {sortOption
+                                    .filter(option => option !== selectOption)
+                                    .map((option) => (
+                                        <div
+                                            key={option}
+                                            onClick={() => handleClickOption(option)}
+                                            className="text-gray-700 text-[16px] text-center hover:bg-gray-100 cursor-pointer"
+                                        >
+                                            {option}
+                                        </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/*태그 컴포넌트*/}
@@ -74,7 +122,7 @@ function TagCollectionPage() {
                 </div>
 
                 {/*페이지네이션*/}
-                <div className="flex justify-center items-center gap-x-[20px] mt-[52px]">
+                <div className="flex justify-center items-center gap-x-[20px] mt-[72px]">
                     {/*이전 페이지 그룹*/}
                     <button
                         disabled={pageGroup === 0}

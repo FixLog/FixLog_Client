@@ -40,7 +40,7 @@ function DeleteAccountPage() {
 
     return(
         <div className="flex flex-col items-center font-pretendard mb-[60px]">
-            <Header/>
+            <Header isLogin={true}/>
             <div className="w-[588px] my-[56px]">
                 <p className="font-semibold text-gray-900 text-[38px] cursor-default">회원 탈퇴</p>
             </div>

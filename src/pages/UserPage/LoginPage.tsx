@@ -55,7 +55,8 @@ function LoginPage () {
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
+  // 빌드 오류 해결용으로 주석 처리..! (나중에 실제 사용 시 주석 해제 필요)
+  // const [showPassword, setShowPassword] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -73,7 +74,7 @@ function LoginPage () {
 
   return (
     <div className="flex flex-col items-center font-pretendard mb-[70px]">
-      <Header/>
+      <Header isLogin={true}/>
       <img src={FixlogLogo} className="h-[60px] w-auto mt-[70px] mb-[20px]" />
       <p className="text-2xl font-semibold text-gray-600 mb-[64px] cursor-default">
         로그인하고 에러 검색하러 가기
