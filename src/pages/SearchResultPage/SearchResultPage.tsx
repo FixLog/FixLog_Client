@@ -2,7 +2,6 @@ import PageNavigator from "../../components/common/PageNavigator";
 import TagSelect from "../../components/common/TagSelect";
 import LongSearchBar from "./components/LongSearchBar";
 import SearchResultPosts from "./components/SearchResultPosts";
-import { Tags } from "../../mocks/MockTags";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../../components/common/Header";
@@ -10,15 +9,23 @@ import Header from "../../components/common/Header";
 
 function SearchResultPage() {
     const [query, setQuery] = useState<string>("");
-  
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const initialQuery = queryParams.get("query") || "";
+    const initialTags = queryParams.get("tags") || "";
+    const initialSelectedTags = initialTags ? initialTags.split(",") : [];
+
 
     useEffect(() => {
       setQuery(initialQuery);
-    }, [initialQuery]);
+      setSelectedTags(initialSelectedTags);
+    }, []);
+    
+
+    console.log("query = " + query);
+    console.log("selectedTags = " + selectedTags);
 
     return (
       <>
@@ -28,8 +35,8 @@ function SearchResultPage() {
           검색 결과
         </div>
         <div className="w-[1199px]">
-          <LongSearchBar query = {query} setQuery = {setQuery} />
-          <TagSelect Tags = {Tags} />
+          <LongSearchBar query = {query} setQuery = {setQuery} selectedTags = {selectedTags}/>
+          <TagSelect selectedTags = {selectedTags} setSelectedTags = {setSelectedTags} />
         </div>
         <div className="flex flex-col items-center">
             <SearchResultPosts />
