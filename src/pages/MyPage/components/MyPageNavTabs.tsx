@@ -1,27 +1,29 @@
-import { useState } from "react";
+import React from "react";
 
 type TabType = "bookmarks" | "likes" | "mywrites" | "forks";
 
 interface MyPageNavTabsProps {
-  onTabChange?: (tab: TabType) => void;
+  onTabChange: (tab: TabType) => void;
+  isOwner: boolean;
+  activeTab: TabType;
 }
 
-function MyPageNavTabs({ onTabChange }: MyPageNavTabsProps) {
-  const [activeTab, setActiveTab] = useState<TabType>("mywrites");
+function MyPageNavTabs({ onTabChange, isOwner, activeTab }: MyPageNavTabsProps) {
+  const tabs: { label: string; value: TabType }[] = isOwner
+    ? [
+        { label: "내가 쓴 글", value: "mywrites" },
+        { label: "북마크한 글", value: "bookmarks" },
+        { label: "좋아요한 글", value: "likes" },
+        { label: "Fork 한 글", value: "forks" }
+      ]
+    : [
+        { label: "작성한 글", value: "mywrites" }
+      ];
 
   const handleClick = (tab: TabType) => {
-    setActiveTab(tab);
-    if (onTabChange) {
-      onTabChange(tab);
-    }
+    if (!isOwner && tab !== "mywrites") return;
+    onTabChange(tab);
   };
-
-  const tabs: { label: string; value: TabType }[] = [
-    { label: "내가 쓴 글", value: "mywrites" },
-    { label: "북마크한 글", value: "bookmarks" },
-    { label: "좋아요한 글", value: "likes" },
-    { label: "Fork 한 글", value: "forks" }
-  ];
 
   return (
     <div className="flex border-b border-gray-200 mb-4">

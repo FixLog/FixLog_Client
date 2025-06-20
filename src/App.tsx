@@ -31,7 +31,7 @@ const App: React.FC = () => {
           }
         >
           {/* 로그인 후에 접근 가능한 페이지들은 여기에 추가! */}
-          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/my-page/:nickname" element={<MyPage />} />
           <Route path="/posting-page" element={<PostingPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />

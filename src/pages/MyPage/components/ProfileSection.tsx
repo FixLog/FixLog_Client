@@ -39,9 +39,11 @@ const ProfileSection = ({
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const token = localStorage.getItem("access_token");
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
         // 프로필 정보
-        const profileRes = await axios.get(`${apiUrl}/members/me`);
-        // 응답이 정확한 구조를 가질 때만 set
+        const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
         if (profile && profile.profileImageUrl) {
           setProfileData(profile);
@@ -51,20 +53,23 @@ const ProfileSection = ({
 
         // 팔로워 목록
         const followersRes = await axios.get(
-          `${apiUrl}/api/user/${userId}/followers`
+          `${apiUrl}/api/user/${userId}/followers`,
+          config
         );
         setFollowersData(followersRes.data);
 
         // 팔로잉 목록
         const followingRes = await axios.get(
-          `${apiUrl}/api/user/${userId}/following`
+          `${apiUrl}/api/user/${userId}/following`,
+          config
         );
         setFollowingData(followingRes.data);
 
         // 팔로우 상태
         if (!isMyProfile) {
           const followStatus = await axios.get(
-            `${apiUrl}/api/user/${userId}/follow-status`
+            `${apiUrl}/api/user/${userId}/follow-status`,
+            config
           );
           setIsFollowing(followStatus.data.isFollowing);
         }
