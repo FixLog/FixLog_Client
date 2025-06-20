@@ -3,51 +3,86 @@ import { useState } from "react";
 import DropDownButtonIcon from "../../assets/img/DropDownButtonIcon.png";
 import PythonIcon from "../../assets/img/PythonIcon.png"; 
 import CloseIcon from "../../assets/img/DropDownCloseButton.png"; 
+import { Tags } from "../../mocks/MockTags"
+
 
 // TODO: 태그 클릭했을 때 나오는 화면 위치 버튼별로 조정하기 (디자인 확인 후 작업)
 
-interface TagSelectParams {
-    Tags: Record<string, string[]>;
+interface TagSelectProps {
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const TagSelect = ({ Tags }: TagSelectParams) => {
-    return (
-      <div className="flex gap-[16px] justify-left mt-[20px]">
-        {Object.entries(Tags).map(([label, options]) => (
-          <DropdownTagButton
-            key={label}
-            defaultLabel={label}
-            options={options}
-          />
-        ))}
-      </div>
-    );
-  };
+const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
+  return (
+    <div className="flex gap-[16px] justify-left mt-[20px]">
+      {Object.entries(Tags).map(([label, options]) => (
+        <DropdownTagButton
+          key={label}
+          defaultLabel={label}
+          options={options}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+      ))}
+    </div>
+  );
+};
 
 interface DropdownTagButtonProps {
   options: string[];
   defaultLabel: string;
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) => {
+const DropdownTagButton = ({
+  options,
+  defaultLabel,
+  selectedTags,
+  setSelectedTags,
+}: DropdownTagButtonProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedTag, setSelectedTag] = useState<string>(defaultLabel);
+
+  // 현재 카테고리에서 선택된 태그 (저장된 건 # 없이 비교)
+  const selectedInCategory = options.find((option) =>
+    selectedTags.includes(option)
+  );
+
+  // 보여줄 라벨 (선택된 태그는 # 붙이기)
+  const labelToShow = selectedInCategory ? `# ${selectedInCategory}` : defaultLabel;
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+  
   const handleSelect = (option: string) => {
-    setSelectedTag(`# ${option}`);
+    // 1. 현재 카테고리에서 선택된 태그 찾기
+    const existingIndex = selectedTags.findIndex((tag) =>
+      options.includes(tag)
+    );
+  
+    if (existingIndex !== -1) {
+      // 2. 이미 선택된 태그가 있다면 → 해당 위치에 새 태그로 교체
+      const newTags = [...selectedTags];
+      newTags[existingIndex] = option;
+      setSelectedTags(newTags);
+    } else {
+      // 3. 해당 카테고리에서 처음 선택한 경우 → 맨 뒤에 삽입
+      setSelectedTags([...selectedTags, option]);
+    }
+  
     setIsOpen(false);
   };
+  
 
   return (
     <div className="relative inline-block">
       <button
         onClick={toggleDropdown}
         className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
-          ${selectedTag !== defaultLabel ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
+          ${selectedInCategory ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
         `}
       >
-        <span>{selectedTag}</span>
+        <span>{labelToShow}</span>
         <img src={DropDownButtonIcon} className="w-[16px] h-[16px]" />
       </button>
 
@@ -76,6 +111,5 @@ const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) =>
     </div>
   );
 };
-
 
 export default TagSelect;
