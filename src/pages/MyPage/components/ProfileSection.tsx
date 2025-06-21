@@ -15,6 +15,8 @@ const ProfileSection = ({
   currentUserId,
   isLogin
 }: ProfileSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [profileData, setProfileData] = useState<{
     email: string;
     nickname: string;
@@ -26,9 +28,9 @@ const ProfileSection = ({
     nickname: "Loading...",
     profileImageUrl: "Loading",
     bio: "Loading...",
-    socialType: "Loading",
+    socialType: "Loading"
   });
-  
+
   const [followersData, setFollowersData] = useState<User_Follower[]>([]);
   const [followingData, setFollowingData] = useState<User_Following[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -37,9 +39,11 @@ const ProfileSection = ({
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
+        const token = localStorage.getItem("access_token");
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
         // 프로필 정보
-        const profileRes = await axios.get("/members/me");
-        // 응답이 정확한 구조를 가질 때만 set
+        const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
         if (profile && profile.profileImageUrl) {
           setProfileData(profile);
@@ -48,17 +52,24 @@ const ProfileSection = ({
         }
 
         // 팔로워 목록
-        const followersRes = await axios.get(`/api/user/${userId}/followers`);
+        const followersRes = await axios.get(
+          `${apiUrl}/api/user/${userId}/followers`,
+          config
+        );
         setFollowersData(followersRes.data);
 
         // 팔로잉 목록
-        const followingRes = await axios.get(`/api/user/${userId}/following`);
+        const followingRes = await axios.get(
+          `${apiUrl}/api/user/${userId}/following`,
+          config
+        );
         setFollowingData(followingRes.data);
 
         // 팔로우 상태
         if (!isMyProfile) {
           const followStatus = await axios.get(
-            `/api/user/${userId}/follow-status`
+            `${apiUrl}/api/user/${userId}/follow-status`,
+            config
           );
           setIsFollowing(followStatus.data.isFollowing);
         }
@@ -75,10 +86,10 @@ const ProfileSection = ({
   const handleFollow = async () => {
     try {
       if (isFollowing) {
-        await axios.post(`/follow`);
+        await axios.post(`${apiUrl}/follow`);
         setFollowersData((prev) => prev.slice(0, -1)); // 단순 감소 처리
       } else {
-        await axios.delete(`/follow/unfollow`);
+        await axios.delete(`${apiUrl}/follow/unfollow`);
         setFollowersData((prev) => [
           ...prev,
           {

@@ -15,6 +15,8 @@ const ProfileSection = ({
   setImageFile,
   bio
 }: ProfileSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -28,7 +30,7 @@ const ProfileSection = ({
 
     try {
       const presignRes = await axios.get(
-        `/mypage/members/profile-image/presign?filename=${imageFile.name}`,
+        `${apiUrl}/mypage/members/profile-image/presign?filename=${imageFile.name}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`
@@ -40,7 +42,7 @@ const ProfileSection = ({
         headers: { "Content-Type": imageFile.type }
       });
       await axios.patch(
-        "/mypage/members/profile-image",
+        `${apiUrl}/mypage/members/profile-image`,
         { imageUrl: fileUrl },
         {
           headers: {
@@ -60,7 +62,7 @@ const ProfileSection = ({
     const newBio = (document.getElementById("bio") as HTMLTextAreaElement)
       .value;
     try {
-      await axios.patch("/mypage/members/bio", { bio: newBio });
+      await axios.patch(`${apiUrl}/mypage/members/bio`, { bio: newBio });
       alert("소개글이 수정되었습니다!");
     } catch (err) {
       console.error("소개글 수정 실패", err);
@@ -69,21 +71,21 @@ const ProfileSection = ({
   };
 
   return (
-    <div className="bg-white border shadow-md rounded-lg p-6 mb-6">
-      <h2 className="text-xl font-semibold mb-3">프로필 관리</h2>
-      <div className="flex space-x-4 mb-4">
-        <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+    <section className="bg-white border shadow-md rounded-lg px-12 py-10 mb-12">
+      <h2 className="text-xl font-semibold mb-8">프로필 관리</h2>
+      <div className="flex items-start gap-12 mb-10">
+        <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
           <img
             src={previewUrl}
             alt="프로필 이미지"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center gap-4">
           <input type="file" accept="image/*" onChange={handleImageChange} />
           <button
             onClick={handleUploadImage}
-            className="mt-3 bg-sub1 text-black px-0.5 py-2 rounded font-bold"
+            className="bg-sub1 text-black py-2 px-4 rounded font-bold w-fit"
           >
             이미지 변경하기
           </button>
@@ -91,26 +93,26 @@ const ProfileSection = ({
       </div>
       <div>
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 text-base font-bold mb-2"
           htmlFor="bio"
         >
           소개글 수정하기
         </label>
         <textarea
           id="bio"
-          className="shadow bg-gray-150 border rounded w-full py-2 px-3 text-gray-600 h-32"
+          className="shadow bg-gray-150 border rounded w-full py-3 px-4 text-gray-600 h-32"
           defaultValue={bio ?? "소개글을 입력하세요"}
         ></textarea>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button
             onClick={handleUpdateBio}
-            className="bg-sub1 text-black font-bold py-2 px-4 rounded"
+            className="bg-sub1 text-black font-bold py-2 px-6 rounded"
           >
             수정하기
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

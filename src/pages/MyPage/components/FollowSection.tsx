@@ -17,8 +17,12 @@ interface FollowListSectionProps {
 
 const FollowListSection = ({
   followers = [],
-  following = []
+  following = [],
+  followersCount,
+  followingCount
 }: FollowListSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [simplifiedFollowers, setSimplifiedFollowers] = useState<
@@ -65,11 +69,11 @@ const FollowListSection = ({
         simplifiedFollowing.find((u) => u.id === userId) ||
         simplifiedFollowers.find((u) => u.id === userId);
       if (user?.isFollowing) {
-        await axios.delete("/follow/unfollow", {
+        await axios.delete(`${apiUrl}/follow/unfollow`, {
           data: { target_member_id: userId }
         });
       } else {
-        await axios.post("/follow", { target_member_id: userId });
+        await axios.post(`${apiUrl}/follow`, { target_member_id: userId });
       }
     } catch (err) {
       console.error("팔로우/언팔로우 실패:", err);
@@ -77,13 +81,19 @@ const FollowListSection = ({
   };
   return (
     <div className="flex gap-4 mt-2 text-sm">
-      <button onClick={() => setShowFollowersModal(true)}>
+      <button
+        className="flex gap-2"
+        onClick={() => setShowFollowersModal(true)}
+      >
         팔로워
-        {/* {followersCount} */}
+        <div>{followersCount}</div>
       </button>
-      <button onClick={() => setShowFollowingModal(true)}>
+      <button
+        className="flex gap-2"
+        onClick={() => setShowFollowingModal(true)}
+      >
         팔로잉
-        {/* {followingCount} */}
+        <div>{followingCount}</div>
       </button>
       <UserListModal
         isOpen={showFollowersModal}
