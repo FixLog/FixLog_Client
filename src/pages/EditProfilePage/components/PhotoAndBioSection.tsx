@@ -1,5 +1,3 @@
-import axios from "axios";
-
 interface PhotoAndBioSectionProps {
   previewUrl: string;
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
