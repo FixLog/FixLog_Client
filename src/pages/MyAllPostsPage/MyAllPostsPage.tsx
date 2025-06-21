@@ -157,7 +157,7 @@ const MyAllPostsPage = () => {
               {/* 연동하며 PageNavigator를 수정하게 되어서 우선 mock data로 넣어뒀습니다..! */}
               <PageNavigator
                     currentPage={1}
-                    totalPageNumber={5}
+                    totalPageNumber={totalPages}
                     onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수 
               />
             </div>
