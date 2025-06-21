@@ -1,89 +1,44 @@
-import axios from "axios";
-
-interface ProfileSectionProps {
+interface PhotoAndBioSectionProps {
   previewUrl: string;
-  setPreviewUrl: (url: string) => void;
-  imageFile: File | null;
-  setImageFile: (file: File | null) => void;
+  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUpdateImage: () => void;
   bio: string;
+  onBioChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onUpdateBio: () => void;
 }
 
-const ProfileSection = ({
+const PhotoAndBioSection = ({
   previewUrl,
-  setPreviewUrl,
-  imageFile,
-  setImageFile,
-  bio
-}: ProfileSectionProps) => {
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
-  const handleUploadImage = async () => {
-    if (!imageFile) return alert("이미지를 먼저 선택해주세요.");
-
-    try {
-      const presignRes = await axios.get(
-        `/mypage/members/profile-image/presign?filename=${imageFile.name}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
-          }
-        }
-      );
-      const { uploadUrl, fileUrl } = presignRes.data.data;
-      await axios.put(uploadUrl, imageFile, {
-        headers: { "Content-Type": imageFile.type }
-      });
-      await axios.patch(
-        "/mypage/members/profile-image",
-        { imageUrl: fileUrl },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
-          }
-        }
-      );
-      alert("프로필 이미지가 성공적으로 변경되었습니다!");
-      setPreviewUrl(fileUrl);
-    } catch (err) {
-      console.error("이미지 업로드 실패:", err);
-      alert("이미지 업로드 중 오류가 발생했습니다.");
-    }
-  };
-
-  const handleUpdateBio = async () => {
-    const newBio = (document.getElementById("bio") as HTMLTextAreaElement)
-      .value;
-    try {
-      await axios.patch("/mypage/members/bio", { bio: newBio });
-      alert("소개글이 수정되었습니다!");
-    } catch (err) {
-      console.error("소개글 수정 실패", err);
-      alert("소개글 수정 중 오류 발생");
-    }
-  };
-
+  onImageChange,
+  onUpdateImage,
+  bio,
+  onBioChange,
+  onUpdateBio
+}: PhotoAndBioSectionProps) => {
   return (
-    <div className="bg-white border shadow-md rounded-lg p-6 mb-6">
-      <h2 className="text-xl font-semibold mb-3">프로필 관리</h2>
-      <div className="flex space-x-4 mb-4">
-        <div className="w-24 h-24 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+    <section className="bg-white border shadow-md rounded-lg px-12 py-10 mb-12">
+      <h2 className="text-xl font-semibold mb-8">프로필 관리</h2>
+      <div className="flex items-start gap-12 mb-10">
+        <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
           <img
             src={previewUrl}
             alt="프로필 이미지"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col justify-center">
-          <input type="file" accept="image/*" onChange={handleImageChange} />
+        <div className="flex flex-col justify-center gap-4">
+          <label className="bg-sub1 text-black py-2 px-4 rounded font-bold w-fit cursor-pointer">
+            이미지 선택
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+              className="hidden"
+            />
+          </label>
           <button
-            onClick={handleUploadImage}
-            className="mt-3 bg-sub1 text-black px-0.5 py-2 rounded font-bold"
+            onClick={onUpdateImage}
+            className="bg-sub1 text-black py-2 px-4 rounded font-bold w-fit"
           >
             이미지 변경하기
           </button>
@@ -91,27 +46,29 @@ const ProfileSection = ({
       </div>
       <div>
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 text-base font-bold mb-2"
           htmlFor="bio"
         >
-          소개글 수정하기
+          소개글
         </label>
         <textarea
           id="bio"
-          className="shadow bg-gray-150 border rounded w-full py-2 px-3 text-gray-600 h-32"
-          defaultValue={bio ?? "소개글을 입력하세요"}
+          className="shadow bg-gray-150 border rounded w-full py-3 px-4 text-gray-600 h-32"
+          value={bio}
+          onChange={onBioChange}
+          placeholder="소개글을 입력하세요"
         ></textarea>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button
-            onClick={handleUpdateBio}
-            className="bg-sub1 text-black font-bold py-2 px-4 rounded"
+            onClick={onUpdateBio}
+            className="bg-sub1 text-black font-bold py-2 px-6 rounded"
           >
             수정하기
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default ProfileSection;
+export default PhotoAndBioSection;

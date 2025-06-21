@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import FollowSection from "./FollowSection";
 import type { User_Follower, User_Following } from "../types/follow";
+import PostDefaultImage from "../../../assets/img/PostDefaultImage.png";
 
 interface ProfileSectionProps {
   userId: string;
@@ -15,20 +16,22 @@ const ProfileSection = ({
   currentUserId,
   isLogin
 }: ProfileSectionProps) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [profileData, setProfileData] = useState<{
     email: string;
     nickname: string;
-    profileImageUrl: string;
-    bio: string;
+    profileImageUrl: string | null;
+    bio: string | null;
     socialType: string;
   }>({
     email: "Loading...",
     nickname: "Loading...",
-    profileImageUrl: "Loading",
+    profileImageUrl: null,
     bio: "Loading...",
-    socialType: "Loading",
+    socialType: "Loading"
   });
-  
+
   const [followersData, setFollowersData] = useState<User_Follower[]>([]);
   const [followingData, setFollowingData] = useState<User_Following[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -37,28 +40,45 @@ const ProfileSection = ({
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        // 프로필 정보
-        const profileRes = await axios.get("/members/me");
-        // 응답이 정확한 구조를 가질 때만 set
+        const token = localStorage.getItem("accessToken");
+        const config = token
+          ? { headers: { Authorization: `Bearer ${token}` } }
+          : {};
+
+        // 다른 유저의 정보를 조회하기 위해 nickname 파라미터 추가
+        const configWithParams = token
+          ? { ...config, params: { nickname: userId } }
+          : { params: { nickname: userId } };
+        
+        // 프로필 정보 (이 부분은 '/members/me'로 자신의 정보만 가져오고 있어, 다른 유저 프로필 조회 시 문제가 될 수 있으나 일단 유지합니다)
+        const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
-        if (profile && profile.profileImageUrl) {
+        if (profile) {
           setProfileData(profile);
         } else {
           console.warn("회원 정보가 유효하지 않습니다.");
         }
 
-        // 팔로워 목록
-        const followersRes = await axios.get(`/api/user/${userId}/followers`);
+        // API 명세에 따라 팔로워 목록 주소 변경
+        const followersRes = await axios.get(
+          `${apiUrl}/follow/followers`,
+          configWithParams
+        );
         setFollowersData(followersRes.data);
 
-        // 팔로잉 목록
-        const followingRes = await axios.get(`/api/user/${userId}/following`);
+        // API 명세에 따라 팔로잉 목록 주소 변경
+        const followingRes = await axios.get(
+          `${apiUrl}/follow/followings`,
+          configWithParams
+        );
         setFollowingData(followingRes.data);
 
         // 팔로우 상태
         if (!isMyProfile) {
+          // 이 API는 명세에 없으나, 버튼 상태를 위해 필요하므로 일단 유지합니다.
           const followStatus = await axios.get(
-            `/api/user/${userId}/follow-status`
+            `${apiUrl}/api/user/${userId}/follow-status`,
+            config
           );
           setIsFollowing(followStatus.data.isFollowing);
         }
@@ -70,27 +90,36 @@ const ProfileSection = ({
     if (userId) {
       fetchProfileData();
     }
-  }, [userId]);
+  }, [userId, isMyProfile]);
 
   const handleFollow = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+    
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+
     try {
+      // isFollowing이 true이면 언팔로우(DELETE) 요청
       if (isFollowing) {
-        await axios.post(`/follow`);
-        setFollowersData((prev) => prev.slice(0, -1)); // 단순 감소 처리
-      } else {
-        await axios.delete(`/follow/unfollow`);
-        setFollowersData((prev) => [
-          ...prev,
-          {
-            id: Date.now(), // 임시 ID
-            follower_id: Number(currentUserId),
-            nickname: "나" // 실제로는 API 재요청이 더 정확함
-          }
-        ]);
+        await axios.delete(`${apiUrl}/follow/unfollow`, {
+          ...config,
+          data: { nickname: userId } // 본문에 언팔로우할 유저 닉네임 포함
+        });
+      } else { // isFollowing이 false이면 팔로우(POST) 요청
+        await axios.post(`${apiUrl}/follow`, { nickname: userId }, config);
       }
+      
+      // API 호출 성공 시 버튼 상태만 변경 (팔로워 수 등은 페이지 새로고침 시 반영)
       setIsFollowing(!isFollowing);
+
     } catch (error) {
       console.error("팔로우/언팔로우 중 오류 발생:", error);
+      alert("요청 처리 중 오류가 발생했습니다.");
     }
   };
 
@@ -98,7 +127,7 @@ const ProfileSection = ({
     <div className="flex items-start gap-4 p-4">
       <div className="relative w-24 h-24 rounded-full object-cover justify-center bg-blue-300 border-black">
         <img
-          src={profileData.profileImageUrl}
+          src={profileData.profileImageUrl || PostDefaultImage}
           alt="프로필 이미지"
           className="w-24 h-24 rounded-full object-cover"
         />

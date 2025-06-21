@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "./ArticleCard";
+import { useNavigate } from "react-router-dom";
 
 interface Article {
   id: number;
@@ -22,24 +23,44 @@ interface MyPageArticleListProps {
   activeTab: "mywrites" | "bookmarks" | "likes" | "forks";
 }
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const API_ENDPOINTS = {
-  mywrites: "/mypage/posts",
-  bookmarks: "/mypage/bookmarks", // 수정 필요함
-  likes: "/mypage/likes",
-  forks: "/mypage/forks" // 아직 구현 안하는걸로
+  mywrites: `${apiUrl}/mypage/posts`,
+  likes: `${apiUrl}/mypage/likes`,
+  forks: `${apiUrl}/mypage/forks`
 };
 
 const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (activeTab === "bookmarks") {
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
     const fetchArticles = async () => {
       setLoading(true);
+
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page: 0, sort: 0, size: 4 }
+      };
+
+      const endpoint = API_ENDPOINTS[activeTab];
+
       try {
-        const res = await axios.get(
-          `${API_ENDPOINTS[activeTab]}?page=0&sort=0&size=4`
-        );
+        const res = await axios.get(endpoint, config);
         const content = res.data.data.content;
 
         const parsed: Article[] = content.map((article: RawPost) => ({
@@ -60,7 +81,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
     };
 
     fetchArticles();
-  }, [activeTab]);
+  }, [activeTab, navigate]);
 
   if (loading) return <p className="mt-4">로딩 중...</p>;
 

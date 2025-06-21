@@ -16,9 +16,10 @@ import LoginPage from "./pages/UserPage/LoginPage";
 import DeleteAccountPage from "./pages/UserPage/DeleteAccountPage";
 import TagCollectionPage from "./pages/TagPage/TagCollectionPage";
 import TagDetailPage from "./pages/TagPage/TagDetailPage";
+import MyAllPostsPage from "./pages/MyAllPostsPage/MyAllPostsPage";
 
 const App: React.FC = () => {
-  const isLoggedIn = true; // TODO: 이후 토큰 존재 여부 검사해서 수정
+  const isLoggedIn = !!localStorage.getItem("accessToken");
 
   return (
     <BrowserRouter>
@@ -31,13 +32,15 @@ const App: React.FC = () => {
           }
         >
           {/* 로그인 후에 접근 가능한 페이지들은 여기에 추가! */}
-          <Route path="/my-page" element={<MyPage />} />
+          <Route path="/my-page/:nickname" element={<MyPage />} />
           <Route path="/posting-page" element={<PostingPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/tag-collection" element={<TagCollectionPage />} />
           <Route path="/tag-detail" element={<TagDetailPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
+          <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
+          <Route path="/my-all-posts/bookmarks/:folderId" element={<MyAllPostsPage />} />
         </Route>          
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}

@@ -22,7 +22,7 @@ function TagCard({ tag } : TagCardProps) {
         >
             {/*태그명*/}
             <span 
-                className="bg-sub2 text-[14px] font-semibold rounded-[8px] px-[8px] py-[4px]"
+                className="bg-sub2 text-[18px] font-semibold rounded-[8px] px-[8px] py-[4px]"
                 style={{ color: '#6EAB0C' }}
             >
                 tag-name
@@ -34,7 +34,7 @@ function TagCard({ tag } : TagCardProps) {
             </p>
 
             {/*포스팅 수*/}
-            <div className="flex items-center text-gray-600 text-[16px]">
+            <div className="flex items-center text-gray-600 text-[14px]">
                 <p className="mr-[17px]">포스팅</p>
                 <p>nnnnn개</p>
             </div>
