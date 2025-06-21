@@ -8,7 +8,7 @@ interface PostPreviewProps {
   img?: string; // 썸네일 이미지가 따로 없다면 기본 이미지 사용
   tags: string[];
   date: string;
-  author?: string; // ✨ optional: 작성자 이름
+  author?: string; 
 }
 
 function PostPreview({ id, title, summary, img, tags, date, author }: PostPreviewProps) {
