@@ -1,6 +1,6 @@
 import SearchButton from "../../../assets/img/SearchButton.png";
 import SearchIcon from "../../../assets/img/SearchIcon.png";
-import FixlogLogoWithText from "../../../assets/img/FixlogLogoWithText.png"
+import FixlogLogoMainPage from "../../../assets/img/FixlogLogoMainPage.png"
 import { useNavigate } from "react-router-dom";
 
 interface ShortSearchBarProps {
@@ -24,8 +24,8 @@ const ShortSearchBar = ({ query, setQuery, selectedTags } : ShortSearchBarProps)
     };
 
     return (
-        <div className="flex flex-col items-center justify-center gap-[65px] mt-[99px]">
-            <img src={FixlogLogoWithText} className="w-[504px]" />
+        <div className="flex flex-col items-center justify-center gap-[65px] mt-[149px]">
+            <img src={FixlogLogoMainPage} className="w-[269px]" />
             <div className="flex items-center justify-between bg-gray-100 rounded-xl px-[17px] py-[17px] w-[772px]">
                 <div className="flex items-center gap-[20px] w-full">
                     <img src={SearchIcon} alt="검색 아이콘" className="w-[24px] h-[24px]" />

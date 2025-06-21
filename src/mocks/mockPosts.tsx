@@ -1,7 +1,7 @@
 interface MockPost {
   post_id: number;
   post_title: string;
-  post_tag: string[];  // 수정됨
+  post_tag: string[];  
   nickname: string;
   created_at: string;
   image_url?: string; 
