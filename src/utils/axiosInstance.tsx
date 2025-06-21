@@ -1,20 +1,19 @@
 import axios from 'axios';
 
-// .env에 있는 VITE_API_URL을 환경변수로 불러옴
 const baseURL = import.meta.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
   baseURL,
-  withCredentials: true, // 쿠키 등을 포함해야 할 경우 true (백엔드와 CORS 설정이 맞아야 함)
+  withCredentials: true, 
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// 요청 인터셉터 (선택)
+// 요청 인터셉터 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 예: 로컬스토리지에서 JWT 토큰 가져와서 Authorization 헤더에 넣기
+    // 로컬스토리지에서 JWT 토큰 가져와서 Authorization 헤더에 넣기
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,7 +23,7 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터 (선택)
+// 응답 인터셉터 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

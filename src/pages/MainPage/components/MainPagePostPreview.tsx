@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
 
 interface DefaultPostProps {
-  id: string;
+  id: number;
   title: string;
   img?: string;
-  tag: string;
+  tags: string[];
   nickname: string;
   createdAt: string;
 }
 
-function DefaultPost({ id, title, img, tag, nickname, createdAt }: DefaultPostProps) {
+function DefaultPost({ id, title, img, tags, nickname, createdAt }: DefaultPostProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -27,14 +27,13 @@ function DefaultPost({ id, title, img, tag, nickname, createdAt }: DefaultPostPr
       </h2>
       </div>
       <div className="mt-[12px] h-[42px] space-y-1 text-sm font-pretendard text-gray-500 leading-tight break-words">
-        {tag
-          .split(" ")
-          .filter((t) => t.trim() !== "")
-          .map((t, index) => (
-            <span key={index} className="mr-2">
-              {t}
-            </span>
-          ))}
+        {tags
+            .filter((t) => t.trim() !== "")
+            .map((t, index) => (
+              <span key={index} className="mr-2">
+                {t}
+              </span>
+        ))}
       </div>
       <div className="flex mt-[20px] h=[39px] justify-between items-center">
         <div className="flex items-center gap-2">
