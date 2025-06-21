@@ -2,6 +2,7 @@ import Header from "../../components/common/Header";
 import ProfileSection from "./components/ProfileSection";
 import MyPageNavTabs from "./components/MyPageNavTabs";
 import MyPageArticleList from "./components/MyPageArticleList";
+import BookmarkFolderList from "./components/BookmarkFolderList";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -12,6 +13,7 @@ const MyPage = () => {
   const [activeTab, setActiveTab] = useState<
     "mywrites" | "bookmarks" | "likes" | "forks"
   >("mywrites");
+  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
   const [isLogin, setIsLogin] = useState(false);
   const [myNickname, setMyNickname] = useState<string | null>(null);
   const [loginMessage, setLoginMessage] = useState("");
@@ -52,11 +54,18 @@ const MyPage = () => {
   ) => {
     if (!isOwner && tab !== "mywrites") return;
     setActiveTab(tab);
+    setSelectedFolderId(null);
   };
 
   const handleViewAllClick = () => {
+    if (activeTab === 'bookmarks' && !selectedFolderId) {
+      alert("먼저 폴더를 선택해주세요.");
+      return;
+    }
     navigate(`/view-all/${activeTab}`);
   };
+
+  const showArticleList = activeTab !== 'bookmarks' || (activeTab === 'bookmarks' && selectedFolderId !== null);
 
   return (
     <div className="min-h-screen bg-gray100">
@@ -74,8 +83,8 @@ const MyPage = () => {
           isOwner={isOwner}
           activeTab={activeTab}
         />
-        {/* 전체보기 버튼: 본인만 보이게 */}
-        {isOwner && (
+        {/* "전체보기" 버튼: 북마크 탭에서는 폴더 선택 시에만 보이도록 */}
+        {showArticleList && isOwner && (
           <div className="flex justify-end mt-6 mb-2">
             <button
               onClick={handleViewAllClick}
@@ -85,8 +94,12 @@ const MyPage = () => {
             </button>
           </div>
         )}
-        {/* 포스팅 목록 */}
-        <MyPageArticleList activeTab={activeTab} />
+        {/* 포스팅 목록 또는 폴더 목록 */}
+        {activeTab === 'bookmarks' && !selectedFolderId ? (
+          <BookmarkFolderList onFolderSelect={setSelectedFolderId} />
+        ) : (
+          <MyPageArticleList activeTab={activeTab} folderId={selectedFolderId} />
+        )}
         {loginMessage && (
           <div className="text-center text-red-500 mt-8">{loginMessage}</div>
         )}

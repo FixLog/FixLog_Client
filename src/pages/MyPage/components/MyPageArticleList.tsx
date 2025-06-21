@@ -21,30 +21,35 @@ interface RawPost {
 
 interface MyPageArticleListProps {
   activeTab: "mywrites" | "bookmarks" | "likes" | "forks";
+  folderId?: number | null;
 }
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const API_ENDPOINTS = {
   mywrites: `${apiUrl}/mypage/posts`,
-  bookmarks: `${apiUrl}/mypage/bookmarks`, // 수정 필요함
+  bookmarks: `${apiUrl}/mypage/bookmarks`, // 이 주소는 폴더별 조회를 위해 동적으로 변경될 것임
   likes: `${apiUrl}/mypage/likes`,
-  forks: `${apiUrl}/mypage/forks` // 아직 구현 안하는걸로
+  forks: `${apiUrl}/mypage/forks`
 };
 
-const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
+const MyPageArticleList = ({ activeTab, folderId }: MyPageArticleListProps) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (activeTab === 'bookmarks' && !folderId) {
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
     const fetchArticles = async () => {
       setLoading(true);
 
       const token = localStorage.getItem("accessToken");
       if (!token) {
-        // 이 페이지에 접근했다는 것 자체가 토큰이 있다는 의미지만,
-        // 만약을 대비한 방어 코드
         navigate("/login");
         return;
       }
@@ -54,8 +59,13 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
         params: { page: 0, sort: 0, size: 4 }
       };
 
+      let endpoint = API_ENDPOINTS[activeTab];
+      if (activeTab === 'bookmarks' && folderId) {
+        endpoint = `${apiUrl}/bookmark-folders/${folderId}/bookmarks`;
+      }
+      
       try {
-        const res = await axios.get(API_ENDPOINTS[activeTab], config);
+        const res = await axios.get(endpoint, config);
         const content = res.data.data.content;
 
         const parsed: Article[] = content.map((article: RawPost) => ({
@@ -76,7 +86,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
     };
 
     fetchArticles();
-  }, [activeTab, navigate]);
+  }, [activeTab, folderId, navigate]);
 
   if (loading) return <p className="mt-4">로딩 중...</p>;
 
