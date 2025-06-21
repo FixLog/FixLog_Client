@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 type TabType = "bookmarks" | "likes" | "mywrites" | "forks";
 
@@ -8,7 +8,11 @@ interface MyPageNavTabsProps {
   activeTab: TabType;
 }
 
-function MyPageNavTabs({ onTabChange, isOwner, activeTab }: MyPageNavTabsProps) {
+function MyPageNavTabs({
+  onTabChange,
+  isOwner,
+  activeTab
+}: MyPageNavTabsProps) {
   const tabs: { label: string; value: TabType }[] = isOwner
     ? [
         { label: "내가 쓴 글", value: "mywrites" },
@@ -16,9 +20,7 @@ function MyPageNavTabs({ onTabChange, isOwner, activeTab }: MyPageNavTabsProps) 
         { label: "좋아요한 글", value: "likes" },
         { label: "Fork 한 글", value: "forks" }
       ]
-    : [
-        { label: "작성한 글", value: "mywrites" }
-      ];
+    : [{ label: "작성한 글", value: "mywrites" }];
 
   const handleClick = (tab: TabType) => {
     if (!isOwner && tab !== "mywrites") return;
