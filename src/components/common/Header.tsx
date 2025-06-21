@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import LogoIcon from "../../assets/icons/Logo.svg";
 import AlarmIcon from "../../assets/icons/Alarm.svg";
 import WriteIcon from "../../assets/icons/Write.svg";
@@ -16,6 +17,28 @@ const Header = ({ isLogin }: HeaderProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // 네비게이션 탭 상태 관리
   const [activeTab, setActiveTab] = useState<NavTabType>("tags");
+  const [myNickname, setMyNickname] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    // 로그인 상태일 때만 API 호출
+    if (isLogin) {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        axios.get(`${apiUrl}/members/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+          setMyNickname(res.data.data.nickname);
+        })
+        .catch(err => {
+          console.error("내 정보 불러오기 실패:", err);
+        });
+      }
+    }
+  }, [isLogin, apiUrl]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -23,6 +46,15 @@ const Header = ({ isLogin }: HeaderProps) => {
 
   const handleTabClick = (tab: NavTabType) => {
     setActiveTab(tab);
+  };
+
+  const handleMyPageClick = () => {
+    if (myNickname) {
+      navigate(`/my-page/${myNickname}`);
+    } else {
+      alert("내 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    }
+    setIsDropdownOpen(false); // 메뉴 닫기
   };
 
   const navTabs: { label: string; value: NavTabType }[] = [
@@ -95,11 +127,12 @@ const Header = ({ isLogin }: HeaderProps) => {
                 {/* 드롭다운 메뉴 */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                    <Link to="/my-page">
-                      <button className="block px-4 py-2 text-sm text-gray700 hover:bg-gray100 w-full text-left transition-colors ">
-                        마이페이지
-                      </button>
-                    </Link>
+                    <button
+                      onClick={handleMyPageClick}
+                      className="block px-4 py-2 text-sm text-gray700 hover:bg-gray100 w-full text-left transition-colors"
+                    >
+                      마이페이지
+                    </button>
                     <Link to="/">
                       <button className="block px-4 py-2 text-sm text-gray700 hover:bg-gray100 w-full text-left transition-colors ">
                         로그아웃

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "./ArticleCard";
+import { useNavigate } from "react-router-dom";
 
 interface Article {
   id: number;
@@ -34,14 +35,27 @@ const API_ENDPOINTS = {
 const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchArticles = async () => {
       setLoading(true);
+
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        // 이 페이지에 접근했다는 것 자체가 토큰이 있다는 의미지만,
+        // 만약을 대비한 방어 코드
+        navigate("/login");
+        return;
+      }
+      
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page: 0, sort: 0, size: 4 }
+      };
+
       try {
-        const res = await axios.get(
-          `${API_ENDPOINTS[activeTab]}?page=0&sort=0&size=4`
-        );
+        const res = await axios.get(API_ENDPOINTS[activeTab], config);
         const content = res.data.data.content;
 
         const parsed: Article[] = content.map((article: RawPost) => ({
@@ -62,7 +76,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
     };
 
     fetchArticles();
-  }, [activeTab]);
+  }, [activeTab, navigate]);
 
   if (loading) return <p className="mt-4">로딩 중...</p>;
 

@@ -18,7 +18,7 @@ const MyPage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("accessToken");
     if (!token) {
       setIsLogin(false);
       setLoginMessage("로그인이 필요합니다.");
@@ -30,18 +30,26 @@ const MyPage = () => {
     setIsLogin(true);
     setLoginMessage("");
 
-    axios.get(`${apiUrl}/members/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => {
-      setMyNickname(res.data.data.nickname);
-    }).catch(() => {
-      setMyNickname(null);
-    });
+    axios
+      .get(`${apiUrl}/members/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((res) => {
+        setMyNickname(res.data.data.nickname);
+      })
+      .catch(() => {
+        setMyNickname(null);
+      });
   }, []);
 
-  const isOwner = typeof myNickname === "string" && typeof pageNickname === "string" && myNickname === pageNickname;
+  const isOwner =
+    typeof myNickname === "string" &&
+    typeof pageNickname === "string" &&
+    myNickname === pageNickname;
 
-  const handleTabChange = (tab: "mywrites" | "bookmarks" | "likes" | "forks") => {
+  const handleTabChange = (
+    tab: "mywrites" | "bookmarks" | "likes" | "forks"
+  ) => {
     if (!isOwner && tab !== "mywrites") return;
     setActiveTab(tab);
   };

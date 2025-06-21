@@ -18,7 +18,7 @@ import TagCollectionPage from "./pages/TagPage/TagCollectionPage";
 import TagDetailPage from "./pages/TagPage/TagDetailPage";
 
 const App: React.FC = () => {
-  const isLoggedIn = true; // TODO: 이후 토큰 존재 여부 검사해서 수정
+  const isLoggedIn = !!localStorage.getItem("accessToken");
 
   return (
     <BrowserRouter>
