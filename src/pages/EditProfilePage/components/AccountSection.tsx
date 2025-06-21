@@ -1,76 +1,34 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-
 interface AccountSectionProps {
   email: string;
   nickname: string;
+  onNicknameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUpdateNickname: () => void;
+  currentPassword?: string;
+  onCurrentPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  newPassword?: string;
+  confirmPassword?: string;
+  onNewPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUpdatePassword: () => void;
 }
 
-const AccountSection = ({ email, nickname }: AccountSectionProps) => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-
-  const [nicknameValue, setNicknameValue] = useState(nickname);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordMatch, setPasswordMatch] = useState<null | boolean>(null);
-
-  const handleUpdateNickname = async () => {
-    try {
-      await axios.patch(
-        `${apiUrl}/mypage/members/nickname`,
-        { nickname: nicknameValue },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
-          }
-        }
-      );
-      alert("닉네임이 수정되었습니다!");
-    } catch (err) {
-      console.error("닉네임 수정 실패:", err);
-      alert("닉네임 수정 중 오류 발생");
-    }
-  };
-
-  useEffect(() => {
-    if (confirmPassword === "") {
-      setPasswordMatch(null);
-      return;
-    }
-    setPasswordMatch(newPassword === confirmPassword);
-  }, [newPassword, confirmPassword]);
-
-  const handleUpdatePassword = async () => {
-    if (!newPassword || !confirmPassword) {
-      alert("모든 비밀번호 입력란을 채워주세요.");
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      alert("새 비밀번호와 확인이 일치하지 않습니다.");
-      return;
-    }
-
-    try {
-      await axios.patch(
-        `${apiUrl}/mypage/members/password`,
-        { currentPassword, newPassword },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
-          }
-        }
-      );
-      alert("비밀번호가 성공적으로 변경되었습니다!");
-      setCurrentPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (err) {
-      console.error("비밀번호 변경 실패:", err);
-      alert("비밀번호 변경 중 오류가 발생했습니다.");
-    }
-  };
+const AccountSection = ({
+  email,
+  nickname,
+  onNicknameChange,
+  onUpdateNickname,
+  currentPassword,
+  onCurrentPasswordChange,
+  newPassword,
+  confirmPassword,
+  onNewPasswordChange,
+  onConfirmPasswordChange,
+  onUpdatePassword,
+}: AccountSectionProps) => {
+  const passwordMatch =
+    newPassword || confirmPassword
+      ? newPassword === confirmPassword
+      : null;
 
   return (
     <section className="bg-white border shadow-md rounded-lg px-12 py-10 mb-12">
@@ -80,10 +38,7 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
       </div>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-6">
-          <label
-            className="w-40 text-gray-700 text-base font-bold"
-            htmlFor="email"
-          >
+          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="email">
             아이디(이메일)
           </label>
           <input
@@ -95,32 +50,36 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
           />
         </div>
         <div className="flex items-center gap-6">
-          <label
-            className="w-40 text-gray-700 text-base font-bold"
-            htmlFor="nickname"
-          >
+          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="nickname">
             닉네임
           </label>
           <input
             type="text"
             id="nickname"
             className="border rounded py-2 px-4 text-gray-700 w-96"
-            value={nicknameValue}
-            onChange={(e) => setNicknameValue(e.target.value)}
+            value={nickname}
+            onChange={onNicknameChange}
           />
-          <button
-            onClick={handleUpdateNickname}
-            className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black"
-          >
+          <button onClick={onUpdateNickname} className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black">
             변경하기
           </button>
         </div>
         <div className="flex items-center gap-6">
-          <label
-            className="w-40 text-gray-700 text-base font-bold"
-            htmlFor="password"
-          >
-            비밀번호
+          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="current-password">
+            현재 비밀번호
+          </label>
+          <input
+            type="password"
+            id="current-password"
+            className="border rounded py-2 px-4 text-gray-700 w-96"
+            placeholder="현재 비밀번호"
+            value={currentPassword}
+            onChange={onCurrentPasswordChange}
+          />
+        </div>
+        <div className="flex items-center gap-6">
+          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="password">
+            새 비밀번호
           </label>
           <input
             type="password"
@@ -128,15 +87,12 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
             className="border rounded py-2 px-4 text-gray-700 w-96"
             placeholder="새 비밀번호"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={onNewPasswordChange}
           />
         </div>
         <div className="flex items-center gap-6">
-          <label
-            className="w-40 text-gray-700 text-base font-bold"
-            htmlFor="confirm-password"
-          >
-            비밀번호 확인
+          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="confirm-password">
+            새 비밀번호 확인
           </label>
           <input
             type="password"
@@ -144,12 +100,9 @@ const AccountSection = ({ email, nickname }: AccountSectionProps) => {
             className="border rounded py-2 px-4 text-gray-700 w-96"
             placeholder="새 비밀번호 확인"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={onConfirmPasswordChange}
           />
-          <button
-            onClick={handleUpdatePassword}
-            className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black"
-          >
+          <button onClick={onUpdatePassword} className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black">
             변경하기
           </button>
         </div>

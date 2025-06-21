@@ -2,6 +2,7 @@ import Header from "../../components/common/Header";
 import ProfileSection from "./components/ProfileSection";
 import MyPageNavTabs from "./components/MyPageNavTabs";
 import MyPageArticleList from "./components/MyPageArticleList";
+import BookmarkFolderList from "./components/BookmarkFolderList";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -18,7 +19,7 @@ const MyPage = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("accessToken");
     if (!token) {
       setIsLogin(false);
       setLoginMessage("로그인이 필요합니다.");
@@ -30,24 +31,32 @@ const MyPage = () => {
     setIsLogin(true);
     setLoginMessage("");
 
-    axios.get(`${apiUrl}/members/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    }).then(res => {
-      setMyNickname(res.data.data.nickname);
-    }).catch(() => {
-      setMyNickname(null);
-    });
+    axios
+      .get(`${apiUrl}/members/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      .then((res) => {
+        setMyNickname(res.data.data.nickname);
+      })
+      .catch(() => {
+        setMyNickname(null);
+      });
   }, []);
 
-  const isOwner = typeof myNickname === "string" && typeof pageNickname === "string" && myNickname === pageNickname;
+  const isOwner =
+    typeof myNickname === "string" &&
+    typeof pageNickname === "string" &&
+    myNickname === pageNickname;
 
-  const handleTabChange = (tab: "mywrites" | "bookmarks" | "likes" | "forks") => {
+  const handleTabChange = (
+    tab: "mywrites" | "bookmarks" | "likes" | "forks"
+  ) => {
     if (!isOwner && tab !== "mywrites") return;
     setActiveTab(tab);
   };
 
   const handleViewAllClick = () => {
-    navigate(`/view-all/${activeTab}`);
+    navigate(`/my-all-posts/${activeTab}`);
   };
 
   return (
@@ -66,8 +75,8 @@ const MyPage = () => {
           isOwner={isOwner}
           activeTab={activeTab}
         />
-        {/* 전체보기 버튼: 본인만 보이게 */}
-        {isOwner && (
+        {/* "전체보기" 버튼: 북마크 탭이 아닌 경우에만 표시 */}
+        {activeTab !== 'bookmarks' && isOwner && (
           <div className="flex justify-end mt-6 mb-2">
             <button
               onClick={handleViewAllClick}
@@ -77,8 +86,12 @@ const MyPage = () => {
             </button>
           </div>
         )}
-        {/* 포스팅 목록 */}
-        <MyPageArticleList activeTab={activeTab} />
+        {/* 포스팅 목록 또는 폴더 목록 */}
+        {activeTab === 'bookmarks' ? (
+          <BookmarkFolderList />
+        ) : (
+          <MyPageArticleList activeTab={activeTab} />
+        )}
         {loginMessage && (
           <div className="text-center text-red-500 mt-8">{loginMessage}</div>
         )}
