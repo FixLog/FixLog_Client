@@ -8,13 +8,12 @@ import Header from "../../components/common/Header";
 import { fetchSearchResults } from "../../api/search";
 import type { Post } from "../../api/search";
 
-
 function SearchResultPage() {
   const [query, setQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
-  // const [page, setPage] = useState<number>(0); // 0-based index
+  const [page, setPage] = useState<number>(1); 
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -25,22 +24,19 @@ function SearchResultPage() {
   useEffect(() => {
     setQuery(initialQuery);
     setSelectedTags(initialSelectedTags);
-  }, [location.search]); // 쿼리 스트링이 바뀔 때마다 실행
+  }, [location.search]);
 
   useEffect(() => {
-    if (query || selectedTags.length > 0) {
-      fetchSearchResults(query, selectedTags, 0, 5)
-        .then((res) => {
-          console.log("✅ 검색 결과 응답:", res);
-          setPosts(res.content);
-          setTotalPages(res.totalPages);
-        })
-        .catch((err) => {
-          console.error("검색 결과 로딩 실패", err);
-        });
-    }
-  }, [query, selectedTags]);
-  
+    fetchSearchResults(query, selectedTags, page - 1, 5) 
+      .then((res) => {
+        console.log("검색 결과 응답:", res);
+        setPosts(res.content);
+        setTotalPages(res.totalPages);
+      })
+      .catch((err) => {
+        console.error("검색 결과 로딩 실패", err);
+      });
+  }, [query, selectedTags, page]); 
 
   return (
     <>
@@ -56,8 +52,9 @@ function SearchResultPage() {
         <div className="flex flex-col items-center">
           <SearchResultPosts posts={posts} />
           <PageNavigator
+            currentPage={page}
             totalPageNumber={totalPages}
-            // onPageChange={(newPage) => setPage(newPage)}
+            onPageChange={(p) => setPage(p)} 
           />
         </div>
       </div>
