@@ -7,11 +7,7 @@ interface Folder {
   name: string;
 }
 
-interface BookmarkFolderListProps {
-  onFolderSelect: (folderId: number) => void;
-}
-
-const BookmarkFolderList = ({ onFolderSelect }: BookmarkFolderListProps) => {
+const BookmarkFolderList = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -46,7 +42,8 @@ const BookmarkFolderList = ({ onFolderSelect }: BookmarkFolderListProps) => {
   }, [apiUrl, navigate]);
 
   const handleFolderClick = (folderId: number) => {
-    onFolderSelect(folderId);
+    // 북마크 폴더를 클릭하면 바로 해당 폴더의 전체보기 페이지로 이동
+    navigate(`/my-all-posts/bookmarks/${folderId}`);
   };
 
   if (loading) {
@@ -65,12 +62,12 @@ const BookmarkFolderList = ({ onFolderSelect }: BookmarkFolderListProps) => {
           onClick={() => handleFolderClick(folder.folder_id)}
           className="p-6 bg-white border rounded-lg shadow hover:shadow-md transition-shadow text-left"
         >
-          <h3 className="font-bold text-lg">{folder.name}</h3>
-          {/* 폴더 아이콘 등을 추가하면 더 좋습니다 */}
+          <h3 className="font-normal text-lg">{folder.name}</h3>
+          {/* Todo: 폴더 아이콘 등 부가적인 요소들 추가 */}
         </button>
       ))}
     </div>
   );
 };
 
-export default BookmarkFolderList; 
+export default BookmarkFolderList;

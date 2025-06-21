@@ -16,6 +16,7 @@ import LoginPage from "./pages/UserPage/LoginPage";
 import DeleteAccountPage from "./pages/UserPage/DeleteAccountPage";
 import TagCollectionPage from "./pages/TagPage/TagCollectionPage";
 import TagDetailPage from "./pages/TagPage/TagDetailPage";
+import MyAllPostsPage from "./pages/MyAllPostsPage/MyAllPostsPage";
 
 const App: React.FC = () => {
   const isLoggedIn = !!localStorage.getItem("accessToken");
@@ -38,6 +39,8 @@ const App: React.FC = () => {
           <Route path="/tag-collection" element={<TagCollectionPage />} />
           <Route path="/tag-detail" element={<TagDetailPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
+          <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
+          <Route path="/my-all-posts/bookmarks/:folderId" element={<MyAllPostsPage />} />
         </Route>          
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}
