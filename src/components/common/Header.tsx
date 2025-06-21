@@ -70,7 +70,6 @@ const Header = ({ isLogin }: HeaderProps) => {
         <Link to="/" className="flex items-center h-full">
           <img src={LogoIcon} alt="FixLog" className="h-8" />
         </Link>
-
         {/* 네비게이션 */}
         <nav className="flex gap-10 items-center text-base font-semibold ml-16 flex-1">
           {navTabs.map((tab) => {

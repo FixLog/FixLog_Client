@@ -6,14 +6,15 @@ import { useNavigate } from "react-router-dom";
 interface ShortSearchBarProps {
     query: string;
     setQuery: (query: string) => void;
+    selectedTags: string[];
 }
 
-const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
+const ShortSearchBar = ({ query, setQuery, selectedTags } : ShortSearchBarProps) => {
 
     const navigate = useNavigate();
 
     const handleSearchClick = () => {
-        navigate(`/search-result?query=${encodeURIComponent(query)}`);
+        navigate(`/search-result?query=${encodeURIComponent(query)}&tags=${selectedTags.join()}`); 
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -34,7 +35,7 @@ const ShortSearchBar = ({ query, setQuery } : ShortSearchBarProps) => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
+                    className="w-full font-pretendard bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
                     />
                 </div>
             <button
