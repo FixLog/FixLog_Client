@@ -14,23 +14,29 @@ const MyPage = () => {
   >("mywrites");
   const [isLogin, setIsLogin] = useState(false);
   const [myNickname, setMyNickname] = useState<string | null>(null);
+  const [loginMessage, setLoginMessage] = useState("");
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    setIsLogin(!!token);
-
-    if (token) {
-      axios.get(`${apiUrl}/members/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      }).then(res => {
-        setMyNickname(res.data.data.nickname);
-      }).catch(() => {
-        setMyNickname(null);
-      });
-    } else {
-      setMyNickname(null);
+    if (!token) {
+      setIsLogin(false);
+      setLoginMessage("로그인이 필요합니다.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+      return;
     }
+    setIsLogin(true);
+    setLoginMessage("");
+
+    axios.get(`${apiUrl}/members/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).then(res => {
+      setMyNickname(res.data.data.nickname);
+    }).catch(() => {
+      setMyNickname(null);
+    });
   }, []);
 
   const isOwner = typeof myNickname === "string" && typeof pageNickname === "string" && myNickname === pageNickname;
@@ -73,6 +79,9 @@ const MyPage = () => {
         )}
         {/* 포스팅 목록 */}
         <MyPageArticleList activeTab={activeTab} />
+        {loginMessage && (
+          <div className="text-center text-red-500 mt-8">{loginMessage}</div>
+        )}
       </main>
     </div>
   );
