@@ -24,6 +24,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("accessToken");
 
+  // 닉네임 불러오기(마이페이지 접근 위함)
   useEffect(() => {
     // 로그인 상태일 때만 API 호출
     if (isLogin) {
@@ -64,6 +65,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
     localStorage.removeItem("accessToken");
     setIsLogin(false);
     navigate("/");
+    setIsDropdownOpen(false); // 메뉴 닫기
   };
 
   const navTabs: { label: string; value: NavTabType }[] = [
