@@ -16,6 +16,7 @@ import DeleteAccountPage from "./pages/UserPage/DeleteAccountPage";
 import TagCollectionPage from "./pages/TagPage/TagCollectionPage";
 import TagDetailPage from "./pages/TagPage/TagDetailPage";
 import MyAllPostsPage from "./pages/MyAllPostsPage/MyAllPostsPage";
+import ViewPage from "./pages/ViewPage/ViewPage";
 
 const App: React.FC = () => {
   const isLoggedIn = !!localStorage.getItem("accessToken");
@@ -34,6 +35,7 @@ const App: React.FC = () => {
           <Route path="/my-page/:nickname" element={<MyPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />
+          <Route path="/posts/:post_id" element={<ViewPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
           <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
           <Route path="/my-all-posts/bookmarks/:folderId" element={<MyAllPostsPage />} />
