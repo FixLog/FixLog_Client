@@ -14,7 +14,7 @@ function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
 
   if (!Array.isArray(posts) || posts.length === 0) {
     return (
-      <div className="w-full text-center text-gray-500 py-10">
+      <div className="w-full text-center text-gray-500 py-10 mt-[100px] mb-[100px]">
         검색 결과가 없습니다.
       </div>
     );
@@ -24,9 +24,12 @@ function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
     <div>
       <div className="flex justify-center items-center mt-[44px]">
         <div className="flex w-[1200px] justify-between">
-          <div className="text-[28px] font-bold text-gray-800 mt-[20px]">
-            ‘{query}’ 검색 결과
-          </div>
+          {query.trim() !== "" && (
+            <div className="text-[28px] font-bold text-gray-800 mt-[20px]">
+              ‘{query}’ 검색 결과
+            </div>
+          )}
+
           {/* 추후 구현 */}
           {/* <select
             value={sortOption}
