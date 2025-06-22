@@ -8,7 +8,7 @@ import ProfileIcon from "../../assets/icons/Profile.svg";
 
 interface HeaderProps {
   isLogin: boolean;
-  setIsLogin: (login: boolean) => void;
+  setIsLogin?: (login: boolean) => void;
 }
 
 type NavTabType = "tags" | "latest" | "popular";
@@ -63,7 +63,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLogin(false);
+    setIsLogin?.(false); 
     setIsDropdownOpen(false); // 메뉴 닫기
     navigate("/");
   };
