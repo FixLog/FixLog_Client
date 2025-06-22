@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
+import axiosInstance from "../../../utils/axiosInstance";
 
 interface ImageUploadModalProps {
   onClose: () => void;
-  onUploadSuccess: (base64Url: string) => void;
+  onUploadSuccess: (markdownImage: string) => void;
 }
 
 export const ImageUploadModal = ({ onClose, onUploadSuccess }: ImageUploadModalProps) => {
@@ -10,30 +11,29 @@ export const ImageUploadModal = ({ onClose, onUploadSuccess }: ImageUploadModalP
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
-  
+
     const file = files[0];
     const formData = new FormData();
-    formData.append("file", file);
-  
+    formData.append("imageFile", file); 
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/images`, {
-        method: "POST",
-        body: formData
+      const res = await axiosInstance.post("/images", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", 
+        },
       });
-  
-      const json = await res.json();
-      if (json.success) {
-        onUploadSuccess(json.data); 
+
+      if (res.data.success) {
+        onUploadSuccess(res.data.data);
         onClose();
       } else {
-        alert("업로드 실패: " + json.message);
+        alert("업로드 실패: " + res.data.message);
       }
     } catch (err) {
       console.error(err);
-      alert("에러 발생");
+      alert("에러 발생)");
     }
   };
-  
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
