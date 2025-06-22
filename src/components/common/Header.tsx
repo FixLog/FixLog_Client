@@ -63,7 +63,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLogin?.(false);
+    setIsLogin?.(false); 
     setIsDropdownOpen(false); // 메뉴 닫기
     navigate("/");
   };
