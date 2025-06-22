@@ -150,9 +150,8 @@ function EditProfilePage() {
       const patchConfig = {
         headers: { ...config.headers, "Content-Type": "application/json" }
       };
-      await axios.put(uploadUrl, {
-        headers: { "Content-Type": imageFile.type },
-        body: imageFile
+      await axios.put(uploadUrl, imageFile, {
+        headers: { "Content-Type": imageFile.type }
       });
       await axios.patch(
         `${apiUrl}/mypage/members/profile-image`,
@@ -160,7 +159,7 @@ function EditProfilePage() {
         patchConfig
       );
       alert("프로필 이미지가 성공적으로 변경되었습니다!");
-      setPreviewUrl(fileUrl);
+      setPreviewUrl(`${fileUrl}?t=${Date.now()}`);
       setImageFile(null);
     } catch (err) {
       console.error("이미지 업로드 실패:", err);
