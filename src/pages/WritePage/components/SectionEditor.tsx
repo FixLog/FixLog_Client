@@ -38,9 +38,9 @@ export default function SectionEditor({ sectionKey }: SectionEditorProps) {
 
       <button
         onClick={() => setShowModal(true)}
-        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mt-2 px-4 py-2 bg-main text-black rounded hover:bg-blue-600"
       >
-        🖼️ 이미지 삽입
+        이미지 삽입
       </button>
 
       {showModal && (
