@@ -4,12 +4,13 @@ import Header from "../../components/common/Header";
 import TagCard from "./components/TagCard";
 
 function TagCollectionPage() {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     // 검색
     const [search, setSearch] = useState('');
 
     // 정렬
     const sortOption = ['오름차순', '내림차순', '인기순'];
-
     const [dropdownView, setDropdownView] = useState(false);
     const [selectOption, setSelectOption] = useState(sortOption[0]);
 
@@ -25,30 +26,45 @@ function TagCollectionPage() {
     const CARDS_PER_PAGE = 12;
     const PAGES_PER_GROUP = 5;
 
-    // code for test
-    const tagData = Array.from({ length: 100 }, (_, i) => ({
-        id: i,
-        name: `tag-name ${i + 1}`,
-        content: `태그 설명 ${i + 1} 개발 분야, 언어, 에러 유형 등 다양한 주제를 태그로 분류해 한눈에 확인할 수 있습니다. 관심 있는 태그를 선택하면 관련된 포스트들을 빠르게 탐색할 수 있습니다.`,
-    }));
+    // API
+    const [tags, setTags] = useState<Array<{ tagName: string; tagInfo: string }>>([]);
+    const [totalPages, setTotalPages] = useState(1);
 
-    // 태그 검색
-    const searchTag = tagData.filter(tag =>
-        tag.name.toLowerCase().includes(search.toLowerCase())
-    );
+    useEffect(() => {
+        fetch(`${apiUrl}/tags?page=${page}&size=${CARDS_PER_PAGE}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("API 요청 성공")
+                    console.log("tags:", data.data.tags);
+                    console.log("totalPages:", data.data.totalPages);
+                    setTags(data.data.tags);
+                    setTotalPages(data.data.totalPages);
+                } else {
+                    console.error("API 요청 실패", data.message);
+                }
+            })
+            .catch((error) => {
+                console.error("API 요청 실패:", error);
+            });
+    }, [apiUrl, page]);
 
-    const paginatedTags = searchTag.slice(
-        (page - 1) * CARDS_PER_PAGE,
-        page * CARDS_PER_PAGE
-    );
-
-    // 전체 페이지 수, 페이지 그룹 수 (소수점 올림)
-    const totalPages = Math.ceil(searchTag.length / CARDS_PER_PAGE);
+    // 페이지 그룹 수 (소수점 올림)
     const totalGroups = Math.ceil(totalPages / PAGES_PER_GROUP);
 
     // 페이지 그룹의 시작·끝 페이지 번호
     const startPage = pageGroup * PAGES_PER_GROUP + 1;
     const endPage = Math.min(startPage + PAGES_PER_GROUP - 1, totalPages);
+
+    // 태그 검색
+    const searchTags = tags.filter(tag =>
+        tag.tagName.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const paginatedTags = searchTags.slice(
+        (page - 1) * CARDS_PER_PAGE,
+        page * CARDS_PER_PAGE
+    );
 
     // 검색할 경우 페이지값 리셋
     useEffect(() => {
@@ -116,9 +132,19 @@ function TagCollectionPage() {
 
                 {/*태그 컴포넌트*/}
                 <div className="grid grid-cols-3 gap-x-[24px] gap-y-[20px]">
-                    {paginatedTags.map(tag => (
-                        <TagCard key={tag.id} tag={tag} />
-                    ))}
+                    {paginatedTags.map((tag, index) => (
+                        <TagCard
+                            key={index}
+                            tag={{
+                                tagName: tag.tagName,
+                                tagInfo: 
+                                    tag.tagInfo.length > 100
+                                        ? tag.tagInfo.slice(0, 100) + '...'
+                                        : tag.tagInfo,
+                            }}
+                        />
+                    ))
+                    }
                 </div>
 
                 {/*페이지네이션*/}
