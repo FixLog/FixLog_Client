@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import Header from "../../components/common/Header";
 
 interface PostInfo {
   userId: number;
@@ -67,65 +68,105 @@ export default function ViewPage() {
   } = data;
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-2">{postTitle}</h1>
-      <div className="text-sm text-gray-500 mb-4 flex items-center gap-2">
-        <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
-        <span>{nickname}</span>
-        <span>•</span>
-        <span>{createdAt}</span>
+    <div className="relative font-pretendard">
+      <Header isLogin={true} />
+      <div className="max-w-[1300px] mx-auto h-[65px] w-full z-40 bg-white border-b border-gray-200 py-4 px-6 flex justify-start">
+        <div className="text-sm font-bold text-gray-700">{nickname}의 블로그</div>
       </div>
 
-      {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-6">
-          {tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="bg-gray-100 text-sm px-2 py-1 rounded-full text-gray-700"
-            >
-              {tag}
-            </span>
-          ))}
+      <div className="fixed right-6 top-[350px] text-gray-500 text-sm space-y-4">
+        <a href="#problem" className="block hover:font-semibold">
+          문제 상황
+        </a>
+        <a href="#error" className="block hover:font-semibold">
+          에러 메시지
+        </a>
+        <a href="#env" className="block hover:font-semibold">
+          개발 환경
+        </a>
+        <a href="#reproduce" className="block hover:font-semibold">
+          재현 코드
+        </a>
+        <a href="#solution" className="block hover:font-semibold">
+          해결 코드
+        </a>
+        <a href="#cause" className="block hover:font-semibold">
+          원인 분석
+        </a>
+        <a href="#link" className="block hover:font-semibold">
+          참고 링크
+        </a>
+        <a href="#extra" className="block hover:font-semibold">
+          기타
+        </a>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 pt-[140px] pb-10">
+        <h1 className="text-heading1 font-bold mb-2">{postTitle}</h1>
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag, idx) => (
+              <span
+                key={idx}
+                className="bg-[#E1FBB8] text-[#6EAB0C] text-sm px-2 py-1 rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="text-sm text-gray-500 mb-4 flex items-center gap-2">
+          <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
+          <span>{nickname}</span>
+          <span>|</span>
+          <span>{createdAt}</span>
         </div>
-      )}
 
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold">문제 상황</h2>
-        <p className="bg-red-50 border border-red-300 text-red-700 p-4 mt-2 rounded whitespace-pre-wrap">
-          {problem}
-        </p>
-      </section>
-
-      {errorMessage && (
-        <section className="mb-6">
-          <h2 className="text-lg font-semibold">에러 메시지</h2>
-          <pre className="bg-gray-100 p-3 rounded mt-2 whitespace-pre-wrap">
-            {errorMessage}
-          </pre>
-        </section>
-      )}
-
-      <Section title="개발 환경" content={environment} />
-      <Section title="재현 코드" content={reproduceCode} />
-      <Section title="해결 코드" content={solutionCode} />
-      <Section title="원인 분석" content={causeAnalysis} />
-      <Section title="참고 링크" content={referenceLink} isLink />
-      <Section title="기타" content={extraContent} />
+        <Section id="problem" title="문제 상황" content={problem} />
+        <Section id="error" title="에러 메시지" content={errorMessage} isCode />
+        <Section id="env" title="개발 환경" content={environment} />
+        <Section id="reproduce" title="재현 코드" content={reproduceCode} />
+        <Section id="solution" title="해결 코드" content={solutionCode} />
+        <Section id="cause" title="원인 분석" content={causeAnalysis} />
+        <Section id="link" title="참고 링크" content={referenceLink} isLink />
+        <Section id="extra" title="기타" content={extraContent} />
+      </div>
     </div>
   );
 }
 
-function Section({ title, content, isLink = false }: { title: string; content: string; isLink?: boolean }) {
+function Section({
+  id,
+  title,
+  content,
+  isLink = false,
+  isCode = false
+}: {
+  id: string;
+  title: string;
+  content: string;
+  isLink?: boolean;
+  isCode?: boolean;
+}) {
   if (!content) return null;
   return (
-    <section className="mb-6">
+    <section id={id} className="mb-6">
       <h2 className="text-lg font-semibold mb-1">{title}</h2>
       {isLink ? (
-        <a href={content} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+        <a
+          href={content}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline"
+        >
           {content}
         </a>
+      ) : isCode ? (
+        <pre className="bg-gray-100 p-3 rounded mt-2 whitespace-pre-wrap text-gray-800">
+          {content}
+        </pre>
       ) : (
-        <p className="whitespace-pre-wrap text-gray-800">{content}</p>
+        <p className="whitespace-pre-wrap text-gray-800 mt-2">{content}</p>
       )}
     </section>
   );
