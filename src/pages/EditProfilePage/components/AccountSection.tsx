@@ -1,3 +1,5 @@
+import { Navigate, useNavigate } from "react-router-dom";
+
 interface AccountSectionProps {
   email: string;
   nickname: string;
@@ -27,12 +29,18 @@ const AccountSection = ({
 }: AccountSectionProps) => {
   const passwordMatch =
     newPassword || confirmPassword ? newPassword === confirmPassword : null;
-
+  
+  const navigate = useNavigate();
+  
   return (
     <section className="bg-white border border-gray-300 rounded-lg px-12 py-10 mb-12">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-semibold">계정 관리</h2>
-        <button className="text-black text-sm hover:underline">탈퇴하기</button>
+        <button 
+          onClick={() => navigate("/delete-account")}
+          className="text-black text-sm hover:underline">
+            탈퇴하기
+        </button>
       </div>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-6">

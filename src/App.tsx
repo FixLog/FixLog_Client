@@ -34,8 +34,6 @@ const App: React.FC = () => {
           <Route path="/my-page/:nickname" element={<MyPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />
-          <Route path="/tag-collection" element={<TagCollectionPage />} />
-          <Route path="/tag-detail" element={<TagDetailPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
           <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
           <Route path="/my-all-posts/bookmarks/:folderId" element={<MyAllPostsPage />} />
@@ -48,6 +46,8 @@ const App: React.FC = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/search-result" element={<SearchResultPage />} />
         <Route path="/view-all/:type" element={<ViewAllPage  />} />
+        <Route path="/tag-collection" element={<TagCollectionPage />} />
+        <Route path="/tag-detail" element={<TagDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
