@@ -20,14 +20,7 @@ const MyPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if (!token) {
-      setIsLogin(false);
-      setLoginMessage("로그인이 필요합니다.");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
-      return;
-    }
+
     setIsLogin(true);
     setLoginMessage("");
 
