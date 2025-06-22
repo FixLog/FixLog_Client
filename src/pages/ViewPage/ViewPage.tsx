@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Header from "../../components/common/Header";
+import ViewComponent from "./components/ViewComponent";
 
 interface PostInfo {
   userId: number;
@@ -115,11 +116,14 @@ export default function ViewPage() {
             ))}
           </div>
         )}
-        <div className="text-sm text-gray-500 mb-4 flex items-center gap-2">
-          <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
-          <span>{nickname}</span>
-          <span>|</span>
-          <span>{createdAt}</span>
+        <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
+          <div className="flex items-center gap-2">
+            <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
+            <span>{nickname}</span>
+            <span>|</span>
+            <span>{createdAt}</span>
+          </div>
+          <ViewComponent postId={post_id!} initialLiked={data.liked} initialMarked={data.marked} />
         </div>
 
         <Section id="problem" title="문제 상황" content={problem} />
