@@ -59,9 +59,9 @@ function MainPosts ({ posts }: MainPostsProps) {
 
             <div className="flex justify-center items-center mt-[44px]">
                 <div className="flex w-[1200px] justify-between">
-                <h2 className="text-[38px] font-semibold text-gray-800">
+                <p className="text-[38px] font-semibold text-gray-800">
                     {activeTab === "latest" ? "최신 글" : "인기 글"}
-                </h2>
+                </p>
                 <button
                     className="flex text-[16px] text-gray-500 items-center"
                     onClick={handleViewAllClick}
