@@ -4,6 +4,7 @@ import SectionEditor from "./components/SectionEditor";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import TagSelect from "../../components/common/TagSelect";
 
 const sections = [
   { title: "문제 상황", key: "problem" },
@@ -17,6 +18,7 @@ const sections = [
 ];
 
 export default function WritePage() {
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [title, setTitle] = useState("제목을 입력하세요");
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,6 +30,11 @@ export default function WritePage() {
       inputRef.current?.focus();
     }
   }, [isEditing]);
+  useEffect(() => {
+    sections.forEach((section) => {
+      queryClient.removeQueries({ queryKey: ["draft", section.key] });
+    });
+  }, []);
 
   const handleCancel = () => {
     const confirmed = window.confirm("홈으로 돌아가시겠어요?");
@@ -52,7 +59,7 @@ export default function WritePage() {
       causeAnalysis: data.cause ?? "",
       referenceLink: data.link ?? "",
       extraContent: data.etc ?? "",
-      tags: [1, 3, 4, 5]
+      tags: selectedTags ?? "" 
     };
 
     try {
@@ -108,7 +115,8 @@ export default function WritePage() {
           </h1>
         )}
 
-        <p className="text-sm text-gray-500 mt-1 mb-6">태그를 입력하세요</p>
+<TagSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+
 
         {sections.map((section) => (
           <Accordion

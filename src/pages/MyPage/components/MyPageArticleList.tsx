@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Article {
   id: number;
+  postId: number;
   title: string;
   summary: string;
   tags: string[];
@@ -65,10 +66,11 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
 
         const parsed: Article[] = content.map((article: RawPost) => ({
           id: article.postId,
+          postId: article.postId,
           title: article.postTitle,
           summary: article.postSummary,
           tags: article.tags,
-          date: article.createdAt.slice(0, 10) // 'YYYY-MM-DD'
+          date: article.createdAt.slice(0, 10)
         }));
 
         setArticles(parsed);
@@ -94,6 +96,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
       {articles.map((article) => (
         <ArticleCard
           key={article.id}
+          postId={String(article.postId)}
           title={article.title}
           summary={article.summary}
           tags={article.tags}
