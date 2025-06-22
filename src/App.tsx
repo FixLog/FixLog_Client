@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import MainPage from "./pages/MainPage/MainPage";
 import MyPage from "./pages/MyPage/MyPage";
 import RouteGuard from "./components/router/RouteGuard";
-import PostingPage from "./pages/PostingPage";
 import EditProfilePage from "./pages/EditProfilePage/EditProfilePage";
 import SearchResultPage from "./pages/SearchResultPage/SearchResultPage";
 import ViewAllPage from "./pages/ViewAllPage/ViewAllPage";
@@ -33,7 +32,6 @@ const App: React.FC = () => {
         >
           {/* 로그인 후에 접근 가능한 페이지들은 여기에 추가! */}
           <Route path="/my-page/:nickname" element={<MyPage />} />
-          <Route path="/posting-page" element={<PostingPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />
           <Route path="/tag-collection" element={<TagCollectionPage />} />
