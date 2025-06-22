@@ -6,31 +6,70 @@ import Button from "../../components/common/Button";
 
 function DeleteAccountPage() {
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_URL;
 
-    // 탈퇴하기 버튼
+    // 탈퇴하기 버튼 (API)
     const handleSubmit = () => {
         if(!agree) {
             alert("안내 사항 확인 후 동의해야 탈퇴가 가능합니다.");
             return;
-        } else {
-            setShowModal(true);
+        }
+
+        const accessToken = localStorage.getItem('accessToken');
+        console.log("Access Token:", accessToken);
+
+        if (!accessToken) {
+            alert("로그인 상태가 아닙니다.");
+            navigate("/login");
+            return;
+        }
+
+        setShowModal(true);
+    };
+
+    // 모달 - 탈퇴하기 버튼 (API)
+    const handleDelete = async () => {
+        if (!password) {
+            alert("비밀번호를 입력해주세요.");
+            return;
+        }
+
+        const accessToken = localStorage.getItem('accessToken');
+        console.log("Access Token:", accessToken);
+
+        try {
+            const response = await fetch(`${apiUrl}/members/me`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ password }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                console.log("토큰 삭제 전:", localStorage.getItem('accessToken'));
+                localStorage.removeItem('accessToken');
+                console.log("토큰 삭제 후:", localStorage.getItem('accessToken'));
+                console.log("회원 탈퇴 성공");
+                alert("회원 탈퇴가 완료되었습니다.");
+                navigate("/");
+            } else {
+                if (response.status === 401) {
+                    console.warn("비밀번호 불일치");
+                    alert("비밀번호가 일치하지 않습니다.");
+                } else {
+                    console.error("회원 탈퇴 실패:", response.status);
+                    alert("회원 탈퇴 중 오류 발생");
+                }
+            }
+        } catch (error) {
+            console.error("회원 탈퇴 실패:", error);
+            alert("회원 탈퇴 중 오류 발생");
         }
     };
-
-    // 모달 - 탈퇴하기 버튼
-    const handleDelete = () => {
-        navigate('/');
-    };
-
-    // const [reasons, setReasons] = useState({
-    //     noMoreUse: false,
-    //     inconvenient: false,
-    //     noInformation: false,
-    //     worrySecurity: false,
-    //     etc: false,
-    // });
-    
-    //const [reason, setReason] = useState([]);
 
     const [feedback, setFeedback] = useState('');
     const [agree, setAgree] = useState(false);
