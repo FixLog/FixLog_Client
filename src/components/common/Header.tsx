@@ -64,8 +64,8 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setIsLogin(false);
-    navigate("/");
     setIsDropdownOpen(false); // 메뉴 닫기
+    navigate("/");
   };
 
   const navTabs: { label: string; value: NavTabType }[] = [
