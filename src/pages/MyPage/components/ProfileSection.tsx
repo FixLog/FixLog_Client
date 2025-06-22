@@ -49,7 +49,7 @@ const ProfileSection = ({
         const configWithParams = token
           ? { ...config, params: { nickname: userId } }
           : { params: { nickname: userId } };
-        
+
         // 프로필 정보 (이 부분은 '/members/me'로 자신의 정보만 가져오고 있어, 다른 유저 프로필 조회 시 문제가 될 수 있으나 일단 유지합니다)
         const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
@@ -66,8 +66,8 @@ const ProfileSection = ({
         );
         console.log("팔로워 API 응답:", followersRes.data);
         // API 응답 구조에 따라 데이터 추출
-        const followers = Array.isArray(followersRes.data) 
-          ? followersRes.data 
+        const followers = Array.isArray(followersRes.data)
+          ? followersRes.data
           : followersRes.data?.data || [];
         console.log("처리된 팔로워 데이터:", followers);
         setFollowersData(followers);
@@ -79,15 +79,15 @@ const ProfileSection = ({
         );
         console.log("팔로잉 API 응답:", followingRes.data);
         // API 응답 구조에 따라 데이터 추출
-        const following = Array.isArray(followingRes.data) 
-          ? followingRes.data 
+        const following = Array.isArray(followingRes.data)
+          ? followingRes.data
           : followingRes.data?.data || [];
         console.log("처리된 팔로잉 데이터:", following);
         setFollowingData(following);
 
         // 팔로우 상태
         if (!isMyProfile) {
-          // 이 API는 명세에 없으나, 버튼 상태를 위해 필요하므로 일단 유지합니다.
+          // 이 API는 명세에 없음. 다른 로직으로 대체 필요
           const followStatus = await axios.get(
             `${apiUrl}/api/user/${userId}/follow-status`,
             config
@@ -113,7 +113,7 @@ const ProfileSection = ({
       alert("로그인이 필요합니다.");
       return;
     }
-    
+
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
@@ -125,13 +125,13 @@ const ProfileSection = ({
           ...config,
           data: { nickname: userId } // 본문에 언팔로우할 유저 닉네임 포함
         });
-      } else { // isFollowing이 false이면 팔로우(POST) 요청
+      } else {
+        // isFollowing이 false이면 팔로우(POST) 요청
         await axios.post(`${apiUrl}/follow`, { nickname: userId }, config);
       }
-      
+
       // API 호출 성공 시 버튼 상태만 변경 (팔로워 수 등은 페이지 새로고침 시 반영)
       setIsFollowing(!isFollowing);
-
     } catch (error) {
       console.error("팔로우/언팔로우 중 오류 발생:", error);
       alert("요청 처리 중 오류가 발생했습니다.");

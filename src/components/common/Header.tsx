@@ -8,7 +8,7 @@ import ProfileIcon from "../../assets/icons/Profile.svg";
 
 interface HeaderProps {
   isLogin: boolean;
-  setIsLogin: (login: boolean) => void;
+  setIsLogin?: (login: boolean) => void;
 }
 
 type NavTabType = "tags" | "latest" | "popular";
@@ -63,7 +63,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLogin(false);
+    setIsLogin?.(false);
     setIsDropdownOpen(false); // 메뉴 닫기
     navigate("/");
   };
@@ -109,7 +109,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
             // 로그인 상태
             <>
               {/* 작성하기 버튼 */}
-              <Link to="/posting-page">
+              <Link to="/write">
                 <button className="flex items-center gap-1 text-sm text-gray700 hover:text-black transition-colors ">
                   <img src={WriteIcon} alt="작성하기" className="h-4 w-4" />
                   작성하기
