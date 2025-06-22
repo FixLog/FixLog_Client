@@ -79,7 +79,7 @@ const DropdownTagButton = ({
       <button
         onClick={toggleDropdown}
         className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
-          ${selectedInCategory ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
+          ${selectedInCategory ? "bg-sub1 font-semibold border-main" : "bg-white border-gray-300"}
         `}
       >
         <span>{labelToShow}</span>

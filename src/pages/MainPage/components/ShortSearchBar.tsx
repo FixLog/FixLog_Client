@@ -1,4 +1,3 @@
-// import SearchButton from "../../../assets/img/SearchButton.png";
 import SearchButtonImg from "../../../assets/img/SearchButtonImg.png";
 import SearchIcon from "../../../assets/img/SearchIcon.png";
 import FixlogLogoMainPage from "../../../assets/img/FixlogLogoMainPage.png"
