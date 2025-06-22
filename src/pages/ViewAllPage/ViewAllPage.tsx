@@ -2,6 +2,7 @@ import PageNavigator from "../../components/common/PageNavigator";
 import { mockPosts } from "../../mocks/mockPosts";
 import DefaultPost from "../MainPage/components/MainPagePostPreview";
 import { useParams } from "react-router-dom";
+import Header from "../../components/common/Header";
 
 function ViewAllPage() {
   const { type } = useParams();
@@ -26,8 +27,10 @@ function ViewAllPage() {
   };
 
   return (
+    <>
+    <Header isLogin={true} />
     <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
-      <div className="flex items-start text-[38px] font-semibold text-black">
+      <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
         {getPageTitle()}
       </div>
       <div className="flex justify-center">
@@ -38,15 +41,22 @@ function ViewAllPage() {
               id={post.post_id}
               title={post.post_title}
               img={post.image_url}
-              tag={post.post_tag}
+              tags={post.post_tag}
               nickname={post.nickname}
               createdAt={post.created_at}
             />
           ))}
         </div>
       </div>
-      <PageNavigator totalPageNumber={13} />
+      {/* <PageNavigator totalPageNumber={13} /> */}
+      {/* 연동하며 PageNavigator를 수정하게 되어서 우선 mock data로 넣어뒀습니다..! */}
+      <PageNavigator
+            currentPage={1}
+            totalPageNumber={5}
+            onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수 
+      />
     </div>
+    </>
   );
 }
 

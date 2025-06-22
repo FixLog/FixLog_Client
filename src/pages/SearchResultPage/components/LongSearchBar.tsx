@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 interface LongSearchBarProps {
     query: string;
     setQuery: (query: string) => void;
+    selectedTags: string[];
 }
 
-const LongSearchBar = ({ query, setQuery } : LongSearchBarProps) => {
+const LongSearchBar = ({ query, setQuery, selectedTags } : LongSearchBarProps) => {
 
     const navigate = useNavigate()
 
     const handleSearchClick = () => {
-        navigate(`/search-result?query=${encodeURIComponent(query)}`);
+        navigate(`/search-result?query=${encodeURIComponent(query)}&tags=${selectedTags.join()}`); 
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

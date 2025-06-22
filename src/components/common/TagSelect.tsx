@@ -3,68 +3,69 @@ import { useState } from "react";
 import DropDownButtonIcon from "../../assets/img/DropDownButtonIcon.png";
 import PythonIcon from "../../assets/img/PythonIcon.png"; 
 import CloseIcon from "../../assets/img/DropDownCloseButton.png"; 
+import { Tags } from "../../mocks/MockTags"
 
-// TODO: 태그 클릭했을 때 나오는 화면 위치 버튼별로 조정하기 (디자인 확인 후 작업)
-
-interface TagSelectParams {
-    Tags: Record<string, string[]>;
+interface TagSelectProps {
+  selectedTags: string[];
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const TagSelect = ({ Tags }: TagSelectParams) => {
-    return (
-      <div className="flex gap-[16px] justify-left mt-[20px]">
-        {Object.entries(Tags).map(([label, options]) => (
-          <DropdownTagButton
-            key={label}
-            defaultLabel={label}
-            options={options}
-          />
-        ))}
-      </div>
-    );
+const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
+  const [openCategory, setOpenCategory] = useState<string | null>(null); 
+  const [dropdownOptions, setDropdownOptions] = useState<string[]>([]);
+
+  const handleOpen = (label: string, options: string[]) => {
+    setOpenCategory(label);
+    setDropdownOptions(options);
   };
 
-interface DropdownTagButtonProps {
-  options: string[];
-  defaultLabel: string;
-}
-
-const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedTag, setSelectedTag] = useState<string>(defaultLabel);
-
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
   const handleSelect = (option: string) => {
-    setSelectedTag(`# ${option}`);
-    setIsOpen(false);
+    const existingIndex = selectedTags.findIndex(tag => dropdownOptions.includes(tag));
+    if (existingIndex !== -1) {
+      const newTags = [...selectedTags];
+      newTags[existingIndex] = option;
+      setSelectedTags(newTags);
+    } else {
+      setSelectedTags([...selectedTags, option]);
+    }
+    setOpenCategory(null);
   };
 
   return (
-    <div className="relative inline-block">
-      <button
-        onClick={toggleDropdown}
-        className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
-          ${selectedTag !== defaultLabel ? "bg-gray-150 font-semibold border-transparent" : "bg-white border-gray-300"}
-        `}
-      >
-        <span>{selectedTag}</span>
-        <img src={DropDownButtonIcon} className="w-[16px] h-[16px]" />
-      </button>
+    <div className="relative">
+      <div className="flex gap-[16px] justify-left mt-[20px]">
+        {Object.entries(Tags).map(([label, options]) => {
+          const selectedInCategory = options.find(option => selectedTags.includes(option));
+          const labelToShow = selectedInCategory ? `# ${selectedInCategory}` : label;
 
-      {isOpen && (
-        <div className="absolute z-20 top-[0px] left-0 w-[760px] h-[214px] bg-white border-[1.5px] border-gray-300 rounded-xl overflow-y-auto">
+          return (
+            <button
+              key={label}
+              onClick={() => handleOpen(label, options)}
+              className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
+              ${selectedInCategory ? "bg-sub1 font-semibold border-main" : "bg-white border-gray-300"}`}
+            >
+              <span>{labelToShow}</span>
+              <img src={DropDownButtonIcon} className="w-[16px] h-[16px]" />
+            </button>
+          );
+        })}
+      </div>
+
+      {openCategory && (
+        <div className="absolute z-20 left-[0px] top-[0px] w-[792px] h-[214px] bg-white border-[1.5px] border-gray-300 rounded-xl overflow-y-auto">
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100">
-            <span className="text-gray-700">{defaultLabel}</span>
-            <button onClick={() => setIsOpen(false)}>
+            <span className="font-pretendard text-gray-700">{openCategory}</span>
+            <button onClick={() => setOpenCategory(null)}>
               <img src={CloseIcon} alt="닫기" className="w-[16px] h-[16px]" />
             </button>
           </div>
           <ul>
-            {options.map((option) => (
+            {dropdownOptions.map((option) => (
               <li
                 key={option}
                 onClick={() => handleSelect(option)}
-                className="flex items-center gap-2 px-4 py-3 text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
+                className="flex items-center gap-2 px-4 py-3 font-pretendard text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
               >
                 <img src={PythonIcon} className="w-[20px] h-[20px]" />
                 <span>{option}</span>
@@ -76,6 +77,5 @@ const DropdownTagButton = ({ options, defaultLabel }: DropdownTagButtonProps) =>
     </div>
   );
 };
-
 
 export default TagSelect;

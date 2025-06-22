@@ -1,7 +1,3 @@
-// ArticleCard.tsx
-// 작성자: 이서연
-// 마지막 수정 일자: 2025.06.08
-
 import React from "react";
 
 interface ArticleCardProps {
@@ -19,25 +15,19 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => {
   return (
     <div className="flex items-start gap-6 py-6 border-b border-gray-200">
-      {/* 이미지 박스 */}
       <div className="w-24 h-24 bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700 rounded-md">
-        Fix<span className="italic">[log]</span>
-        {/* <img /> */}
+        <img />
       </div>
 
-      {/* 오른쪽 내용 */}
       <div className="flex-1 flex flex-col gap-2">
-        {/* 제목 */}
         <h2 className="text-lg font-semibold text-gray-900 leading-snug">
           {title}
         </h2>
 
-        {/* 요약 */}
         <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">
           {summary}
         </p>
 
-        {/* 태그 */}
         <div className="flex flex-wrap gap-2 mt-1">
           {tags.map((tag) => (
             <span
@@ -49,7 +39,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({
           ))}
         </div>
 
-        {/* 날짜 오른쪽 정렬 */}
         <div className="text-xs text-gray-400 text-right mt-1">{date}</div>
       </div>
     </div>

@@ -1,13 +1,13 @@
-import { useState } from "react";
 import PageNavigationButtonLeft from "../../assets/img/PageNavigationButtonLeft.png";
 import PageNavigationButtonRight from "../../assets/img/PageNavigationButtonRight.png";
 
 interface PageNavigatorProps {
+  currentPage: number;
   totalPageNumber: number;
+  onPageChange: (page: number) => void;
 }
 
-function PageNavigator({ totalPageNumber }: PageNavigatorProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+function PageNavigator({ currentPage, totalPageNumber, onPageChange }: PageNavigatorProps) {
   const pageGroupSize = 5;
 
   const pageGroupStart = Math.floor((currentPage - 1) / pageGroupSize) * pageGroupSize + 1;
@@ -15,19 +15,19 @@ function PageNavigator({ totalPageNumber }: PageNavigatorProps) {
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPageNumber) {
-      setCurrentPage(page);
+      onPageChange(page);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      onPageChange(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPageNumber) {
-      setCurrentPage(currentPage + 1);
+      onPageChange(currentPage + 1);
     }
   };
 
@@ -48,7 +48,9 @@ function PageNavigator({ totalPageNumber }: PageNavigatorProps) {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`font-bold ${currentPage === page ? "text-main" : "text-gray-800"}`}
+              className={`font-bold font-pretendard text-[16px] ${
+                currentPage === page ? "text-main" : "text-gray-800"
+              }`}
             >
               {page}
             </button>
