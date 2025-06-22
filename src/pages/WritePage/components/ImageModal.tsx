@@ -17,7 +17,7 @@ export const ImageUploadModal = ({ onClose, onUploadSuccess }: ImageUploadModalP
     formData.append("imageFile", file); 
 
     try {
-      const res = await axiosInstance.post("/images", formData, {
+      const res = await axiosInstance.post("/posts/images", formData, {
         headers: {
           "Content-Type": "multipart/form-data", 
         },
