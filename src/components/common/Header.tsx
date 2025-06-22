@@ -55,7 +55,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
     if (myNickname && token) {
       navigate(`/my-page/${myNickname}`);
     } else {
-      alert("내 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      alert("접근 권한이 없습니다.");
     }
     setIsDropdownOpen(false); // 메뉴 닫기
   };
