@@ -40,6 +40,7 @@ const UserListModal: React.FC<UserListModalProps> = ({
                 className="flex items-center justify-between py-2 border-b last:border-b-0"
               >
                 <div className="flex items-center gap-3">
+                  {/* TODO: 사용자 프로필 사진 필요!! */}
                   <div className="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0"></div>{" "}
                   {/* 사용자 프로필 사진 */}
                   <span className="font-medium">{user.nickname}</span>
