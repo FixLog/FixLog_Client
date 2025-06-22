@@ -8,11 +8,12 @@ import ProfileIcon from "../../assets/icons/Profile.svg";
 
 interface HeaderProps {
   isLogin: boolean;
+  setIsLogin: (login: boolean) => void;
 }
 
 type NavTabType = "tags" | "latest" | "popular";
 
-const Header = ({ isLogin }: HeaderProps) => {
+const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   // 드롭다운 메뉴 상태 관리
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // 네비게이션 탭 상태 관리
@@ -27,15 +28,16 @@ const Header = ({ isLogin }: HeaderProps) => {
     if (isLogin) {
       const token = localStorage.getItem("accessToken");
       if (token) {
-        axios.get(`${apiUrl}/members/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
-        .then(res => {
-          setMyNickname(res.data.data.nickname);
-        })
-        .catch(err => {
-          console.error("내 정보 불러오기 실패:", err);
-        });
+        axios
+          .get(`${apiUrl}/members/me`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then((res) => {
+            setMyNickname(res.data.data.nickname);
+          })
+          .catch((err) => {
+            console.error("내 정보 불러오기 실패:", err);
+          });
       }
     }
   }, [isLogin, apiUrl]);
@@ -55,6 +57,12 @@ const Header = ({ isLogin }: HeaderProps) => {
       alert("내 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
     }
     setIsDropdownOpen(false); // 메뉴 닫기
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setIsLogin(false);
+    navigate("/");
   };
 
   const navTabs: { label: string; value: NavTabType }[] = [
@@ -132,11 +140,12 @@ const Header = ({ isLogin }: HeaderProps) => {
                     >
                       마이페이지
                     </button>
-                    <Link to="/">
-                      <button className="block px-4 py-2 text-sm text-gray700 hover:bg-gray100 w-full text-left transition-colors ">
-                        로그아웃
-                      </button>
-                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block px-4 py-2 text-sm text-gray700 hover:bg-gray100 w-full text-left transition-colors "
+                    >
+                      로그아웃
+                    </button>
                   </div>
                 )}
               </div>

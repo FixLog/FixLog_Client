@@ -61,7 +61,7 @@ const MyPage = () => {
 
   return (
     <div className="min-h-screen bg-gray100">
-      <Header isLogin={isLogin} />
+      <Header isLogin={isLogin} setIsLogin={setIsLogin} />
       <main className="max-w-[900px] mx-auto px-8 pt-12">
         {/* 프로필 섹션 컴포넌트 */}
         <ProfileSection
@@ -76,7 +76,7 @@ const MyPage = () => {
           activeTab={activeTab}
         />
         {/* "전체보기" 버튼: 북마크 탭이 아닌 경우에만 표시 */}
-        {activeTab !== 'bookmarks' && isOwner && (
+        {activeTab !== "bookmarks" && isOwner && (
           <div className="flex justify-end mt-6 mb-2">
             <button
               onClick={handleViewAllClick}
@@ -87,7 +87,7 @@ const MyPage = () => {
           </div>
         )}
         {/* 포스팅 목록 또는 폴더 목록 */}
-        {activeTab === 'bookmarks' ? (
+        {activeTab === "bookmarks" ? (
           <BookmarkFolderList />
         ) : (
           <MyPageArticleList activeTab={activeTab} />
