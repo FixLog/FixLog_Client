@@ -33,7 +33,7 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
 
   return (
     <div className="relative">
-      <div className="flex gap-[16px] justify-left mt-[20px]">
+      <div className="flex gap-[16px] justify-start mt-[20px]">
         {Object.entries(Tags).map(([label, options]) => {
           const selectedInCategory = options.find(option => selectedTags.includes(option));
           const labelToShow = selectedInCategory ? `# ${selectedInCategory}` : label;
@@ -42,7 +42,7 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
             <button
               key={label}
               onClick={() => handleOpen(label, options)}
-              className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 w-[131px] h-[42px]
+              className={`flex items-center justify-between px-[11px] py-[15px] rounded-xl font-pretendard text-[16px] border-[1.5px] text-gray-600 min-w-[131px] h-[42px]
               ${selectedInCategory ? "bg-sub1 font-semibold border-main" : "bg-white border-gray-300"}`}
             >
               <span>{labelToShow}</span>

@@ -39,13 +39,16 @@ function SearchResultPage() {
       });
   }, [query, selectedTags, page]); 
 
+  const token = localStorage.getItem("accessToken");
+  const isLogin = token !== null;
+
   return (
     <>
     <div
       className="bg-cover bg-center w-full h-[350px]" 
       style={{ backgroundImage: `url(${SearchResultPageBg})` }}
     >
-    <Header isLogin={false} />
+    <Header isLogin={isLogin} />
       <div className="w-[1200px] mx-auto mt-[55px] mb-[55px]">
         <div className="font-pretendard flex items-start text-[38px] font-semibold text-black">
             검색 결과

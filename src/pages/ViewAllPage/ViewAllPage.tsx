@@ -50,16 +50,19 @@ function ViewAllPage() {
     loadPosts(currentPage);
   }, [type, currentPage]);
 
+  const token = localStorage.getItem("accessToken");
+  const isLogin = token !== null;
+
   return (
     <>
-      <Header isLogin={true} />
-      <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
+      <Header isLogin={isLogin} />
+      <div className="w-[1200px] mx-auto mt-[50px]">
         <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
           {getPageTitle()}
         </div>
 
         <div className="flex justify-center">
-          <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[106px] items-start">
+          <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[80px] items-start">
             {posts.map((post, index) => (
               <DefaultPost
                 key={index}

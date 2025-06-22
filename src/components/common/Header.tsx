@@ -48,9 +48,20 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  // const handleTabClick = (tab: NavTabType) => {
+  //   setActiveTab(tab);
+  // };
+
   const handleTabClick = (tab: NavTabType) => {
     setActiveTab(tab);
+    
+    if (tab === "latest") {
+      navigate("/view-all/latest");
+    } else if (tab === "popular") {
+      navigate("/view-all/popular");
+    }
   };
+  
 
   const handleMyPageClick = () => {
     if (myNickname && token) {
