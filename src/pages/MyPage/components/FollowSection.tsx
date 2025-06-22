@@ -23,6 +23,13 @@ const FollowListSection = ({
 }: FollowListSectionProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  console.log("FollowSection props:", {
+    followers,
+    following,
+    followersCount,
+    followingCount
+  });
+
   const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [simplifiedFollowers, setSimplifiedFollowers] = useState<
@@ -56,44 +63,66 @@ const FollowListSection = ({
   }, [followers, following]);
 
   const toggleFollow = async (userId: number) => {
-    const updateList = (list: SimplifiedUser[]) =>
-      list.map((user) =>
-        user.id === userId ? { ...user, isFollowing: !user.isFollowing } : user
-      );
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
 
-    setSimplifiedFollowers((prev) => updateList(prev));
-    setSimplifiedFollowing((prev) => updateList(prev));
+    const currentUser =
+      simplifiedFollowers.find((u) => u.id === userId) ||
+      simplifiedFollowing.find((u) => u.id === userId);
+
+    if (!currentUser) {
+      console.error("사용자를 찾을 수 없습니다:", userId);
+      return;
+    }
+    const isCurrentlyFollowing = currentUser.isFollowing;
 
     try {
-      const user =
-        simplifiedFollowing.find((u) => u.id === userId) ||
-        simplifiedFollowers.find((u) => u.id === userId);
-      if (user?.isFollowing) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      if (isCurrentlyFollowing) {
         await axios.delete(`${apiUrl}/follow/unfollow`, {
-          data: { target_member_id: userId }
+          ...config,
+          data: { target_member_id: userId },
         });
       } else {
-        await axios.post(`${apiUrl}/follow`, { target_member_id: userId });
+        await axios.post(`${apiUrl}/follow`, { target_member_id: userId }, config);
       }
+
+      const updateList = (list: SimplifiedUser[]) =>
+        list.map((user) =>
+          user.id === userId
+            ? { ...user, isFollowing: !isCurrentlyFollowing }
+            : user
+        );
+
+      setSimplifiedFollowers(updateList);
+      setSimplifiedFollowing(updateList);
     } catch (err) {
       console.error("팔로우/언팔로우 실패:", err);
+      alert("팔로우/언팔로우 처리 중 오류가 발생했습니다.");
     }
   };
+
   return (
     <div className="flex gap-4 mt-2 text-sm">
       <button
-        className="flex gap-2"
+        className="flex gap-2 hover:text-gray-600 transition-colors"
         onClick={() => setShowFollowersModal(true)}
       >
         팔로워
-        <div>{followersCount}</div>
+        <div className="font-medium">{followersCount}</div>
       </button>
       <button
-        className="flex gap-2"
+        className="flex gap-2 hover:text-gray-600 transition-colors"
         onClick={() => setShowFollowingModal(true)}
       >
         팔로잉
-        <div>{followingCount}</div>
+        <div className="font-medium">{followingCount}</div>
       </button>
       <UserListModal
         isOpen={showFollowersModal}

@@ -64,14 +64,26 @@ const ProfileSection = ({
           `${apiUrl}/follow/followers`,
           configWithParams
         );
-        setFollowersData(followersRes.data);
+        console.log("팔로워 API 응답:", followersRes.data);
+        // API 응답 구조에 따라 데이터 추출
+        const followers = Array.isArray(followersRes.data) 
+          ? followersRes.data 
+          : followersRes.data?.data || [];
+        console.log("처리된 팔로워 데이터:", followers);
+        setFollowersData(followers);
 
         // API 명세에 따라 팔로잉 목록 주소 변경
         const followingRes = await axios.get(
           `${apiUrl}/follow/followings`,
           configWithParams
         );
-        setFollowingData(followingRes.data);
+        console.log("팔로잉 API 응답:", followingRes.data);
+        // API 응답 구조에 따라 데이터 추출
+        const following = Array.isArray(followingRes.data) 
+          ? followingRes.data 
+          : followingRes.data?.data || [];
+        console.log("처리된 팔로잉 데이터:", following);
+        setFollowingData(following);
 
         // 팔로우 상태
         if (!isMyProfile) {
@@ -84,6 +96,9 @@ const ProfileSection = ({
         }
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생:", error);
+        // 에러 발생 시 빈 배열로 초기화
+        setFollowersData([]);
+        setFollowingData([]);
       }
     };
 
