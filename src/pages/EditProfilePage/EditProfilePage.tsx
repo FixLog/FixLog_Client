@@ -24,7 +24,7 @@ function EditProfilePage() {
 
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");
-  
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(PostDefaultImage);
 
@@ -61,14 +61,6 @@ function EditProfilePage() {
     fetchProfile();
   }, [apiUrl, navigate]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
-
   const getAuthHeader = () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -86,31 +78,35 @@ function EditProfilePage() {
       return alert("닉네임이 변경되지 않았습니다.");
     }
     try {
-      await axios.patch(`${apiUrl}/mypage/members/nickname`, { nickname }, config);
+      await axios.patch(
+        `${apiUrl}/mypage/members/nickname`,
+        { nickname },
+        config
+      );
       alert("닉네임이 수정되었습니다!");
-      setProfileData(prev => prev ? { ...prev, nickname } : null);
+      setProfileData((prev) => (prev ? { ...prev, nickname } : null));
     } catch (err) {
       console.error("닉네임 수정 실패:", err);
       alert("닉네임 수정 중 오류가 발생했습니다.");
     }
   };
-  
+
   const handleUpdateBio = async () => {
     const config = getAuthHeader();
     if (!config) return;
-     if (profileData && bio === (profileData.bio ?? "")) {
+    if (profileData && bio === (profileData.bio ?? "")) {
       return alert("소개글이 변경되지 않았습니다.");
     }
     try {
       await axios.patch(`${apiUrl}/mypage/members/bio`, { bio }, config);
       alert("소개글이 수정되었습니다!");
-      setProfileData(prev => prev ? { ...prev, bio } : null);
+      setProfileData((prev) => (prev ? { ...prev, bio } : null));
     } catch (err) {
       console.error("소개글 수정 실패:", err);
       alert("소개글 수정 중 오류가 발생했습니다.");
     }
   };
-  
+
   const handleUpdatePassword = async () => {
     const config = getAuthHeader();
     if (!config) return;
@@ -132,19 +128,38 @@ function EditProfilePage() {
       alert("비밀번호 변경 중 오류가 발생했습니다.");
     }
   };
-  
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
   const handleUpdateImage = async () => {
     const config = getAuthHeader();
-    if (!config) return;
-    if (!imageFile) return alert("이미지를 먼저 선택해주세요.");
+    if (!config) return; // accessToken 없으면 return
+    if (!imageFile) return alert("이미지를 먼저 선택해주세요."); // handleImageChange 실행 안되면 return
     try {
-      const presignRes = await axios.get(`${apiUrl}/mypage/members/profile-image/presign?filename=${imageFile.name}`, config);
+      const presignRes = await axios.get(
+        `${apiUrl}/mypage/members/profile-image/presign?filename=${imageFile.name}`,
+        config
+      );
       const { uploadUrl, fileUrl } = presignRes.data.data;
-      const patchConfig = { headers: { ...config.headers, "Content-Type": "application/json" } };
-      await axios.put(uploadUrl, imageFile, { headers: { "Content-Type": imageFile.type } });
-      await axios.patch(`${apiUrl}/mypage/members/profile-image`, { imageUrl: fileUrl }, patchConfig);
+      const patchConfig = {
+        headers: { ...config.headers, "Content-Type": "application/json" }
+      };
+      await axios.put(uploadUrl, imageFile, {
+        headers: { "Content-Type": imageFile.type }
+      });
+      await axios.patch(
+        `${apiUrl}/mypage/members/profile-image`,
+        { imageUrl: fileUrl },
+        patchConfig
+      );
       alert("프로필 이미지가 성공적으로 변경되었습니다!");
-      setPreviewUrl(fileUrl);
+      setPreviewUrl(`${fileUrl}?t=${Date.now()}`);
       setImageFile(null);
     } catch (err) {
       console.error("이미지 업로드 실패:", err);
@@ -152,11 +167,10 @@ function EditProfilePage() {
     }
   };
 
-
   if (loading) {
     return <div className="p-6">회원 정보를 불러오는 중입니다...</div>;
   }
-  
+
   if (!profileData) {
     return <div className="p-6">회원 정보를 불러올 수 없습니다.</div>;
   }

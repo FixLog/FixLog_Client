@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 interface AccountSectionProps {
   email: string;
   nickname: string;
@@ -23,22 +25,29 @@ const AccountSection = ({
   confirmPassword,
   onNewPasswordChange,
   onConfirmPasswordChange,
-  onUpdatePassword,
+  onUpdatePassword
 }: AccountSectionProps) => {
   const passwordMatch =
-    newPassword || confirmPassword
-      ? newPassword === confirmPassword
-      : null;
-
+    newPassword || confirmPassword ? newPassword === confirmPassword : null;
+  
+  const navigate = useNavigate();
+  
   return (
-    <section className="bg-white border shadow-md rounded-lg px-12 py-10 mb-12">
+    <section className="bg-white border border-gray-300 rounded-lg px-12 py-10 mb-12">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-semibold">계정 관리</h2>
-        <button className="text-black text-sm hover:underline">탈퇴하기</button>
+        <button 
+          onClick={() => navigate("/delete-account")}
+          className="text-black text-sm hover:underline">
+            탈퇴하기
+        </button>
       </div>
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-6">
-          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="email">
+          <label
+            className="w-40 text-gray-700 text-base font-bold"
+            htmlFor="email"
+          >
             아이디(이메일)
           </label>
           <input
@@ -50,7 +59,10 @@ const AccountSection = ({
           />
         </div>
         <div className="flex items-center gap-6">
-          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="nickname">
+          <label
+            className="w-40 text-gray-700 text-base font-bold"
+            htmlFor="nickname"
+          >
             닉네임
           </label>
           <input
@@ -60,12 +72,18 @@ const AccountSection = ({
             value={nickname}
             onChange={onNicknameChange}
           />
-          <button onClick={onUpdateNickname} className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black">
+          <button
+            onClick={onUpdateNickname}
+            className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black"
+          >
             변경하기
           </button>
         </div>
         <div className="flex items-center gap-6">
-          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="current-password">
+          <label
+            className="w-40 text-gray-700 text-base font-bold"
+            htmlFor="current-password"
+          >
             현재 비밀번호
           </label>
           <input
@@ -78,7 +96,10 @@ const AccountSection = ({
           />
         </div>
         <div className="flex items-center gap-6">
-          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="password">
+          <label
+            className="w-40 text-gray-700 text-base font-bold"
+            htmlFor="password"
+          >
             새 비밀번호
           </label>
           <input
@@ -91,7 +112,10 @@ const AccountSection = ({
           />
         </div>
         <div className="flex items-center gap-6">
-          <label className="w-40 text-gray-700 text-base font-bold" htmlFor="confirm-password">
+          <label
+            className="w-40 text-gray-700 text-base font-bold"
+            htmlFor="confirm-password"
+          >
             새 비밀번호 확인
           </label>
           <input
@@ -102,7 +126,10 @@ const AccountSection = ({
             value={confirmPassword}
             onChange={onConfirmPasswordChange}
           />
-          <button onClick={onUpdatePassword} className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black">
+          <button
+            onClick={onUpdatePassword}
+            className="px-5 py-1 ml-4 bg-sub1 font-bold border rounded text-black"
+          >
             변경하기
           </button>
         </div>

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import Header from "../../components/common/Header";
 import { fetchSearchResults } from "../../api/search";
 import type { Post } from "../../api/search";
+import SearchResultPageBg from "../../assets/img/SearchResultPageBg.png"
 
 function SearchResultPage() {
   const [query, setQuery] = useState<string>("");
@@ -40,17 +41,21 @@ function SearchResultPage() {
 
   return (
     <>
-      <Header isLogin={false} />
-      <div className="w-[1200px] mx-auto mt-[55px] mb-[70px]">
+    <div
+      className="bg-cover bg-center w-full h-[350px]" 
+      style={{ backgroundImage: `url(${SearchResultPageBg})` }}
+    >
+    <Header isLogin={false} />
+      <div className="w-[1200px] mx-auto mt-[55px] mb-[55px]">
         <div className="font-pretendard flex items-start text-[38px] font-semibold text-black">
-          검색 결과
-        </div>
-        <div className="w-[1199px]">
-          <LongSearchBar query={query} setQuery={setQuery} selectedTags={selectedTags} />
-          <TagSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
-        </div>
+            검색 결과
+          </div>
+          <div className="w-[1199px]">
+            <LongSearchBar query={query} setQuery={setQuery} selectedTags={selectedTags} />
+            <TagSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+          </div>
         <div className="flex flex-col items-center">
-          <SearchResultPosts posts={posts} />
+          <SearchResultPosts posts={posts} query={query} />
           <PageNavigator
             currentPage={page}
             totalPageNumber={totalPages}
@@ -58,6 +63,8 @@ function SearchResultPage() {
           />
         </div>
       </div>
+    </div>
+      
     </>
   );
 }
