@@ -26,7 +26,7 @@ const ShortSearchBar = ({ query, setQuery, selectedTags } : ShortSearchBarProps)
     return (
         <div className="flex flex-col items-center justify-center gap-[65px] mt-[149px]">
             <img src={FixlogLogoMainPage} className="w-[269px]" />
-            <div className="flex items-center justify-between bg-white border-[1.5px] border-sub1 rounded-xl px-[10px] py-[10px] w-[772px]">
+            <div className="flex items-center justify-between bg-white border-[1.5px] border-sub1 rounded-xl px-[10px] py-[10px] w-[792px]">
                 <div className="flex items-center gap-[20px] w-full">
                     <img src={SearchIcon} alt="검색 아이콘" className="w-[24px] h-[24px] ml-[24px]" />
                     <input
