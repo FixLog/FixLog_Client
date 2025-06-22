@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from 'react';
 import { IoChevronDown, IoAdd } from "react-icons/io5";
 
 interface AccordionProps {
