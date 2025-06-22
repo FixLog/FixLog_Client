@@ -50,9 +50,12 @@ function ViewAllPage() {
     loadPosts(currentPage);
   }, [type, currentPage]);
 
+  const token = localStorage.getItem("accessToken");
+  const isLogin = token !== null;
+
   return (
     <>
-      <Header isLogin={true} />
+      <Header isLogin={isLogin} />
       <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
         <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
           {getPageTitle()}
