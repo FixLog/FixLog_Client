@@ -22,8 +22,8 @@ const LongSearchBar = ({ query, setQuery, selectedTags } : LongSearchBarProps) =
     };
 
     return (
-        <div className="flex flex-col items-center justify-center gap-[65px] mt-[70px]">
-            <div className="flex items-center justify-between bg-gray-100 rounded-xl px-[17px] py-[17px] w-[1199px]">
+        <div className="flex flex-col items-center justify-center gap-[65px] mt-[20px]">
+            <div className="flex items-center justify-between bg-white border border-gray-200 rounded-xl px-[17px] py-[17px] w-[1199px]">
                 <div className="flex items-center gap-[20px] w-full">
                     <img src={SearchIcon} alt="검색 아이콘" className="w-[24px] h-[24px]"/>
                     <input
@@ -33,7 +33,6 @@ const LongSearchBar = ({ query, setQuery, selectedTags } : LongSearchBarProps) =
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={handleKeyDown}
                         className="w-full bg-transparent outline-none text-gray-500 placeholder-gray-500 text-[18px]"
-                        // onFocus={() => setQuery("")} 
                     />
                 </div>
             </div>
