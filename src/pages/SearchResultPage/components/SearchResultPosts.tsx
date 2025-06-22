@@ -5,9 +5,10 @@ import type { Post } from "../../../api/search";
 
 interface SearchResultPostsProps {
   posts?: Post[];
+  query: string; 
 }
 
-function SearchResultPosts({ posts }: SearchResultPostsProps) {
+function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
   const [sortOption, setSortOption] = useState<"latest" | "popular">("latest");
   console.log("미친 포스트 호출 결과.." + posts);
 
@@ -20,10 +21,12 @@ function SearchResultPosts({ posts }: SearchResultPostsProps) {
   }
 
   return (
-
     <div>
-      <div className="flex justify-end w-[1200px] mb-6 border-t-[1.5px] border-gray-300 pt-[19px] mt-[45px]">
-        <div className="relative">
+      <div className="flex justify-center items-center mt-[44px]">
+        <div className="flex w-[1200px] justify-between">
+          <div className="text-[24px] font-semibold text-gray-800">
+            ‘{query}’ 검색 결과
+          </div>
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value as "latest" | "popular")}

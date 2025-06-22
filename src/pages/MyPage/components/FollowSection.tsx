@@ -23,13 +23,6 @@ const FollowListSection = ({
 }: FollowListSectionProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  console.log("FollowSection props:", {
-    followers,
-    following,
-    followersCount,
-    followingCount
-  });
-
   const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [simplifiedFollowers, setSimplifiedFollowers] = useState<
@@ -81,16 +74,20 @@ const FollowListSection = ({
 
     try {
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       };
 
       if (isCurrentlyFollowing) {
         await axios.delete(`${apiUrl}/follow/unfollow`, {
           ...config,
-          data: { target_member_id: userId },
+          data: { target_member_id: userId }
         });
       } else {
-        await axios.post(`${apiUrl}/follow`, { target_member_id: userId }, config);
+        await axios.post(
+          `${apiUrl}/follow`,
+          { target_member_id: userId },
+          config
+        );
       }
 
       const updateList = (list: SimplifiedUser[]) =>

@@ -1,61 +1,89 @@
-import PageNavigator from "../../components/common/PageNavigator";
-import { mockPosts } from "../../mocks/mockPosts";
-import DefaultPost from "../MainPage/components/MainPagePostPreview";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../components/common/Header";
+import PageNavigator from "../../components/common/PageNavigator";
+import DefaultPost from "../MainPage/components/MainPagePostPreview";
+import { fetchViewAllPosts, type ViewAllPost } from "../../api/ViewAllPosts";
 
 function ViewAllPage() {
   const { type } = useParams();
-  
+  const [posts, setPosts] = useState<ViewAllPost[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 12;
+
   const getPageTitle = () => {
     switch (type) {
       case "popular":
         return "인기 글";
       case "latest":
         return "최신 글";
-      case "mywrites":
-        return "내가 쓴 글";
-      case "bookmarks":
-        return "북마크한 글";
-      case "likes":
-        return "좋아요한 글";
-      case "forks":
-        return "Fork 한 글";
       default:
         return "전체 글";
     }
   };
+  console.log("현재 페이지 타입:", type);
+
+  const getSortType = (): 0 | 1 => {
+    return type === "popular" ? 1 : 0;
+  };
+
+  const loadPosts = async (page: number) => {
+    try {
+      const res = await fetchViewAllPosts({
+        sort: getSortType(),
+        page,
+        size: PAGE_SIZE,
+      });
+      setPosts(res.data.posts);
+      setTotalPages(res.data.totalPages);
+    } catch (error) {
+      console.error("전체 글 불러오기 실패", error);
+    }
+  };
+
+  useEffect(() => {
+    setCurrentPage(1); 
+  }, [type]);
+
+  useEffect(() => {
+    loadPosts(currentPage);
+  }, [type, currentPage]);
 
   return (
     <>
-    <Header isLogin={true} />
-    <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
-      <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
-        {getPageTitle()}
-      </div>
-      <div className="flex justify-center">
-        <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[106px] items-start">
-          {mockPosts.map((post) => (
-            <DefaultPost
-              key={post.post_id}
-              id={post.post_id}
-              title={post.post_title}
-              img={post.image_url}
-              tags={post.post_tag}
-              nickname={post.nickname}
-              createdAt={post.created_at}
-            />
-          ))}
+      <Header isLogin={true} />
+      <div className="w-[1200px] mx-auto mt-[55px] mb-[100px]">
+        <div className="flex items-start text-[38px] font-semibold font-pretendard text-black">
+          {getPageTitle()}
         </div>
+
+        <div className="flex justify-center">
+          <div className="grid grid-cols-4 gap-x-[24px] gap-y-[54px] w-[1200px] mt-[106px] items-start">
+            {posts.map((post, index) => (
+              <DefaultPost
+                key={index}
+                id={index} 
+                title={post.postTitle}
+                img={
+                  post.coverImage && post.coverImage !== "null"
+                    ? post.coverImage
+                    : undefined
+                }
+                tags={post.tags}
+                nickname={post.nickname}
+                createdAt={post.createdAt}
+              />
+            ))}
+          </div>
+        </div>
+
+        <PageNavigator
+          currentPage={currentPage}
+          totalPageNumber={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
-      {/* <PageNavigator totalPageNumber={13} /> */}
-      {/* 연동하며 PageNavigator를 수정하게 되어서 우선 mock data로 넣어뒀습니다..! */}
-      <PageNavigator
-            currentPage={1}
-            totalPageNumber={5}
-            onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수 
-      />
-    </div>
     </>
   );
 }

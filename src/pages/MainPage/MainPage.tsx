@@ -5,14 +5,13 @@ import TagSelect from "../../components/common/TagSelect";
 import MainPosts from "./components/MainPosts";
 import Header from "../../components/common/Header";
 import MainPageBackgroundImg from "../../assets/img/MainPageBackgroundImg.png";
-import { mockPosts } from "../../mocks/mockPosts";
+// import { mockPosts } from "../../mocks/mockPosts";
 
 function MainPage() {
   const [query, setQuery] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   // isLogin 상태를 localstorage의 토큰 유무로 검사해서 수정해야 함 (추후 작성 예정)
-  // console.log("query = " + query);
-  // console.log("selectedTags = " + selectedTags);
+
   return (
     <>
     <div className="flex flex-col items-center">
@@ -26,7 +25,7 @@ function MainPage() {
         </div>
       </div>
       <div className="w-full">
-        <MainPosts posts = {mockPosts}/>
+        <MainPosts />
       </div>
     </div>
     </>
