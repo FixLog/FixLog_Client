@@ -50,7 +50,6 @@ const ProfileSection = ({
           ? { ...config, params: { nickname: userId } }
           : { params: { nickname: userId } };
 
-        // 프로필 정보 (이 부분은 '/members/me'로 자신의 정보만 가져오고 있어, 다른 유저 프로필 조회 시 문제가 될 수 있으나 일단 유지합니다)
         const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
         if (profile) {
@@ -64,12 +63,10 @@ const ProfileSection = ({
           `${apiUrl}/follow/followers`,
           configWithParams
         );
-        console.log("팔로워 API 응답:", followersRes.data);
         // API 응답 구조에 따라 데이터 추출
         const followers = Array.isArray(followersRes.data)
           ? followersRes.data
           : followersRes.data?.data || [];
-        console.log("처리된 팔로워 데이터:", followers);
         setFollowersData(followers);
 
         // API 명세에 따라 팔로잉 목록 주소 변경
@@ -77,28 +74,16 @@ const ProfileSection = ({
           `${apiUrl}/follow/followings`,
           configWithParams
         );
-        console.log("팔로잉 API 응답:", followingRes.data);
         // API 응답 구조에 따라 데이터 추출
         const following = Array.isArray(followingRes.data)
           ? followingRes.data
           : followingRes.data?.data || [];
-        console.log("처리된 팔로잉 데이터:", following);
         setFollowingData(following);
-
-        // 팔로우 상태
-        if (!isMyProfile) {
-          // 이 API는 명세에 없음. 다른 로직으로 대체 필요
-          const followStatus = await axios.get(
-            `${apiUrl}/api/user/${userId}/follow-status`,
-            config
-          );
-          setIsFollowing(followStatus.data.isFollowing);
-        }
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생:", error);
         // 에러 발생 시 빈 배열로 초기화
-        setFollowersData([]);
-        setFollowingData([]);
+        // setFollowersData([]);
+        // setFollowingData([]);
       }
     };
 

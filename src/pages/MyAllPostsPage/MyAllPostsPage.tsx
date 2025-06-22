@@ -2,14 +2,16 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/common/Header";
-import ArticleCard from "../MyPage/components/ArticleCard";
+import GridArticleCard from "../MyPage/components/GridArticleCard";
 import PageNavigator from "../../components/common/PageNavigator";
 
 interface Article {
   id: number;
   title: string;
   summary: string;
+  img?: string;
   tags: string[];
+  nickname: string;
   date: string;
 }
 
@@ -17,7 +19,9 @@ interface RawPost {
   postId: number;
   postTitle: string;
   postSummary: string;
+  imgUrl: string;
   tags: string[];
+  nickname: string;
   createdAt: string;
 }
 
@@ -95,7 +99,9 @@ const MyAllPostsPage = () => {
         id: article.postId,
         title: article.postTitle,
         summary: article.postSummary,
+        img: article.imgUrl,
         tags: article.tags,
+        nickname: article.nickname,
         date: article.createdAt.slice(0, 10)
       }));
 
@@ -141,14 +147,16 @@ const MyAllPostsPage = () => {
           <p className="text-center mt-8">로딩 중...</p>
         ) : articles.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
               {articles.map((article) => (
-                <ArticleCard
+                <GridArticleCard
                   key={article.id}
+                  id={article.id}
                   title={article.title}
                   summary={article.summary}
                   tags={article.tags}
-                  date={article.date}
+                  nickname={article.nickname}
+                  createdAt={article.date}
                 />
               ))}
             </div>
@@ -156,9 +164,9 @@ const MyAllPostsPage = () => {
               {/* <PageNavigator totalPageNumber={totalPages} /> */}
               {/* 연동하며 PageNavigator를 수정하게 되어서 우선 mock data로 넣어뒀습니다..! */}
               <PageNavigator
-                    currentPage={1}
-                    totalPageNumber={totalPages}
-                    onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수 
+                currentPage={1}
+                totalPageNumber={totalPages}
+                onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수
               />
             </div>
           </>
