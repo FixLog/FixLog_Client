@@ -22,6 +22,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     // 로그인 상태일 때만 API 호출
@@ -51,7 +52,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   };
 
   const handleMyPageClick = () => {
-    if (myNickname) {
+    if (myNickname && token) {
       navigate(`/my-page/${myNickname}`);
     } else {
       alert("내 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
@@ -102,7 +103,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
         {/* 우측 섹션 (로그인 상태에 따라 다름) */}
         <div className="flex items-center gap-6">
-          {isLogin ? (
+          {isLogin && token ? (
             // 로그인 상태
             <>
               {/* 작성하기 버튼 */}
