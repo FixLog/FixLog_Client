@@ -151,7 +151,8 @@ function EditProfilePage() {
         headers: { ...config.headers, "Content-Type": "application/json" }
       };
       await axios.put(uploadUrl, {
-        headers: { "Content-Type": imageFile.type }
+        headers: { "Content-Type": imageFile.type },
+        body: imageFile
       });
       await axios.patch(
         `${apiUrl}/mypage/members/profile-image`,
