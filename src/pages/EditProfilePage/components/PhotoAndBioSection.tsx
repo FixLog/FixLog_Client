@@ -16,10 +16,10 @@ const PhotoAndBioSection = ({
   onUpdateBio
 }: PhotoAndBioSectionProps) => {
   return (
-    <section className="bg-white border shadow-md rounded-lg px-12 py-10 mb-12">
+    <section className="bg-white border border-gray-300 rounded-lg px-12 py-10 mb-12">
       <h2 className="text-xl font-semibold mb-8">프로필 관리</h2>
       <div className="flex items-start gap-12 mb-10">
-        <div className="w-32 h-32 rounded-full bg-gray-300 overflow-hidden flex items-center justify-center">
+        <div className="w-32 h-32 bg-gray-100 border border-gray-300 rounded-full overflow-hidden flex items-center justify-center">
           <img
             src={previewUrl}
             alt="프로필 이미지"
@@ -27,8 +27,8 @@ const PhotoAndBioSection = ({
           />
         </div>
         <div className="flex flex-col justify-center gap-4">
-          <label className="bg-sub1 text-black py-2 px-4 rounded font-bold w-fit cursor-pointer">
-            이미지 선택
+          <label className="bg-sub1 text-black py-2 px-4 rounded font-bold w-40 cursor-pointer flex justify-center items-center whitespace-nowrap">
+            이미지 업로드
             <input
               type="file"
               accept="image/*"
@@ -38,7 +38,7 @@ const PhotoAndBioSection = ({
           </label>
           <button
             onClick={onUpdateImage}
-            className="bg-sub1 text-black py-2 px-4 rounded font-bold w-fit"
+            className="bg-sub1 text-black py-2 px-4 rounded font-bold w-40 cursor-pointer"
           >
             이미지 변경하기
           </button>
@@ -46,14 +46,14 @@ const PhotoAndBioSection = ({
       </div>
       <div>
         <label
-          className="block text-gray-700 text-base font-bold mb-2"
+          className="block text-gray-700 text-bas font-bold mb-2"
           htmlFor="bio"
         >
           소개글
         </label>
         <textarea
           id="bio"
-          className="shadow bg-gray-150 border rounded w-full py-3 px-4 text-gray-600 h-32"
+          className="bg-gray-100 border rounded w-full py-3 px-4 text-gray-600 h-32"
           value={bio}
           onChange={onBioChange}
           placeholder="소개글을 입력하세요"
