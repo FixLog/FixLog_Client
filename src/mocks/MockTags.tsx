@@ -15,7 +15,7 @@ export const Tags: Record<string, string[]> = {
     "scikit-learn",
     "spring-boot"
   ],
-  "# 중분류": ["c", "css", "haskell", "java", "java-script", "json", "python", "r"],
+  "# 중분류": ["c", "css", "haskell", "java", "javascript", "json", "python", "r"],
   "# 소분류": [
     "404-error",
     "500-error",
@@ -60,7 +60,7 @@ export const TagDisplayName: Record<string, string> = {
   css: "css",
   haskell: "Haskell",
   java: "자바",
-  "java-script": "자바스크립트",
+  javascript: "자바스크립트",
   json: "JSON",
   python: "파이썬",
   r: "R",
