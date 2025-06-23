@@ -4,6 +4,7 @@ export interface Post {
   postId: number;
   title: string;
   content: string;
+  coverImageUrl?: string;
   writerNickname: string;
   writerProfileImage: string;
   tags: string[];
@@ -38,6 +39,5 @@ export const fetchSearchResults = async (
   console.log("📦 전체 axios 응답", response);
   console.log("📦 response.data", response.data);
 
-//   console.log(response.data)
   return response.data.data;
 };

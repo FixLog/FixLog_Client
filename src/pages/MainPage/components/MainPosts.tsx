@@ -78,7 +78,7 @@ function MainPosts() {
           {posts.map((post, index) => (
             <MainPagePostPreview
               key={index}
-              id={index} 
+              id={post.postId} 
               title={post.postTitle}
               img={
                 post.coverImage && post.coverImage !== "null"
@@ -88,6 +88,7 @@ function MainPosts() {
               tags={post.tags}
               nickname={post.nickname}
               createdAt={post.createdAt}
+              profileImageUrl ={post.writerProfileImageUrl || undefined} 
             />
           ))}
         </div>

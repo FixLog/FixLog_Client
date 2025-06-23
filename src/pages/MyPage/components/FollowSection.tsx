@@ -2,39 +2,31 @@ import { useState, useEffect } from "react";
 import UserListModal from "./UserListModal";
 import axios from "axios";
 
-import type {
-  User_Follower,
-  User_Following,
-  SimplifiedUser
-} from "../types/follow";
+import type { User_Follower, User_Following, SimplifiedUser } from "../types/follow";
 
 interface FollowListSectionProps {
   followers: User_Follower[];
   following: User_Following[];
   followersCount: number;
   followingCount: number;
+  onFollowChange?: () => void;
 }
 
 const FollowListSection = ({
   followers = [],
   following = [],
   followersCount,
-  followingCount
+  followingCount,
+  onFollowChange
 }: FollowListSectionProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const [showFollowersModal, setShowFollowersModal] = useState(false);
   const [showFollowingModal, setShowFollowingModal] = useState(false);
-  const [simplifiedFollowers, setSimplifiedFollowers] = useState<
-    SimplifiedUser[]
-  >([]);
-  const [simplifiedFollowing, setSimplifiedFollowing] = useState<
-    SimplifiedUser[]
-  >([]);
+  const [simplifiedFollowers, setSimplifiedFollowers] = useState<SimplifiedUser[]>([]);
+  const [simplifiedFollowing, setSimplifiedFollowing] = useState<SimplifiedUser[]>([]);
 
-  const followingIds = new Set(
-    Array.isArray(following) ? following.map((f) => f.following_id) : []
-  );
+  const followingIds = new Set(Array.isArray(following) ? following.map((f) => f.following_id) : []);
 
   useEffect(() => {
     if (Array.isArray(followers) && Array.isArray(following)) {
@@ -64,8 +56,7 @@ const FollowListSection = ({
     }
 
     const currentUser =
-      simplifiedFollowers.find((u) => u.id === userId) ||
-      simplifiedFollowing.find((u) => u.id === userId);
+      simplifiedFollowers.find((u) => u.id === userId) || simplifiedFollowing.find((u) => u.id === userId);
 
     console.log('[DEBUG] currentUser', currentUser);
 
@@ -78,12 +69,20 @@ const FollowListSection = ({
 
     try {
       if (isCurrentlyFollowing) {
-        console.log('[DEBUG] 언팔로우 요청', userId);
-        await axios.delete(`${apiUrl}/follow/unfollow`, {
-          headers: { Authorization: `Bearer ${token}`, ContentType: "application/json" },
-          data: { target_member_id: Number(userId) }
-        });
-        console.log('[DEBUG] 언팔로우 성공', userId);
+
+        await axios.post(
+          `${apiUrl}/follow/unfollow`,
+          {
+            target_member_id: Number(userId)
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
+        const updateList = (list: SimplifiedUser[]) =>
+          list.map((user) => (user.id === userId ? { ...user, isFollowing: !isCurrentlyFollowing } : user));
+        setSimplifiedFollowers(updateList);
+        setSimplifiedFollowing(updateList);
       } else {
         console.log('[DEBUG] 팔로우 요청', userId);
         await axios.post(
@@ -91,16 +90,13 @@ const FollowListSection = ({
           { target_member_id: Number(userId) },
           { headers: { Authorization: `Bearer ${token}`, ContentType: "application/json" } }
         );
-        console.log('[DEBUG] 팔로우 성공', userId);
+
+        const updateList = (list: SimplifiedUser[]) =>
+          list.map((user) => (user.id === userId ? { ...user, isFollowing: !isCurrentlyFollowing } : user));
+        setSimplifiedFollowers(updateList);
+        setSimplifiedFollowing(updateList);
       }
-      const updateList = (list: SimplifiedUser[]) =>
-        list.map((user) =>
-          user.id === userId
-            ? { ...user, isFollowing: !isCurrentlyFollowing }
-            : user
-        );
-      setSimplifiedFollowers(updateList);
-      setSimplifiedFollowing(updateList);
+      if (onFollowChange) onFollowChange();
     } catch (err) {
       console.error("[DEBUG] 팔로우/언팔로우 실패:", err);
       alert("팔로우/언팔로우 처리 중 오류가 발생했습니다.");
@@ -109,17 +105,11 @@ const FollowListSection = ({
 
   return (
     <div className="flex gap-4 mt-2 text-sm">
-      <button
-        className="flex gap-2 hover:text-gray-600 transition-colors"
-        onClick={() => setShowFollowersModal(true)}
-      >
+      <button className="flex gap-2 hover:text-gray-600 transition-colors" onClick={() => setShowFollowersModal(true)}>
         팔로워
         <div className="font-medium">{followersCount}</div>
       </button>
-      <button
-        className="flex gap-2 hover:text-gray-600 transition-colors"
-        onClick={() => setShowFollowingModal(true)}
-      >
+      <button className="flex gap-2 hover:text-gray-600 transition-colors" onClick={() => setShowFollowingModal(true)}>
         팔로잉
         <div className="font-medium">{followingCount}</div>
       </button>
