@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import LogoIcon from "../../assets/icons/Logo.svg";
 import AlarmIcon from "../../assets/icons/Alarm.svg";
@@ -11,16 +11,17 @@ interface HeaderProps {
   setIsLogin?: (login: boolean) => void;
 }
 
-type NavTabType = "tags" | "latest" | "popular";
+type NavTabType = "tags" | "latest" | "popular" | null;
 
 const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   // 드롭다운 메뉴 상태 관리
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   // 네비게이션 탭 상태 관리
-  const [activeTab, setActiveTab] = useState<NavTabType>("tags");
+  // const [activeTab, setActiveTab] = useState<NavTabType>(null);
   const [myNickname, setMyNickname] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem("accessToken");
 
@@ -48,20 +49,31 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  // const handleTabClick = (tab: NavTabType) => {
-  //   setActiveTab(tab);
-  // };
+  // 탭
+  const navTabs: { label: string; value: NavTabType }[] = [
+    { label: "태그 모음", value: "tags" },
+    { label: "최신글", value: "latest" },
+    { label: "인기글", value: "popular" }
+  ];
+
+  const getActiveTab = (): NavTabType => {
+    if (location.pathname.startsWith("/tag-collection")) return "tags";       // 태그 모음
+    if (location.pathname.startsWith("/view-all/latest")) return "latest";    // 최신글
+    if (location.pathname.startsWith("/view-all/popular")) return "popular";  // 인기글
+    return null;
+  };
+
+  const activeTab = getActiveTab();
 
   const handleTabClick = (tab: NavTabType) => {
-    setActiveTab(tab);
-    
-    if (tab === "latest") {
-      navigate("/view-all/latest");
+    if (tab === "tags") {
+      navigate("/tag-collection");    // 태그 모음
+    } else if (tab === "latest") {
+      navigate("/view-all/latest");   // 최신글
     } else if (tab === "popular") {
-      navigate("/view-all/popular");
+      navigate("/view-all/popular");  // 인기글
     }
   };
-  
 
   const handleMyPageClick = () => {
     if (myNickname && token) {
@@ -78,12 +90,6 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
     setIsDropdownOpen(false); // 메뉴 닫기
     navigate("/");
   };
-
-  const navTabs: { label: string; value: NavTabType }[] = [
-    { label: "태그 모음", value: "tags" },
-    { label: "최신글", value: "latest" },
-    { label: "인기글", value: "popular" }
-  ];
 
   return (
     <header className="w-full border-b bg-white shadow-sm font-pretendard">
@@ -168,12 +174,12 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
             // 비로그인 상태
             <div className="flex gap-2">
               <Link to="/login">
-                <button className="text-sm text-main border border-main px-4 py-1 rounded hover:bg-main hover:text-white transition-colors ">
+                <button className="w-[80px] h-[32px] flex items-center justify-center font-semibold text-gray-800 text-[16px] bg-sub1 px-[14px] py-[8px] rounded-[100px] border border-transparent hover:bg-transparent hover:border-sub1 transition-colors">
                   로그인
                 </button>
               </Link>
               <Link to="/signup">
-                <button className="text-sm text-white bg-main px-4 py-1 rounded hover:bg-sub1 hover:text-main transition-colors ">
+                <button className="w-auto h-[32px] flex items-center justify-center font-medium text-gray-600 text-[16px] bg-transparent px-[14px] py-[8px] rounded-[100px] hover:text-gray-900 transition-colors">
                   회원가입
                 </button>
               </Link>
