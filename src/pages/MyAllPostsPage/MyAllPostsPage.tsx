@@ -9,7 +9,7 @@ interface Article {
   id: number;
   title: string;
   summary: string;
-  img?: string;
+  imageUrl?: string;
   tags: string[];
   nickname: string;
   date: string;
@@ -19,7 +19,7 @@ interface RawPost {
   postId: number;
   postTitle: string;
   postSummary: string;
-  imgUrl: string;
+  imageUrl: string;
   tags: string[];
   nickname: string;
   createdAt: string;
@@ -63,12 +63,9 @@ const MyAllPostsPage = () => {
     if (!token) return;
 
     try {
-      const response = await axios.get(
-        `${apiUrl}/bookmark-folders/${folderId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const response = await axios.get(`${apiUrl}/bookmark-folders/${folderId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setFolderName(response.data.data.folderName);
     } catch (err) {
       console.error("폴더명 조회 실패:", err);
@@ -112,7 +109,7 @@ const MyAllPostsPage = () => {
         id: article.postId,
         title: article.postTitle,
         summary: article.postSummary,
-        img: article.imgUrl,
+        imageUrl: article.imageUrl,
         tags: article.tags,
         nickname: article.nickname,
         date: article.createdAt.slice(0, 10)
@@ -168,15 +165,12 @@ const MyAllPostsPage = () => {
                   tags={article.tags}
                   nickname={article.nickname}
                   createdAt={article.date}
+                  imageUrl={article.imageUrl || ""}
                 />
               ))}
             </div>
             <div className="mt-12">
-              <PageNavigator
-                currentPage={currentPage}
-                totalPageNumber={totalPages}
-                onPageChange={setCurrentPage}
-              />
+              <PageNavigator currentPage={currentPage} totalPageNumber={totalPages} onPageChange={setCurrentPage} />
             </div>
           </>
         ) : (
