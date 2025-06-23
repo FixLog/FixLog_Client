@@ -17,7 +17,6 @@ export default function SectionEditor({ sectionKey }: SectionEditorProps) {
 
   useEffect(() => {
     if (cached === "") {
-      console.log(`Initializing section "${sectionKey}"`);
       queryClient.setQueryData(cacheKey, "");
     }
   }, []);

@@ -1,9 +1,8 @@
 import { useState } from "react";
-
 import DropDownButtonIcon from "../../assets/img/DropDownButtonIcon.png";
-import PythonIcon from "../../assets/img/PythonIcon.png"; 
-import CloseIcon from "../../assets/img/DropDownCloseButton.png"; 
-import { Tags } from "../../mocks/MockTags"
+import PythonIcon from "../../assets/img/PythonIcon.png";
+import CloseIcon from "../../assets/img/DropDownCloseButton.png";
+import { Tags, TagDisplayName } from "../../mocks/MockTags";
 
 interface TagSelectProps {
   selectedTags: string[];
@@ -11,7 +10,7 @@ interface TagSelectProps {
 }
 
 const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
-  const [openCategory, setOpenCategory] = useState<string | null>(null); 
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [dropdownOptions, setDropdownOptions] = useState<string[]>([]);
 
   const handleOpen = (label: string, options: string[]) => {
@@ -20,7 +19,7 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
   };
 
   const handleSelect = (option: string) => {
-    const existingIndex = selectedTags.findIndex(tag => dropdownOptions.includes(tag));
+    const existingIndex = selectedTags.findIndex((tag) => dropdownOptions.includes(tag));
     if (existingIndex !== -1) {
       const newTags = [...selectedTags];
       newTags[existingIndex] = option;
@@ -31,12 +30,16 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
     setOpenCategory(null);
   };
 
+  const getDisplayText = (value: string) => TagDisplayName[value] ?? value;
+
   return (
     <div className="relative">
       <div className="flex gap-[16px] justify-start mt-[20px]">
         {Object.entries(Tags).map(([label, options]) => {
-          const selectedInCategory = options.find(option => selectedTags.includes(option));
-          const labelToShow = selectedInCategory ? `# ${selectedInCategory}` : label;
+          const selectedInCategory = options.find((option) => selectedTags.includes(option));
+          const labelToShow = selectedInCategory
+            ? `# ${getDisplayText(selectedInCategory)}`
+            : label;
 
           return (
             <button
@@ -68,7 +71,7 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
                 className="flex items-center gap-2 px-4 py-3 font-pretendard text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
               >
                 <img src={PythonIcon} className="w-[20px] h-[20px]" />
-                <span>{option}</span>
+                <span>{getDisplayText(option)}</span>
               </li>
             ))}
           </ul>
