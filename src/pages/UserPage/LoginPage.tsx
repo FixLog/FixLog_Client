@@ -64,7 +64,6 @@ function LoginPage () {
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
 
-  // 빌드 오류 해결용으로 주석 처리..! (나중에 실제 사용 시 주석 해제 필요)
   // const [showPassword, setShowPassword] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
