@@ -16,7 +16,6 @@ function DeleteAccountPage() {
         }
 
         const accessToken = localStorage.getItem('accessToken');
-        console.log("Access Token:", accessToken);
 
         if (!accessToken) {
             alert("로그인 상태가 아닙니다.");
@@ -35,7 +34,6 @@ function DeleteAccountPage() {
         }
 
         const accessToken = localStorage.getItem('accessToken');
-        console.log("Access Token:", accessToken);
 
         try {
             const response = await fetch(`${apiUrl}/members/me`, {
@@ -50,24 +48,21 @@ function DeleteAccountPage() {
             const result = await response.json();
 
             if (response.ok && result.success) {
-                console.log("토큰 삭제 전:", localStorage.getItem('accessToken'));
+                //console.log("토큰 삭제 전:", localStorage.getItem('accessToken'));
                 localStorage.removeItem('accessToken');
-                console.log("토큰 삭제 후:", localStorage.getItem('accessToken'));
-                console.log("회원 탈퇴 성공");
+                //console.log("토큰 삭제 후:", localStorage.getItem('accessToken'));
                 alert("회원 탈퇴가 완료되었습니다.");
                 navigate("/");
             } else {
                 if (response.status === 401) {
-                    console.warn("비밀번호 불일치");
                     alert("비밀번호가 일치하지 않습니다.");
                 } else {
-                    console.error("회원 탈퇴 실패:", response.status);
-                    alert("회원 탈퇴 중 오류 발생");
+                    alert("회원 탈퇴 실패: " + response.status);
                 }
             }
         } catch (error) {
-            console.error("회원 탈퇴 실패:", error);
-            alert("회원 탈퇴 중 오류 발생");
+            console.error("회원 탈퇴 실패: ", error);
+            alert("회원 탈퇴 실패");
         }
     };
 
