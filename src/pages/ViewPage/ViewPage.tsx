@@ -4,6 +4,11 @@ import axiosInstance from "../../utils/axiosInstance";
 import Header from "../../components/common/Header";
 import ViewComponent from "./components/ViewComponent";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+
 interface PostInfo {
   userId: number;
   nickname: string;
@@ -147,11 +152,31 @@ export default function ViewPage() {
 
 function Section({ id, title, content }: { id: string; title: string; content: string }) {
   if (!content) return null;
+
   return (
     <section id={id} className="mb-6">
       <h2 className="text-heading3 font-semibold mb-1">{title}</h2>
-      <div className="prose prose-sm mt-2 text-gray-800 max-w-none whitespace-pre-wrap">
-        <ReactMarkdown>{content}</ReactMarkdown>
+      <div className="prose prose-sm mt-2 text-gray-800 max-w-none">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw, rehypeSanitize]}
+          components={{
+            code({ inline, className, children, ...props }: any) {
+              const match = /language-(\w+)/.exec(className || "");
+              return !inline && match ? (
+                <SyntaxHighlighter language={match[1]} PreTag="div" {...props}>
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            }
+          }}
+        >
+          {content}
+        </ReactMarkdown>
       </div>
     </section>
   );
