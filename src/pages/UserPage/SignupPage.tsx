@@ -90,16 +90,8 @@ function SignupPage() {
 
   // 회원가입 버튼 (API)
   const handleSignup = async () => {
-    if (email.trim() === '') {
-      alert("이메일을 입력해주세요.");
-      return;
-    }
     if (!checkEmail) {
       alert("이메일 중복 확인을 해주세요.");
-      return;
-    }
-    if (nickname.trim() === '') {
-      alert("닉네임을 입력해주세요.");
       return;
     }
     if (!checkNickname) {
@@ -125,8 +117,6 @@ function SignupPage() {
       });
 
       if (response.ok) {
-        console.log("회원가입 성공");
-
         // 회원가입 후 바로 로그인
         const login = await fetch(`${apiUrl}/auth/login`, {
           method: 'POST',
@@ -143,8 +133,6 @@ function SignupPage() {
           const loginData = await login.json();
 
           localStorage.setItem('accessToken', loginData.data.accessToken);
-          console.log("Access Token 저장:", loginData.data.accessToken);
-
           navigate('/signup-success');
         } else {
           alert('회원가입 성공, 로그인 실패.');
@@ -152,7 +140,6 @@ function SignupPage() {
         }
         
       } else {
-        console.error("회원가입 실패");
         alert("회원가입 실패");
       }
 
