@@ -35,11 +35,12 @@ const App: React.FC = () => {
           <Route path="/my-page/:nickname" element={<MyPage />} />
           <Route path="/edit-profile-page" element={<EditProfilePage />} />
           <Route path="/write" element={<WritePage />} />
+          <Route path="/posts/:postId/edit" element={<WritePage editMode={true} />} />
           <Route path="/posts/:post_id" element={<ViewPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
           <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
           <Route path="/my-all-posts/:type/:folderId" element={<MyAllPostsPage />} />
-        </Route>          
+        </Route>
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}
         <Route path="/" element={<MainPage />} />
@@ -47,7 +48,7 @@ const App: React.FC = () => {
         <Route path="/signup-success" element={<SignupSuccessPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/search-result" element={<SearchResultPage />} />
-        <Route path="/view-all/:type" element={<ViewAllPage  />} />
+        <Route path="/view-all/:type" element={<ViewAllPage />} />
         <Route path="/tag-collection" element={<TagCollectionPage />} />
         <Route path="/tag-detail" element={<TagDetailPage />} />
       </Routes>
