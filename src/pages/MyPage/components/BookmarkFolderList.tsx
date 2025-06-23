@@ -45,7 +45,8 @@ const BookmarkFolderList = () => {
 
   const handleFolderClick = (folderId: number, folderName: string) => {
     // 북마크 폴더를 클릭하면 바로 해당 폴더의 전체보기 페이지로 이동
-    navigate(`/my-all-posts/bookmarks/${folderId}`, { state: { folderName } });  };
+    navigate(`/my-all-posts/bookmarks/${folderId}`, { state: { folderName } });
+  };
 
   if (loading) {
     return <p className="mt-4">북마크 폴더를 불러오는 중...</p>;
@@ -63,13 +64,9 @@ const BookmarkFolderList = () => {
           onClick={() => handleFolderClick(folder.folder_id, folder.name)}
           className="flex flex-col items-center p-4 bg-white transition-shadow w-full"
         >
-          <img
-            src={FolderIcon}
-            alt="Folder Icon"
-            className="w-[150px] h-[110px] object-contain mb-1"
-          />
+          <img src={FolderIcon} alt="Folder Icon" className="w-[150px] h-[110px] object-contain mb-[20.4px]" />
 
-          <h3 className="font-medium text-[17px] truncate">{folder.name}</h3>
+          <h3 className="font-medium text-[17px] truncate items-start mb-[200px]">{folder.name}</h3>
         </button>
       ))}
     </div>

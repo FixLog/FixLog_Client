@@ -99,13 +99,19 @@ const FollowListSection = ({
 
   return (
     <div className="flex gap-4 mt-2 text-sm">
-      <button className="flex gap-2 hover:text-gray-600 transition-colors" onClick={() => setShowFollowersModal(true)}>
+      <button
+        className="text-[17px] text-black font-medium flex gap-2 hover:text-gray-600 transition-colors"
+        onClick={() => setShowFollowersModal(true)}
+      >
         팔로워
-        <div className="font-medium">{followersCount}</div>
+        <div className="text-[19px] text-black font-normal hover:text-gray-600">{followersCount}</div>
       </button>
-      <button className="flex gap-2 hover:text-gray-600 transition-colors" onClick={() => setShowFollowingModal(true)}>
+      <button
+        className="text-[17px] text-black font-medium flex gap-2 hover:text-gray-600 transition-colors"
+        onClick={() => setShowFollowingModal(true)}
+      >
         팔로잉
-        <div className="font-medium">{followingCount}</div>
+        <div className="text-[19px] text-black font-normal hover:text-gray-600">{followingCount}</div>
       </button>
       <UserListModal
         isOpen={showFollowersModal}

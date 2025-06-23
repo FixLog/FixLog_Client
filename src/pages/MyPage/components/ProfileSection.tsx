@@ -97,19 +97,19 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
 
   return (
     <div className="flex items-start gap-4 pt-4 pb-4">
-      <div className="w-32 h-32 rounded-full object-cover justify-center border border-gray-300 overflow-hidden">
+      <div className="w-[160px] h-[160px] rounded-full object-cover justify-center border border-gray-300 shadow-md overflow-hidden">
         <img
           src={profileData.profileImageUrl || PostDefaultImage}
           alt="프로필 이미지"
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pl-[65px]">
         <div className="flex justify-between items-start">
           <div>
-            <div className="text-2xl font-bold">{profileData.nickname}</div>
-            <div className="text-gray-600 text-sm">{profileData.email}</div>
-            <div className="flex gap-4 mt-2 text-sm">
+            <div className="text-black text-[26px] font-bold mb-[10px]">{profileData.nickname}</div>
+            <div className="text-black text-[19px] font-normal mb-[10px]">{profileData.email}</div>
+            <div className="flex gap-4 mt-2 mb-[63.5px]">
               <FollowSection
                 followers={followersData}
                 following={followingData}
@@ -123,14 +123,14 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
             <Link
               to="/edit-profile-page"
               state={{ isLogin: isLogin, profileData: profileData }}
-              className="text-gray-600 text-sm cursor-pointer hover:underline"
+              className="text-gray-700 text-[15px] font-normal cursor-pointer"
             >
               회원정보 수정 &gt;
             </Link>
           ) : (
             <button
               onClick={handleFollow}
-              className={`px-4 py-2  text-sm font-medium ${
+              className={`px-4 py-2 text-sm font-medium ${
                 isFollowing
                   ? "text-main border border-main px-4 py-1 rounded hover:bg-main hover:text-white transition-colors "
                   : "text-white border bg-main border-main px-4 py-1 rounded transition-colors "
@@ -140,9 +140,9 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
             </button>
           )}
         </div>
-        <div className="mt-6">
-          <h3 className="font-bold text-lg mb-1">소개</h3>
-          <p className="text-sm h-20 text-gray-700">{profileData.bio ?? "소개글이 없습니다."}</p>
+        <div>
+          <h3 className="font-semibold text-[18px] mb-[16px] text-black">소개</h3>
+          <p className="text-[18px] font-normal text-black mb-[62px]">{profileData.bio ?? "소개글이 없습니다."}</p>
         </div>
       </div>
     </div>

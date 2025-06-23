@@ -95,7 +95,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
   }
 
   return (
-    <div className="space-y-6 mt-4">
+    <div className="space-y-6 mt-4 mb-[200px]">
       {articles.map((article) => (
         <ArticleCard
           key={article.id}
