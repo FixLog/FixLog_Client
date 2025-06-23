@@ -1,6 +1,7 @@
 import axiosInstance from "../utils/axiosInstance";
 
 export interface ViewAllPost {
+  postId: number;
   postTitle: string;
   coverImage: string | null;
   tags: string[];

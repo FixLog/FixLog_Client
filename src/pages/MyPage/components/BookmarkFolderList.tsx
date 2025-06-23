@@ -66,7 +66,7 @@ const BookmarkFolderList = () => {
           <img
             src={FolderIcon}
             alt="Folder Icon"
-            className="w-[180px] h-[140px] object-contain mb-1"
+            className="w-[150px] h-[110px] object-contain mb-1"
           />
 
           <h3 className="font-medium text-[17px] truncate">{folder.name}</h3>
