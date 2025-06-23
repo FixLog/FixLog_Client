@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Accordion from "./components/Accordion";
 import SectionEditor from "./components/SectionEditor";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import TagSelect from "../../components/common/TagSelect";
 
@@ -17,14 +17,31 @@ const sections = [
   { title: "기타", key: "etc" }
 ];
 
-export default function WritePage() {
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+export default function WritePage({ editMode = false }: { editMode?: boolean }) {
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [title, setTitle] = useState("제목을 입력하세요");
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
+  const { postId } = useParams();
+  useEffect(() => {
+    if (editMode && postId) {
+      axiosInstance.get(`/posts/${postId}`).then((res) => {
+        const post = res.data.data.postInfo;
+        setTitle(post.postTitle);
+        setSelectedTags(post.tags);
+        queryClient.setQueryData(["draft", "problem"], post.problem);
+        queryClient.setQueryData(["draft", "error"], post.errorMessage);
+        queryClient.setQueryData(["draft", "env"], post.environment);
+        queryClient.setQueryData(["draft", "reproduce"], post.reproduceCode);
+        queryClient.setQueryData(["draft", "solution"], post.solutionCode);
+        queryClient.setQueryData(["draft", "cause"], post.causeAnalysis);
+        queryClient.setQueryData(["draft", "link"], post.referenceLink);
+        queryClient.setQueryData(["draft", "etc"], post.extraContent);
+      });
+    }
+  }, [editMode, postId]);
   useEffect(() => {
     if (isEditing) {
       inputRef.current?.focus();
@@ -59,16 +76,22 @@ export default function WritePage() {
       causeAnalysis: data.cause ?? "",
       referenceLink: data.link ?? "",
       extraContent: data.etc ?? "",
-      tags: selectedTags ?? "" 
+      tags: selectedTags ?? ""
     };
 
     try {
-      const res = await axiosInstance.post("/posts", requestBody);
+      let res;
+      if (editMode && postId) {
+        res = await axiosInstance.patch(`/posts/${postId}/edit`, requestBody);
+      } else {
+        res = await axiosInstance.post("/posts", requestBody);
+      }
+
       if (res.data.success) {
-        alert("등록이 완료되었습니다.");
+        alert(editMode ? "수정이 완료되었습니다." : "등록이 완료되었습니다.");
         navigate("/");
       } else {
-        alert("등록 실패: " + res.data.message);
+        alert(`${editMode ? "수정" : "등록"} 실패: ` + res.data.message);
       }
     } catch (err) {
       alert("에러 발생");
@@ -89,7 +112,7 @@ export default function WritePage() {
           className="px-6 py-2 bg-black text-white rounded hover:bg-gray-800"
           onClick={handleSubmit}
         >
-          등록
+          {editMode ? "수정" : "등록"}
         </button>
       </div>
 
@@ -107,23 +130,15 @@ export default function WritePage() {
             className="text-2xl font-bold w-full border-b border-gray-300 focus:outline-none pb-1"
           />
         ) : (
-          <h1
-            className="text-2xl font-bold cursor-pointer"
-            onClick={() => setIsEditing(true)}
-          >
+          <h1 className="text-2xl font-bold cursor-pointer" onClick={() => setIsEditing(true)}>
             {title || "제목을 입력하세요"}
           </h1>
         )}
 
-<TagSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
-
+        <TagSelect selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
 
         {sections.map((section) => (
-          <Accordion
-            key={section.key}
-            title={section.title}
-            sectionKey={section.key}
-          >
+          <Accordion key={section.key} title={section.title} sectionKey={section.key}>
             <SectionEditor sectionKey={section.key} />
           </Accordion>
         ))}
