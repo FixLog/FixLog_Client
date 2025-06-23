@@ -38,7 +38,7 @@ const App: React.FC = () => {
           <Route path="/posts/:post_id" element={<ViewPage />} />
           <Route path="/delete-account" element={<DeleteAccountPage />} />
           <Route path="/my-all-posts/:type" element={<MyAllPostsPage />} />
-          <Route path="/my-all-posts/bookmarks/:folderId" element={<MyAllPostsPage />} />
+          <Route path="/my-all-posts/:type/:folderId" element={<MyAllPostsPage />} />
         </Route>          
 
         {/* 로그인 없이 접근 가능한 페이지들은 여기에 추가! */}

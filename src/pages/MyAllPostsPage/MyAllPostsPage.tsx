@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/common/Header";
 import GridArticleCard from "../MyPage/components/GridArticleCard";
@@ -40,10 +40,22 @@ const MyAllPostsPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
-  const [folderName, setFolderName] = useState<string>(""); // 북마크 폴더명 저장
 
-  // 북마크 폴더명 조회 함수
-  const fetchFolderName = useCallback(async () => {
+  const location = useLocation();
+  const folderNameFromState = location.state?.folderName;
+  const [folderName, setFolderName] = useState<string>(folderNameFromState || "");
+
+  useEffect(() => {
+    if (type === "bookmarks") {
+      if (folderNameFromState) {
+        setFolderName(folderNameFromState);
+      } else {
+        fetchFolderName();
+      }
+    }
+  }, [type, folderId]);
+
+  const fetchFolderName = async () => {
     if (type !== "bookmarks" || !folderId) return;
 
     const token = localStorage.getItem("accessToken");
@@ -61,9 +73,9 @@ const MyAllPostsPage = () => {
       console.error("폴더명 조회 실패:", err);
       setFolderName("알 수 없는 폴더");
     }
-  }, [type, folderId, apiUrl]);
+  };
 
-  const getEndpoint = useCallback(() => {
+  const getEndpoint = () => {
     if (!type) return null;
     if (type === "bookmarks" && folderId) {
       return `${apiUrl}/bookmark-folders/${folderId}/bookmarks`;
@@ -74,9 +86,9 @@ const MyAllPostsPage = () => {
       forks: `${apiUrl}/mypage/forks`
     };
     return simpleEndpoints[type] || null;
-  }, [type, folderId, apiUrl]);
+  };
 
-  const fetchArticles = useCallback(async () => {
+  const fetchArticles = async () => {
     const endpoint = getEndpoint();
     if (!endpoint) return;
 
@@ -90,7 +102,7 @@ const MyAllPostsPage = () => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page: 0, size: 12, sort: 0 } // 항상 첫 번째 페이지 요청
+        params: { page: 0, size: 12, sort: 0 }
       };
       const res = await axios.get(endpoint, config);
       const data = res.data.data;
@@ -114,18 +126,12 @@ const MyAllPostsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [getEndpoint, navigate]);
+  };
 
   useEffect(() => {
     fetchArticles();
-  }, [fetchArticles]);
+  }, [type, folderId]);
 
-  // 북마크 폴더인 경우 폴더명 조회
-  useEffect(() => {
-    fetchFolderName();
-  }, [fetchFolderName]);
-
-  // 페이지 제목 생성
   const getPageTitle = () => {
     if (type === "bookmarks" && folderName) {
       return folderName;
@@ -161,12 +167,10 @@ const MyAllPostsPage = () => {
               ))}
             </div>
             <div className="mt-12">
-              {/* <PageNavigator totalPageNumber={totalPages} /> */}
-              {/* 연동하며 PageNavigator를 수정하게 되어서 우선 mock data로 넣어뒀습니다..! */}
               <PageNavigator
                 currentPage={1}
                 totalPageNumber={totalPages}
-                onPageChange={(page) => console.log(`페이지 변경: ${page}`)} // 페이지 변경 시 동작할 함수
+                onPageChange={(page) => console.log(`페이지 변경: ${page}`)}
               />
             </div>
           </>

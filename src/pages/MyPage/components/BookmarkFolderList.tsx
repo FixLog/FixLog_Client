@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FolderIcon from "../../../assets/icons/Folder.svg";
 
 interface Folder {
   folder_id: number;
@@ -29,6 +30,7 @@ const BookmarkFolderList = () => {
 
       try {
         const res = await axios.get(`${apiUrl}/bookmark-folders`, config);
+        console.log(res.data);
         setFolders(res.data.data.content);
       } catch (err) {
         console.error("북마크 폴더 로딩 실패:", err);
@@ -41,10 +43,9 @@ const BookmarkFolderList = () => {
     fetchFolders();
   }, [apiUrl, navigate]);
 
-  const handleFolderClick = (folderId: number) => {
+  const handleFolderClick = (folderId: number, folderName: string) => {
     // 북마크 폴더를 클릭하면 바로 해당 폴더의 전체보기 페이지로 이동
-    navigate(`/my-all-posts/bookmarks/${folderId}`);
-  };
+    navigate(`/my-all-posts/bookmarks/${folderId}`, { state: { folderName } });  };
 
   if (loading) {
     return <p className="mt-4">북마크 폴더를 불러오는 중...</p>;
@@ -59,11 +60,16 @@ const BookmarkFolderList = () => {
       {folders.map((folder) => (
         <button
           key={folder.folder_id}
-          onClick={() => handleFolderClick(folder.folder_id)}
-          className="p-6 bg-white border rounded-lg shadow hover:shadow-md transition-shadow text-left"
+          onClick={() => handleFolderClick(folder.folder_id, folder.name)}
+          className="flex flex-col items-center p-4 bg-white transition-shadow w-full"
         >
-          <h3 className="font-normal text-lg">{folder.name}</h3>
-          {/* Todo: 폴더 아이콘 등 부가적인 요소들 추가 */}
+          <img
+            src={FolderIcon}
+            alt="Folder Icon"
+            className="w-[180px] h-[140px] object-contain mb-1"
+          />
+
+          <h3 className="font-medium text-[17px] truncate">{folder.name}</h3>
         </button>
       ))}
     </div>
