@@ -10,6 +10,7 @@ interface Article {
   summary: string;
   tags: string[];
   date: string;
+  imageUrl: string;
 }
 
 interface RawPost {
@@ -18,6 +19,7 @@ interface RawPost {
   postSummary: string;
   tags: string[];
   createdAt: string;
+  imageUrl: string;
 }
 
 interface MyPageArticleListProps {
@@ -70,7 +72,8 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
           title: article.postTitle,
           summary: article.postSummary,
           tags: article.tags,
-          date: article.createdAt.slice(0, 10)
+          date: article.createdAt.slice(0, 10),
+          imageUrl: article.imageUrl
         }));
 
         setArticles(parsed);
@@ -101,6 +104,7 @@ const MyPageArticleList = ({ activeTab }: MyPageArticleListProps) => {
           summary={article.summary}
           tags={article.tags}
           date={article.date}
+          imageUrl={article.imageUrl}
         />
       ))}
     </div>

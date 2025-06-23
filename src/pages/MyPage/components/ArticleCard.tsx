@@ -7,20 +7,32 @@ interface ArticleCardProps {
   summary: string;
   tags: string[];
   date: string;
+  imageUrl: string;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ postId, title, summary, tags, date }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({
+  postId,
+  title,
+  summary,
+  tags,
+  date,
+  imageUrl
+}) => {
   return (
     <Link to={`/posts/${postId}`} className="block">
       <div className="flex items-start gap-6 py-6 border-b border-gray-200 hover:bg-gray-50 transition">
-        <div className="w-24 h-24 bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700 rounded-md">
-          <img alt="" />
+        <div className="w-[200px] h-[124px] bg-gray-100 flex items-center justify-center text-lg font-bold text-gray-700 rounded-md">
+          <img src={imageUrl} alt="썸네일" className="w-full h-full" />
         </div>
 
         <div className="flex-1 flex flex-col gap-2">
-          <h2 className="text-lg font-semibold text-gray-900 leading-snug">{title}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 leading-snug">
+            {title}
+          </h2>
 
-          <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">{summary}</p>
+          <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">
+            {summary}
+          </p>
 
           <div className="flex flex-wrap gap-2 mt-1">
             {tags.map((tag) => (

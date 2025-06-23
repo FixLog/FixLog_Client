@@ -39,13 +39,13 @@ const FollowListSection = ({
   useEffect(() => {
     if (Array.isArray(followers) && Array.isArray(following)) {
       const mapped = followers.map((f) => ({
-        id: f.follower_id,
+        id: Number(f.follower_id),
         nickname: f.nickname,
-        isFollowing: followingIds.has(f.follower_id)
+        isFollowing: followingIds.has(Number(f.follower_id))
       }));
 
       const followingMapped = following.map((f) => ({
-        id: f.following_id,
+        id: Number(f.following_id),
         nickname: f.nickname,
         isFollowing: true
       }));
@@ -65,7 +65,6 @@ const FollowListSection = ({
     const currentUser =
       simplifiedFollowers.find((u) => u.id === userId) ||
       simplifiedFollowing.find((u) => u.id === userId);
-    console.log(currentUser);
 
     if (!currentUser) {
       console.error("사용자를 찾을 수 없습니다:", userId);
@@ -79,33 +78,21 @@ const FollowListSection = ({
           headers: { Authorization: `Bearer ${token}` },
           data: { target_member_id: Number(userId) }
         });
-        const updateList = (list: SimplifiedUser[]) =>
-          list.map((user) =>
-            user.id === userId
-              ? { ...user, isFollowing: !isCurrentlyFollowing }
-              : user
-          );
-        console.log(updateList);
-        setSimplifiedFollowers(updateList);
-        setSimplifiedFollowing(updateList);
       } else {
         await axios.post(
           `${apiUrl}/follow`,
           { target_member_id: Number(userId) },
-          { headers: { Authorization: `Bearer ${token}` }}
+          { headers: { Authorization: `Bearer ${token}` } }
         );
-        const updateList = (list: SimplifiedUser[]) =>
-          list.map((user) =>
-            user.id === userId
-              ? { ...user, isFollowing: !isCurrentlyFollowing }
-              : user
-          );
-        console.log(updateList);
-        setSimplifiedFollowers(updateList);
-        setSimplifiedFollowing(updateList);
       }
-
-      
+      const updateList = (list: SimplifiedUser[]) =>
+        list.map((user) =>
+          user.id === userId
+            ? { ...user, isFollowing: !isCurrentlyFollowing }
+            : user
+        );
+      setSimplifiedFollowers(updateList);
+      setSimplifiedFollowing(updateList);
     } catch (err) {
       console.error("팔로우/언팔로우 실패:", err);
       alert("팔로우/언팔로우 처리 중 오류가 발생했습니다.");
