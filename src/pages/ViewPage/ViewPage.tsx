@@ -126,53 +126,26 @@ export default function ViewPage() {
         </div>
 
         <Section id="problem" title="문제 상황" content={problem} />
-        <Section id="error" title="에러 메시지" content={errorMessage} isCode />
+        <Section id="error" title="에러 메시지" content={errorMessage} />
         <Section id="env" title="개발 환경" content={environment} />
         <Section id="reproduce" title="재현 코드" content={reproduceCode} />
         <Section id="solution" title="해결 코드" content={solutionCode} />
         <Section id="cause" title="원인 분석" content={causeAnalysis} />
-        <Section id="link" title="참고 링크" content={referenceLink} isLink />
+        <Section id="link" title="참고 링크" content={referenceLink} />
         <Section id="extra" title="기타" content={extraContent} />
       </div>
     </div>
   );
 }
 
-function Section({
-  id,
-  title,
-  content,
-  isLink = false,
-  isCode = false
-}: {
-  id: string;
-  title: string;
-  content: string;
-  isLink?: boolean;
-  isCode?: boolean;
-}) {
+function Section({ id, title, content }: { id: string; title: string; content: string }) {
   if (!content) return null;
   return (
     <section id={id} className="mb-6">
-      <h2 className="text-lg font-semibold mb-1">{title}</h2>
-      {isLink ? (
-        <a
-          href={content}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 underline"
-        >
-          {content}
-        </a>
-      ) : isCode ? (
-        <pre className="bg-gray-100 p-3 rounded mt-2 whitespace-pre-wrap text-gray-800">
-          {content}
-        </pre>
-      ) : (
-        <div className="prose prose-sm mt-2 text-gray-800 max-w-none">
-          <ReactMarkdown>{content}</ReactMarkdown>
-        </div>
-      )}
+      <h2 className="text-heading3 font-semibold mb-1">{title}</h2>
+      <div className="prose prose-sm mt-2 text-gray-800 max-w-none whitespace-pre-wrap">
+        <ReactMarkdown>{content}</ReactMarkdown>
+      </div>
     </section>
   );
 }
