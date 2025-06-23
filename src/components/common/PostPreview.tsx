@@ -26,9 +26,9 @@ function PostPreview({ id, title, summary, img, tags, date, author }: PostPrevie
       <img
         src={img || PostPreviewImage}
         alt="썸네일"
-        className="w-[282px] h-[168px] object-cover rounded-xl"
+        className="w-[282px] h-[168px] object-fill rounded-xl"
+        style={{ width: "282px", height: "168px", flexShrink: 0 }}
       />
-
       <div className="flex flex-col justify-between px-5 py-3 w-full text-left">
         <div>
           <h2 className="font-pretendard text-[23px] font-semibold text-gray-900 mb-1">{title}</h2>

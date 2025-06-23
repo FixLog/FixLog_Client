@@ -3,8 +3,6 @@ import PostPreview from "../../../components/common/PostPreview";
 import type { Post } from "../../../api/search";
 import PostDefaultImage from "../../../assets/img/PostDefaultImage.png"
 
-
-
 interface SearchResultPostsProps {
   posts?: Post[];
   query: string; 
@@ -48,7 +46,7 @@ function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
             id={post.postId}
             title={post.title}
             summary={post.content.slice(0, 200)} // 200자 이하로 요약
-            img={post.writerProfileImage ?? PostDefaultImage} // null 또는 undefined일 경우 대체 이미지
+            img={post.coverImageUrl ?? PostDefaultImage} // null 또는 undefined일 경우 대체 이미지
             tags={post.tags}
             date={new Date(post.createdAt).toLocaleDateString()}
           />
