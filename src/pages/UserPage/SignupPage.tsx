@@ -9,6 +9,25 @@ function SignupPage() {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
 
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
+  const [agree, setAgree] = useState(false);
+
+  const [checkEmail, setCheckEmail] = useState(false);
+  const [checkNickname, setCheckNickname] = useState(false);
+
+  //const [showPassword, setShowPassword] = useState(false);
+  //const [showCheckPassword, setShowCheckPassword] = useState(false);
+
+  const isFormValid =
+    email.trim() !== "" &&
+    nickname.trim() !== "" &&
+    password.trim() !== "" &&
+    checkPassword.trim() !== "" &&
+    agree === true;
+
   // 이메일 중복 확인 (API)
   const handleEmail = async () => {
     if (email.trim() === '') {
@@ -155,25 +174,6 @@ function SignupPage() {
     navigate('/login');
   };
 
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [checkPassword, setCheckPassword] = useState('');
-  const [agree, setAgree] = useState(false);
-
-  const [checkEmail, setCheckEmail] = useState(false);
-  const [checkNickname, setCheckNickname] = useState(false);
-
-  //const [showPassword, setShowPassword] = useState(false);
-  //const [showCheckPassword, setShowCheckPassword] = useState(false);
-
-  const isFormValid =
-    email.trim() !== "" &&
-    nickname.trim() !== "" &&
-    password.trim() !== "" &&
-    checkPassword.trim() !== "" &&
-    agree === true;
-
   return (
     <div className="flex flex-col items-center font-pretendard mb-[128px]">
       <Header isLogin={true}/>
@@ -190,10 +190,19 @@ function SignupPage() {
             type="email" 
             className="bg-gray-150 text-gray-900 w-[283px] h-[54px] rounded-[8px] p-[15px] border border-transparent outline-none focus:bg-white focus:border-gray-800"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setCheckEmail(false);
+            }}
             required
           />
-          <Button onClick={handleEmail} text="중복 확인"/>
+          <Button 
+            text="중복 확인"
+            onClick={handleEmail} 
+            isDisabled={checkEmail}
+            bgColor={checkEmail ? 'bg-gray-300' : 'bg-sub1'}
+            textColor={checkEmail ? 'text-gray-500' : 'text-gray-750'}
+          />
         </div>
       </div>
 
@@ -205,10 +214,19 @@ function SignupPage() {
             type="text" 
             className="bg-gray-150 text-gray-900 w-[283px] h-[54px] rounded-[8px] p-[15px] border border-transparent outline-none focus:bg-white focus:border-gray-800"
             value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
+            onChange={(e) => {
+              setNickname(e.target.value);
+              setCheckNickname(false);
+            }}
             required
           />
-          <Button onClick={handleNickname} text="중복 확인"/>
+          <Button 
+            text="중복 확인"
+            onClick={handleNickname} 
+            isDisabled={checkNickname}
+            bgColor={checkNickname ? 'bg-gray-300' : 'bg-sub1'}
+            textColor={checkNickname ? 'text-gray-500' : 'text-gray-750'}
+          />
         </div>
         <p className="text-[14px] text-gray-500 mt-[8px]">
           한글, 영문, 숫자, 특수문자 2-20자
