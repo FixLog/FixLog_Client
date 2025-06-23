@@ -66,7 +66,7 @@ function ViewAllPage() {
             {posts.map((post, index) => (
               <DefaultPost
                 key={index}
-                id={index} 
+                id={post.postId} 
                 title={post.postTitle}
                 img={
                   post.coverImage && post.coverImage !== "null"
