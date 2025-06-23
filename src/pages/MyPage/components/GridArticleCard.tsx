@@ -8,9 +8,19 @@ interface GridArticleCardProps {
   nickname: string;
   createdAt: string;
   imageUrl: string;
+  profileImageUrl: string;
 }
 
-const GridArticleCard = ({ id, title, summary, tags, nickname, createdAt, imageUrl }: GridArticleCardProps) => {
+const GridArticleCard = ({
+  id,
+  title,
+  summary,
+  tags,
+  nickname,
+  createdAt,
+  imageUrl,
+  profileImageUrl
+}: GridArticleCardProps) => {
   const navigate = useNavigate();
   const handleClick = () => {
     if (id !== undefined) {
@@ -48,7 +58,9 @@ const GridArticleCard = ({ id, title, summary, tags, nickname, createdAt, imageU
       {/* 작성자/작성일자 하단 고정 */}
       <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 mt-auto">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-gray-300 rounded-full" />
+          <div className="w-6 h-6 bg-gray-300 rounded-full overflow-hidden">
+            <img src={profileImageUrl} className="w-full h-full object-cover" />
+          </div>
           <span className="text-sm text-gray-600">{nickname}</span>
         </div>
         <span className="text-sm text-gray-400">{createdAt}</span>

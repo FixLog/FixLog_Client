@@ -13,6 +13,7 @@ interface Article {
   tags: string[];
   nickname: string;
   date: string;
+  profileImageUrl?: string;
 }
 
 interface RawPost {
@@ -23,6 +24,7 @@ interface RawPost {
   tags: string[];
   nickname: string;
   createdAt: string;
+  profileImageUrl: string;
 }
 
 const PAGE_TITLES: { [key: string]: string } = {
@@ -112,7 +114,8 @@ const MyAllPostsPage = () => {
         imageUrl: article.imageUrl,
         tags: article.tags,
         nickname: article.nickname,
-        date: article.createdAt.slice(0, 10)
+        date: article.createdAt.slice(0, 10),
+        profileImageUrl: article.profileImageUrl
       }));
 
       setArticles(parsed);
@@ -166,6 +169,7 @@ const MyAllPostsPage = () => {
                   nickname={article.nickname}
                   createdAt={article.date}
                   imageUrl={article.imageUrl || ""}
+                  profileImageUrl={article.profileImageUrl || ""}
                 />
               ))}
             </div>
