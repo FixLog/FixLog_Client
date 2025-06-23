@@ -11,11 +11,7 @@ interface ProfileSectionProps {
   isLogin: boolean;
 }
 
-const ProfileSection = ({
-  userId,
-  currentUserId,
-  isLogin
-}: ProfileSectionProps) => {
+const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const [profileData, setProfileData] = useState<{
@@ -41,14 +37,10 @@ const ProfileSection = ({
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const config = token
-          ? { headers: { Authorization: `Bearer ${token}` } }
-          : {};
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 
         // 다른 유저의 정보를 조회하기 위해 nickname 파라미터 추가
-        const configWithParams = token
-          ? { ...config, params: { nickname: userId } }
-          : { params: { nickname: userId } };
+        const configWithParams = token ? { ...config, params: { nickname: userId } } : { params: { nickname: userId } };
 
         const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
@@ -59,31 +51,18 @@ const ProfileSection = ({
         }
 
         // API 명세에 따라 팔로워 목록 주소 변경
-        const followersRes = await axios.get(
-          `${apiUrl}/follow/followers`,
-          configWithParams
-        );
+        const followersRes = await axios.get(`${apiUrl}/follow/followers`, configWithParams);
         // API 응답 구조에 따라 데이터 추출
-        const followers = Array.isArray(followersRes.data)
-          ? followersRes.data
-          : followersRes.data?.data || [];
+        const followers = Array.isArray(followersRes.data) ? followersRes.data : followersRes.data?.data || [];
         setFollowersData(followers);
 
         // API 명세에 따라 팔로잉 목록 주소 변경
-        const followingRes = await axios.get(
-          `${apiUrl}/follow/followings`,
-          configWithParams
-        );
+        const followingRes = await axios.get(`${apiUrl}/follow/followings`, configWithParams);
         // API 응답 구조에 따라 데이터 추출
-        const following = Array.isArray(followingRes.data)
-          ? followingRes.data
-          : followingRes.data?.data || [];
+        const following = Array.isArray(followingRes.data) ? followingRes.data : followingRes.data?.data || [];
         setFollowingData(following);
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생:", error);
-        // 에러 발생 시 빈 배열로 초기화
-        // setFollowersData([]);
-        // setFollowingData([]);
       }
     };
 
@@ -104,9 +83,9 @@ const ProfileSection = ({
     };
 
     try {
-      // isFollowing이 true이면 언팔로우(DELETE) 요청
+      // isFollowing이 true이면 언팔로우(POST) 요청
       if (isFollowing) {
-        await axios.delete(`${apiUrl}/follow/unfollow`, {
+        await axios.post(`${apiUrl}/follow/unfollow`, {
           ...config,
           data: { nickname: userId } // 본문에 언팔로우할 유저 닉네임 포함
         });
@@ -169,9 +148,7 @@ const ProfileSection = ({
         </div>
         <div className="mt-6">
           <h3 className="font-bold text-lg mb-1">소개</h3>
-          <p className="text-sm h-20 text-gray-700">
-            {profileData.bio ?? "소개글이 없습니다."}
-          </p>
+          <p className="text-sm h-20 text-gray-700">{profileData.bio ?? "소개글이 없습니다."}</p>
         </div>
       </div>
     </div>
