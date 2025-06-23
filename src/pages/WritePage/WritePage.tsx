@@ -21,16 +21,19 @@ export default function WritePage({ editMode = false }: { editMode?: boolean }) 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [title, setTitle] = useState("제목을 입력하세요");
   const [isEditing, setIsEditing] = useState(false);
+  const [coverImageUrl, setCoverImageUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { postId } = useParams();
+
   useEffect(() => {
     if (editMode && postId) {
       axiosInstance.get(`/posts/${postId}`).then((res) => {
         const post = res.data.data.postInfo;
         setTitle(post.postTitle);
         setSelectedTags(post.tags);
+        setCoverImageUrl(post.coverImageUrl); // 수정 시 기존 커버 이미지 로딩
         queryClient.setQueryData(["draft", "problem"], post.problem);
         queryClient.setQueryData(["draft", "error"], post.errorMessage);
         queryClient.setQueryData(["draft", "env"], post.environment);
@@ -42,11 +45,13 @@ export default function WritePage({ editMode = false }: { editMode?: boolean }) 
       });
     }
   }, [editMode, postId]);
+
   useEffect(() => {
     if (isEditing) {
       inputRef.current?.focus();
     }
   }, [isEditing]);
+
   useEffect(() => {
     sections.forEach((section) => {
       queryClient.removeQueries({ queryKey: ["draft", section.key] });
@@ -67,7 +72,7 @@ export default function WritePage({ editMode = false }: { editMode?: boolean }) 
 
     const requestBody = {
       postTitle: title ?? "",
-      coverImageUrl: null,
+      coverImageUrl: coverImageUrl, // 대표 이미지 포함
       problem: data.problem ?? "",
       errorMessage: data.error ?? "",
       environment: data.env ?? "",
@@ -139,7 +144,10 @@ export default function WritePage({ editMode = false }: { editMode?: boolean }) 
 
         {sections.map((section) => (
           <Accordion key={section.key} title={section.title} sectionKey={section.key}>
-            <SectionEditor sectionKey={section.key} />
+            <SectionEditor
+              sectionKey={section.key}
+              onSelectCoverImage={(url) => setCoverImageUrl(url)}
+            />
           </Accordion>
         ))}
       </div>

@@ -3,7 +3,7 @@ import axiosInstance from "../../../utils/axiosInstance";
 
 interface ImageUploadModalProps {
   onClose: () => void;
-  onUploadSuccess: (markdownImage: string) => void;
+  onUploadSuccess: (imageUrl: string) => void;
 }
 
 export const ImageUploadModal = ({ onClose, onUploadSuccess }: ImageUploadModalProps) => {
@@ -14,17 +14,18 @@ export const ImageUploadModal = ({ onClose, onUploadSuccess }: ImageUploadModalP
 
     const file = files[0];
     const formData = new FormData();
-    formData.append("imageFile", file); 
+    formData.append("imageFile", file);
 
     try {
       const res = await axiosInstance.post("/posts/images", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", 
-        },
+          "Content-Type": "multipart/form-data"
+        }
       });
 
       if (res.data.success) {
-        onUploadSuccess(res.data.data);
+        const imageUrl = res.data.data;
+        onUploadSuccess(imageUrl);
         onClose();
       } else {
         alert("업로드 실패: " + res.data.message);
