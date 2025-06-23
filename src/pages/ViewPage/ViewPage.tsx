@@ -64,7 +64,8 @@ export default function ViewPage() {
       tags
     },
     createdAt,
-    profileImageUrl
+    profileImageUrl,
+    nickname
   } = data;
 
   return (
@@ -122,7 +123,13 @@ export default function ViewPage() {
             <span>|</span>
             <span>{createdAt}</span>
           </div>
-          <ViewComponent postId={post_id!} initialLiked={data.liked} initialMarked={data.marked} />
+          <ViewComponent
+            postId={post_id!}
+            initialLiked={data.liked}
+            initialMarked={data.marked}
+            myNickname={nickname}
+            authorNickname={data.postInfo.nickname}
+          />
         </div>
 
         <Section id="problem" title="문제 상황" content={problem} />
