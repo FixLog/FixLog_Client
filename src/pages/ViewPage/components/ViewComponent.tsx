@@ -36,7 +36,9 @@ export default function ViewComponent({
     try {
       await axiosInstance.post(`/posts/${postId}/like`);
       setLiked((prev) => !prev);
-    } catch (error) {
+    } catch (error: any) {
+      const message = error.response?.data?.message || "좋아요에 실패했습니다.";
+      alert(message);
       console.error("좋아요 실패:", error);
     }
   };
@@ -45,7 +47,9 @@ export default function ViewComponent({
     try {
       await axiosInstance.post(`/posts/${postId}/bookmark`);
       setMarked((prev) => !prev);
-    } catch (error) {
+    } catch (error: any) {
+      const message = error.response?.data?.message || "북마크에 실패했습니다.";
+      alert(message);
       console.error("북마크 실패:", error);
     }
   };
