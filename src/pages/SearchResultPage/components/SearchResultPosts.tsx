@@ -1,6 +1,8 @@
 import PostPreview from "../../../components/common/PostPreview";
 // import { useState } from "react";
 import type { Post } from "../../../api/search";
+import PostDefaultImage from "../../../assets/img/PostDefaultImage.png"
+
 
 
 interface SearchResultPostsProps {
@@ -10,8 +12,6 @@ interface SearchResultPostsProps {
 
 function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
   // const [sortOption, setSortOption] = useState<"latest" | "popular">("latest");
-  console.log("미친 포스트 호출 결과.." + posts);
-
   if (!Array.isArray(posts) || posts.length === 0) {
     return (
       <div className="w-full text-center text-gray-500 py-10 mt-[100px] mb-[100px]">
@@ -48,7 +48,7 @@ function SearchResultPosts({ posts, query }: SearchResultPostsProps) {
             id={post.postId}
             title={post.title}
             summary={post.content.slice(0, 200)} // 200자 이하로 요약
-            img={post.writerProfileImage} // 프사 or 썸네일
+            img={post.writerProfileImage ?? PostDefaultImage} // null 또는 undefined일 경우 대체 이미지
             tags={post.tags}
             date={new Date(post.createdAt).toLocaleDateString()}
           />

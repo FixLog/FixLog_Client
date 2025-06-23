@@ -19,7 +19,7 @@ function DefaultPost({ id, title, img, tags, nickname, createdAt }: DefaultPostP
   return (
     <button onClick={handleClick} className="w-[282px] text-left">
       <div className="w-full h-[180px] bg-gray-200 rounded-xl overflow-hidden">
-        <img src={img} alt="썸네일" className="w-full h-[156px] object-cover" />
+        <img src={img} alt="썸네일" className="w-full h-[180px] object-cover" />
       </div>
       <div className="h-[60px]">
       <h2 className="mt-[20px] text-[20px] font-pretendard font-semibold text-gray-700 leading-snug">
