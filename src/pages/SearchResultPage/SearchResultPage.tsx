@@ -3,7 +3,7 @@ import TagSelect from "../../components/common/TagSelect";
 import LongSearchBar from "./components/LongSearchBar";
 import SearchResultPosts from "./components/SearchResultPosts";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
 import { fetchSearchResults } from "../../api/search";
 import type { Post } from "../../api/search";
@@ -22,11 +22,26 @@ function SearchResultPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [page, setPage] = useState<number>(1); 
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setQuery(initialQuery);
-    setSelectedTags(initialSelectedTags);
-  }, [location.search]);
+    const searchParams = new URLSearchParams();
+  
+    if (query) {
+      searchParams.set("query", query);
+    } else {
+      searchParams.set("query", "");
+    }
+  
+    if (selectedTags.length > 0) {
+      searchParams.set("tags", selectedTags.join(","));
+    } else {
+      searchParams.set("tags", "");
+    }
+  
+    navigate(`/search-result?${searchParams.toString()}`, { replace: true });
+  }, [query, selectedTags]);
+  
 
   useEffect(() => {
     fetchSearchResults(query, selectedTags, page - 1, 5) 
