@@ -48,6 +48,7 @@ const FollowListSection = ({
   }, [followers, following]);
 
   const toggleFollow = async (userId: number) => {
+    console.log('[DEBUG] toggleFollow 호출', userId);
     const token = localStorage.getItem("accessToken");
     if (!token) {
       alert("로그인이 필요합니다.");
@@ -57,14 +58,18 @@ const FollowListSection = ({
     const currentUser =
       simplifiedFollowers.find((u) => u.id === userId) || simplifiedFollowing.find((u) => u.id === userId);
 
+    console.log('[DEBUG] currentUser', currentUser);
+
     if (!currentUser) {
       console.error("사용자를 찾을 수 없습니다:", userId);
       return;
     }
     const isCurrentlyFollowing = currentUser.isFollowing;
+    
 
     try {
       if (isCurrentlyFollowing) {
+
         await axios.post(
           `${apiUrl}/follow/unfollow`,
           {
@@ -79,11 +84,13 @@ const FollowListSection = ({
         setSimplifiedFollowers(updateList);
         setSimplifiedFollowing(updateList);
       } else {
+        console.log('[DEBUG] 팔로우 요청', userId);
         await axios.post(
           `${apiUrl}/follow`,
           { target_member_id: Number(userId) },
-          { headers: { Authorization: `Bearer ${token}` } }
+          { headers: { Authorization: `Bearer ${token}`, ContentType: "application/json" } }
         );
+
         const updateList = (list: SimplifiedUser[]) =>
           list.map((user) => (user.id === userId ? { ...user, isFollowing: !isCurrentlyFollowing } : user));
         setSimplifiedFollowers(updateList);
@@ -91,7 +98,7 @@ const FollowListSection = ({
       }
       if (onFollowChange) onFollowChange();
     } catch (err) {
-      console.error("팔로우/언팔로우 실패:", err);
+      console.error("[DEBUG] 팔로우/언팔로우 실패:", err);
       alert("팔로우/언팔로우 처리 중 오류가 발생했습니다.");
     }
   };

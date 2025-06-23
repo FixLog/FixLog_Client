@@ -96,12 +96,12 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
   };
 
   return (
-    <div className="flex items-start gap-4 p-4">
-      <div className="relative w-24 h-24 rounded-full object-cover justify-center bg-blue-300 border-black">
+    <div className="flex items-start gap-4 pt-4 pb-4">
+      <div className="w-32 h-32 rounded-full object-cover justify-center border border-gray-300 overflow-hidden">
         <img
           src={profileData.profileImageUrl || PostDefaultImage}
           alt="프로필 이미지"
-          className="w-24 h-24 rounded-full object-cover"
+          className="w-full h-full object-cover"
         />
       </div>
       <div className="flex-1 flex flex-col">
