@@ -64,7 +64,6 @@ export default function ViewPage() {
       tags
     },
     createdAt,
-    nickname,
     profileImageUrl
   } = data;
 
@@ -72,7 +71,7 @@ export default function ViewPage() {
     <div className="relative font-pretendard">
       <Header isLogin={true} />
       <div className="max-w-[1300px] mx-auto h-[65px] w-full z-40 bg-white border-b border-gray-200 py-4 px-6 flex justify-start">
-        <div className="text-body1 font-bold text-gray-700">{nickname}의 블로그</div>
+        <div className="text-body1 font-bold text-gray-700">{data.postInfo.nickname}의 블로그</div>
       </div>
 
       <div className="fixed right-6 top-[350px] text-gray-500 text-sm space-y-4">
@@ -119,7 +118,7 @@ export default function ViewPage() {
         <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
           <div className="flex items-center gap-2">
             <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
-            <span>{nickname}</span>
+            <span>{data.postInfo.nickname}</span>
             <span>|</span>
             <span>{createdAt}</span>
           </div>
