@@ -88,6 +88,7 @@ function MainPosts() {
               tags={post.tags}
               nickname={post.nickname}
               createdAt={post.createdAt}
+              profileImageUrl ={post.writerProfileImageUrl || undefined} 
             />
           ))}
         </div>
