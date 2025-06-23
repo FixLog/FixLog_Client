@@ -32,56 +32,20 @@ module.exports = {
         pretendard: ["Pretendard", "sans-serif"]
       },
       fontSize: {
-        hero: [
-          "50px",
-          { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }
-        ],
-        heading1: [
-          "38px",
-          { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }
-        ],
-        heading2: [
-          "28px",
-          { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }
-        ],
-        heading3: [
-          "22px",
-          { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }
-        ],
-        heading4: [
-          "18px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }
-        ],
-        body1: [
-          "20px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }
-        ],
-        body2: [
-          "18px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }
-        ],
-        body3: [
-          "16px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }
-        ],
-        caption: [
-          "14px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }
-        ],
-        button1: [
-          "18px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }
-        ],
-        button2: [
-          "16px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }
-        ],
-        tag: [
-          "14px",
-          { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }
-        ]
+        hero: ["50px", { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }],
+        heading1: ["38px", { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }],
+        heading2: ["28px", { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }],
+        heading3: ["22px", { lineHeight: "150%", letterSpacing: "-0.04em", fontWeight: "600" }],
+        heading4: ["18px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }],
+        body1: ["20px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }],
+        body2: ["18px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }],
+        body3: ["16px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }],
+        caption: ["14px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "400" }],
+        button1: ["18px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }],
+        button2: ["16px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }],
+        tag: ["14px", { lineHeight: "150%", letterSpacing: "-0.02em", fontWeight: "600" }]
       }
     }
   },
-  plugins: []
+  plugins: [require("@tailwindcss/typography")]
 };
