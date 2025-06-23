@@ -55,7 +55,7 @@ const MyPage = () => {
   return (
     <div className="min-h-screen bg-gray100">
       <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-      <main className="max-w-[900px] mx-auto px-8 pt-12">
+      <main className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12">
         {/* 프로필 섹션 컴포넌트 */}
         <ProfileSection
           userId={pageNickname ?? ""}
@@ -73,7 +73,7 @@ const MyPage = () => {
           <div className="flex justify-end mt-6 mb-2">
             <button
               onClick={handleViewAllClick}
-              className="text-gray-500 hover:text-gray-700 text-sm flex items-center"
+              className="text-[16px] text-gray-500 hover:text-gray-700 flex items-center"
             >
               전체보기 &gt;
             </button>
