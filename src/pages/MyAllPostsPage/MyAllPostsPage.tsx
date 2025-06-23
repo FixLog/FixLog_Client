@@ -40,6 +40,7 @@ const MyAllPostsPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const location = useLocation();
   const folderNameFromState = location.state?.folderName;
@@ -88,7 +89,7 @@ const MyAllPostsPage = () => {
     return simpleEndpoints[type] || null;
   };
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (page = 1) => {
     const endpoint = getEndpoint();
     if (!endpoint) return;
 
@@ -102,7 +103,7 @@ const MyAllPostsPage = () => {
     try {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page: 0, size: 12, sort: 0 }
+        params: { page: page - 1, size: 12, sort: 0 }
       };
       const res = await axios.get(endpoint, config);
       const data = res.data.data;
@@ -129,8 +130,12 @@ const MyAllPostsPage = () => {
   };
 
   useEffect(() => {
-    fetchArticles();
+    setCurrentPage(1);
   }, [type, folderId]);
+
+  useEffect(() => {
+    fetchArticles(currentPage);
+  }, [type, folderId, currentPage]);
 
   const getPageTitle = () => {
     if (type === "bookmarks" && folderName) {
@@ -168,9 +173,9 @@ const MyAllPostsPage = () => {
             </div>
             <div className="mt-12">
               <PageNavigator
-                currentPage={1}
+                currentPage={currentPage}
                 totalPageNumber={totalPages}
-                onPageChange={(page) => console.log(`페이지 변경: ${page}`)}
+                onPageChange={setCurrentPage}
               />
             </div>
           </>
