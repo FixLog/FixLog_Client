@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Header from "../../components/common/Header";
 import ViewComponent from "./components/ViewComponent";
-
+import ReactMarkdown from "react-markdown";
 interface PostInfo {
   userId: number;
   nickname: string;
@@ -170,7 +170,9 @@ function Section({
           {content}
         </pre>
       ) : (
-        <p className="whitespace-pre-wrap text-gray-800 mt-2">{content}</p>
+        <div className="prose prose-sm mt-2 text-gray-800 max-w-none">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
       )}
     </section>
   );
