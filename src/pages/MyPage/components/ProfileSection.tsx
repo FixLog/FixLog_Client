@@ -142,7 +142,7 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
         </div>
         <div>
           <h3 className="font-semibold text-[18px] mb-[16px] text-black">소개</h3>
-          <p className="text-[18px] font-normal text-black mb-[82px]">{profileData.bio ?? "소개글이 없습니다."}</p>
+          <p className="text-[18px] font-normal text-black mb-[62px]">{profileData.bio ?? "소개글이 없습니다."}</p>
         </div>
       </div>
     </div>
