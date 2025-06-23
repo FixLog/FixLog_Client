@@ -10,17 +10,18 @@ import type { Post } from "../../api/search";
 import SearchResultPageBg from "../../assets/img/SearchResultPageBg.png"
 
 function SearchResultPage() {
-  const [query, setQuery] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [page, setPage] = useState<number>(1); 
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialQuery = queryParams.get("query") || "";
   const initialTags = queryParams.get("tags") || "";
   const initialSelectedTags = initialTags ? initialTags.split(",") : [];
+
+  const [query, setQuery] = useState<string>(initialQuery);
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialSelectedTags);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [page, setPage] = useState<number>(1); 
 
   useEffect(() => {
     setQuery(initialQuery);
@@ -35,7 +36,7 @@ function SearchResultPage() {
         setTotalPages(res.totalPages);
       })
       .catch((err) => {
-        console.error("검색 결과 로딩 실패", err);
+        console.error("검색 결과 로딩 실패", err); 
       });
   }, [query, selectedTags, page]); 
 
