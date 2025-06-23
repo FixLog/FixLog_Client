@@ -8,17 +8,13 @@ interface MyPageNavTabsProps {
   activeTab: TabType;
 }
 
-function MyPageNavTabs({
-  onTabChange,
-  isOwner,
-  activeTab
-}: MyPageNavTabsProps) {
+function MyPageNavTabs({ onTabChange, isOwner, activeTab }: MyPageNavTabsProps) {
   const tabs: { label: string; value: TabType }[] = isOwner
     ? [
         { label: "내가 쓴 글", value: "mywrites" },
-        { label: "북마크한 글", value: "bookmarks" },
-        { label: "좋아요한 글", value: "likes" },
-        { label: "Fork 한 글", value: "forks" }
+        { label: "북마크", value: "bookmarks" },
+        { label: "좋아요", value: "likes" },
+        { label: "Fork", value: "forks" }
       ]
     : [{ label: "작성한 글", value: "mywrites" }];
 
@@ -28,12 +24,11 @@ function MyPageNavTabs({
   };
 
   return (
-    <div className="flex border-b border-gray-200 mb-4">
+    <div className="flex border-b border-gray-200 mb-4 py-">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.value;
-        const baseClass =
-          "px-4 py-2 text-sm font-medium transition-colors duration-150";
-        const activeClass = "border-b-2 border-main text-black";
+        const baseClass = "py-4 px-[15px] mr-[32.5px] text-[19px] font-medium transition-colors duration-150";
+        const activeClass = "border-b-2 border-black font-bold text-black";
         const inactiveClass = "text-gray-500 hover:text-black";
 
         return (
