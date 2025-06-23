@@ -4,7 +4,6 @@ import axios from "axios";
 import LogoIcon from "../../assets/icons/Logo.svg";
 import AlarmIcon from "../../assets/icons/Alarm.svg";
 import WriteIcon from "../../assets/icons/Write.svg";
-import ProfileIcon from "../../assets/icons/Profile.svg";
 
 interface HeaderProps {
   isLogin: boolean;
@@ -19,6 +18,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   // 네비게이션 탭 상태 관리
   // const [activeTab, setActiveTab] = useState<NavTabType>(null);
   const [myNickname, setMyNickname] = useState<string | null>(null);
+  const [myProfileUrl, setMyProfileUrl] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,6 +37,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
           })
           .then((res) => {
             setMyNickname(res.data.data.nickname);
+            setMyProfileUrl(res.data.data.profileImageUrl);
           })
           .catch((err) => {
             console.error("내 정보 불러오기 실패:", err);
@@ -57,9 +58,9 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   ];
 
   const getActiveTab = (): NavTabType => {
-    if (location.pathname.startsWith("/tag-collection")) return "tags";       // 태그 모음
-    if (location.pathname.startsWith("/view-all/latest")) return "latest";    // 최신글
-    if (location.pathname.startsWith("/view-all/popular")) return "popular";  // 인기글
+    if (location.pathname.startsWith("/tag-collection")) return "tags"; // 태그 모음
+    if (location.pathname.startsWith("/view-all/latest")) return "latest"; // 최신글
+    if (location.pathname.startsWith("/view-all/popular")) return "popular"; // 인기글
     return null;
   };
 
@@ -67,11 +68,11 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const handleTabClick = (tab: NavTabType) => {
     if (tab === "tags") {
-      navigate("/tag-collection");    // 태그 모음
+      navigate("/tag-collection"); // 태그 모음
     } else if (tab === "latest") {
-      navigate("/view-all/latest");   // 최신글
+      navigate("/view-all/latest"); // 최신글
     } else if (tab === "popular") {
-      navigate("/view-all/popular");  // 인기글
+      navigate("/view-all/popular"); // 인기글
     }
   };
 
@@ -86,7 +87,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
-    setIsLogin?.(false); 
+    setIsLogin?.(false);
     setIsDropdownOpen(false); // 메뉴 닫기
     navigate("/");
   };
@@ -110,9 +111,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
               <button
                 key={tab.value}
                 onClick={() => handleTabClick(tab.value)}
-                className={`${baseClass} ${
-                  isActive ? activeClass : inactiveClass
-                }`}
+                className={`${baseClass} ${isActive ? activeClass : inactiveClass}`}
               >
                 {tab.label}
               </button>
@@ -145,11 +144,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
                   className="w-8 h-8 rounded-full bg-gray300 overflow-hidden focus:outline-none "
                   onClick={toggleDropdown}
                 >
-                  <img
-                    src={ProfileIcon}
-                    alt="프로필"
-                    className="h-full w-full object-cover"
-                  />
+                  <img src={myProfileUrl || ""} alt="프로필" className="h-full w-full object-cover" />
                 </button>
                 {/* 드롭다운 메뉴 */}
                 {isDropdownOpen && (
