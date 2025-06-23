@@ -9,13 +9,15 @@ interface FollowListSectionProps {
   following: User_Following[];
   followersCount: number;
   followingCount: number;
+  onFollowChange?: () => void;
 }
 
 const FollowListSection = ({
   followers = [],
   following = [],
   followersCount,
-  followingCount
+  followingCount,
+  onFollowChange
 }: FollowListSectionProps) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -87,6 +89,7 @@ const FollowListSection = ({
         setSimplifiedFollowers(updateList);
         setSimplifiedFollowing(updateList);
       }
+      if (onFollowChange) onFollowChange();
     } catch (err) {
       console.error("팔로우/언팔로우 실패:", err);
       alert("팔로우/언팔로우 처리 중 오류가 발생했습니다.");

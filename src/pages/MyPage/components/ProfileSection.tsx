@@ -32,16 +32,16 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
   const [followingData, setFollowingData] = useState<User_Following[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const isMyProfile = userId === currentUserId;
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refetchProfileData = () => setRefreshKey((prev) => prev + 1);
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const token = localStorage.getItem("accessToken");
         const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
-        // 다른 유저의 정보를 조회하기 위해 nickname 파라미터 추가
         const configWithParams = token ? { ...config, params: { nickname: userId } } : { params: { nickname: userId } };
-
         const profileRes = await axios.get(`${apiUrl}/members/me`, config);
         const profile = profileRes?.data?.data;
         if (profile) {
@@ -49,27 +49,20 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
         } else {
           console.warn("회원 정보가 유효하지 않습니다.");
         }
-
-        // API 명세에 따라 팔로워 목록 주소 변경
         const followersRes = await axios.get(`${apiUrl}/follow/followers`, configWithParams);
-        // API 응답 구조에 따라 데이터 추출
         const followers = Array.isArray(followersRes.data) ? followersRes.data : followersRes.data?.data || [];
         setFollowersData(followers);
-
-        // API 명세에 따라 팔로잉 목록 주소 변경
         const followingRes = await axios.get(`${apiUrl}/follow/followings`, configWithParams);
-        // API 응답 구조에 따라 데이터 추출
         const following = Array.isArray(followingRes.data) ? followingRes.data : followingRes.data?.data || [];
         setFollowingData(following);
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생:", error);
       }
     };
-
     if (userId) {
       fetchProfileData();
     }
-  }, [userId, isMyProfile]);
+  }, [userId, isMyProfile, refreshKey]);
 
   const handleFollow = async () => {
     const token = localStorage.getItem("accessToken");
@@ -122,6 +115,7 @@ const ProfileSection = ({ userId, currentUserId, isLogin }: ProfileSectionProps)
                 following={followingData}
                 followersCount={followersData.length}
                 followingCount={followingData.length}
+                onFollowChange={refetchProfileData}
               />
             </div>
           </div>
