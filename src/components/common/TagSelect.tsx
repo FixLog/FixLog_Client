@@ -70,7 +70,7 @@ const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
                 onClick={() => handleSelect(option)}
                 className="flex items-center gap-2 px-4 py-3 font-pretendard text-gray-700 hover:bg-gray-100 cursor-pointer border-b last:border-0"
               >
-                <img src={PythonIcon} className="w-[20px] h-[20px]" />
+                {/* <img src={PythonIcon} className="w-[20px] h-[20px]" /> */}
                 <span>{getDisplayText(option)}</span>
               </li>
             ))}

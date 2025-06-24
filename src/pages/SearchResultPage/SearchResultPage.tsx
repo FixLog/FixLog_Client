@@ -24,6 +24,7 @@ function SearchResultPage() {
   const [page, setPage] = useState<number>(1); 
   const navigate = useNavigate();
 
+  // URL 쿼리 파라미터 업데이트
   useEffect(() => {
     const searchParams = new URLSearchParams();
   
@@ -43,7 +44,10 @@ function SearchResultPage() {
   }, [query, selectedTags]);
   
 
+  // 검색 결과 로드
   useEffect(() => {
+    console.log("query:", query);
+    console.log("selectedTags:", selectedTags);
     fetchSearchResults(query, selectedTags, page - 1, 5) 
       .then((res) => {
         console.log("검색 결과 응답:", res);

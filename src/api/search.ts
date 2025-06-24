@@ -36,8 +36,5 @@ export const fetchSearchResults = async (
       size, 
     },
   });
-  console.log("📦 전체 axios 응답", response);
-  console.log("📦 response.data", response.data);
-
   return response.data.data;
 };
