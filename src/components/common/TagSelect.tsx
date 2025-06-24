@@ -1,12 +1,12 @@
 import { useState } from "react";
 import DropDownButtonIcon from "../../assets/img/DropDownButtonIcon.png";
-import PythonIcon from "../../assets/img/PythonIcon.png";
+// import PythonIcon from "../../assets/img/PythonIcon.png";
 import CloseIcon from "../../assets/img/DropDownCloseButton.png";
 import { Tags, TagDisplayName } from "../../mocks/MockTags";
 
 interface TagSelectProps {
   selectedTags: string[];
-  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;  
 }
 
 const TagSelect = ({ selectedTags, setSelectedTags }: TagSelectProps) => {
