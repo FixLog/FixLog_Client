@@ -8,6 +8,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import ProfileImage from "../../assets/img/ProfileImage.png"
 
 interface PostInfo {
   userId: number;
@@ -125,7 +126,7 @@ export default function ViewPage() {
         )}
         <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
           <div className="flex items-center gap-2">
-            <img src={writerProfileImage} alt="프로필" className="w-6 h-6 rounded-full" />
+            <img src={writerProfileImage || ProfileImage} alt="프로필" className="w-6 h-6 rounded-full" />
             <span>{data.postInfo.nickname}</span>
             <span>|</span>
             <span>{createdAt}</span>
