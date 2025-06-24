@@ -71,7 +71,7 @@ export default function ViewPage() {
       tags
     },
     createdAt,
-    profileImageUrl,
+    // profileImageUrl,
     nickname
   } = data;
 
