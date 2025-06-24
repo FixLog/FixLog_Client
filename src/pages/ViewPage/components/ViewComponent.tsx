@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import heartIcon from "../../../assets/icons/heart.png";
 import heartOnIcon from "../../../assets/icons/heartOn.png";
@@ -7,7 +7,6 @@ import folderOnIcon from "../../../assets/icons/folderOn.png";
 import linkIcon from "../../../assets/icons/link.png";
 import etcIcon from "../../../assets/icons/etc.png";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
 
 interface ViewComponentProps {
   postId: string;
@@ -27,8 +26,9 @@ export default function ViewComponent({
   const [liked, setLiked] = useState(initialLiked);
   const [marked, setMarked] = useState(initialMarked);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
   const [modalPos, setModalPos] = useState({ top: 0, left: 0 });
+
+  const navigate = useNavigate();
   const etcBtnRef = useRef<HTMLButtonElement | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -60,17 +60,25 @@ export default function ViewComponent({
       alert("링크가 복사되었습니다.");
     });
   };
+
   const handleEdit = () => {
     setShowModal(false);
     navigate(`/posts/${postId}/edit`);
   };
+
   const handleEtcClick = () => {
     if (etcBtnRef.current) {
       const rect = etcBtnRef.current.getBoundingClientRect();
-      setModalPos({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      setModalPos({
+        top: rect.bottom + scrollTop + 8,
+        left: rect.left + scrollLeft - 60
+      });
       setShowModal(true);
     }
   };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -93,37 +101,45 @@ export default function ViewComponent({
   }, [showModal]);
 
   return (
-    <div className="flex items-center gap-4">
-      <button onClick={toggleLike}>
-        <img src={liked ? heartOnIcon : heartIcon} alt="좋아요" className="w-5 h-5" />
-      </button>
-      <button onClick={toggleBookmark}>
-        <img src={marked ? folderOnIcon : folderIcon} alt="북마크" className="w-5 h-5" />
-      </button>
-      <button onClick={copyLink}>
-        <img src={linkIcon} alt="링크 복사" className="w-5 h-5" />
-      </button>
-      {myNickname === authorNickname && (
-        <>
-          <button onClick={handleEtcClick} ref={etcBtnRef}>
-            <img src={etcIcon} alt="기타" className="w-5 h-5" />
+    <>
+      <div className="flex items-center gap-4">
+        <button onClick={toggleLike}>
+          <img src={liked ? heartOnIcon : heartIcon} alt="좋아요" className="w-5 h-5" />
+        </button>
+        <button onClick={toggleBookmark}>
+          <img src={marked ? folderOnIcon : folderIcon} alt="북마크" className="w-5 h-5" />
+        </button>
+        <button onClick={copyLink}>
+          <img src={linkIcon} alt="링크 복사" className="w-5 h-5" />
+        </button>
+
+        {myNickname === authorNickname && (
+          <>
+            <button onClick={handleEtcClick} ref={etcBtnRef}>
+              <img src={etcIcon} alt="기타" className="w-5 h-5" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {showModal && (
+        <div
+          ref={modalRef}
+          className="absolute z-50 bg-white rounded-md shadow-lg py-2"
+          style={{
+            top: modalPos.top,
+            left: modalPos.left,
+            position: "absolute"
+          }}
+        >
+          <button
+            onClick={handleEdit}
+            className="px-6 py-2 text-sm text-black hover:bg-gray-100 w-full text-left"
+          >
+            수정하기
           </button>
-          {showModal && (
-            <div
-              ref={modalRef}
-              className="fixed z-50 bg-white rounded-md shadow-lg py-2"
-              style={{ top: modalPos.top + 8, left: modalPos.left - 65 }}
-            >
-              <button
-                onClick={handleEdit}
-                className="px-6 py-2 text-sm text-black hover:bg-gray-100 w-full text-left"
-              >
-                수정하기
-              </button>
-            </div>
-          )}
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
