@@ -3,18 +3,13 @@ import TagSelect from "../../components/common/TagSelect";
 import LongSearchBar from "./components/LongSearchBar";
 import SearchResultPosts from "./components/SearchResultPosts";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
 import { fetchSearchResults } from "../../api/search";
 import type { Post } from "../../api/search";
 import SearchResultPageBg from "../../assets/img/SearchResultPageBg.png"
 
 function SearchResultPage() {
-  const [query, setQuery] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [page, setPage] = useState<number>(1); 
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -22,12 +17,37 @@ function SearchResultPage() {
   const initialTags = queryParams.get("tags") || "";
   const initialSelectedTags = initialTags ? initialTags.split(",") : [];
 
-  useEffect(() => {
-    setQuery(initialQuery);
-    setSelectedTags(initialSelectedTags);
-  }, [location.search]);
+  const [query, setQuery] = useState<string>(initialQuery);
+  const [selectedTags, setSelectedTags] = useState<string[]>(initialSelectedTags);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [page, setPage] = useState<number>(1); 
+  const navigate = useNavigate();
 
+  // URL 쿼리 파라미터 업데이트
   useEffect(() => {
+    const searchParams = new URLSearchParams();
+  
+    if (query) {
+      searchParams.set("query", query);
+    } else {
+      searchParams.set("query", "");
+    }
+  
+    if (selectedTags.length > 0) {
+      searchParams.set("tags", selectedTags.join(","));
+    } else {
+      searchParams.set("tags", "");
+    }
+  
+    navigate(`/search-result?${searchParams.toString()}`, { replace: true });
+  }, [query, selectedTags]);
+  
+
+  // 검색 결과 로드
+  useEffect(() => {
+    console.log("query:", query);
+    console.log("selectedTags:", selectedTags);
     fetchSearchResults(query, selectedTags, page - 1, 5) 
       .then((res) => {
         console.log("검색 결과 응답:", res);
@@ -35,7 +55,7 @@ function SearchResultPage() {
         setTotalPages(res.totalPages);
       })
       .catch((err) => {
-        console.error("검색 결과 로딩 실패", err);
+        console.error("검색 결과 로딩 실패", err); 
       });
   }, [query, selectedTags, page]); 
 

@@ -32,15 +32,14 @@ function LoginPage () {
         const loginData = await response.json();
         const accessToken = loginData.data.accessToken;
 
+        // Access Token 저장
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
-          console.log("Access Token 저장:", accessToken);
         }
-        console.log("로그인 성공");
-        navigate('/');
 
+        // 로그인 성공 후 메인페이지로 이동
+        navigate('/');
       } else {
-        console.error("로그인 실패");
         setShowModal(true);
       }
 
@@ -64,7 +63,6 @@ function LoginPage () {
   const [password, setPassword] = useState('');
   const [autoLogin, setAutoLogin] = useState(false);
 
-  // 빌드 오류 해결용으로 주석 처리..! (나중에 실제 사용 시 주석 해제 필요)
   // const [showPassword, setShowPassword] = useState(false);
 
   const [showModal, setShowModal] = useState(false);

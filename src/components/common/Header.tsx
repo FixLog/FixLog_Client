@@ -4,6 +4,7 @@ import axios from "axios";
 import LogoIcon from "../../assets/icons/Logo.svg";
 import AlarmIcon from "../../assets/icons/Alarm.svg";
 import WriteIcon from "../../assets/icons/Write.svg";
+import ProfileImage from "../../assets/img/ProfileImage.png"
 
 interface HeaderProps {
   isLogin: boolean;
@@ -77,6 +78,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   };
 
   const handleMyPageClick = () => {
+    const token = localStorage.getItem("accessToken");
     if (token) {
       navigate(`/my-page/${myNickname}`);
     } else {
@@ -144,7 +146,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
                   className="w-8 h-8 rounded-full bg-gray300 overflow-hidden focus:outline-none "
                   onClick={toggleDropdown}
                 >
-                  <img src={myProfileUrl || ""} alt="프로필" className="h-full w-full object-cover" />
+                  <img src={myProfileUrl || ProfileImage} alt="프로필" className="h-full w-full object-cover" />
                 </button>
                 {/* 드롭다운 메뉴 */}
                 {isDropdownOpen && (

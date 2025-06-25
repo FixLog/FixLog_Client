@@ -35,17 +35,15 @@ function TagCollectionPage() {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success) {
-                    console.log("API 요청 성공")
-                    console.log("tags:", data.data.tags);
-                    console.log("totalPages:", data.data.totalPages);
                     setTags(data.data.tags);
                     setTotalPages(data.data.totalPages);
                 } else {
-                    console.error("API 요청 실패", data.message);
+                    alert("API 요청 실패: " + data.message);
                 }
             })
             .catch((error) => {
-                console.error("API 요청 실패:", error);
+                console.error("API 요청 실패: ", error);
+                alert("API 요청 실패");
             });
     }, [apiUrl, page]);
 

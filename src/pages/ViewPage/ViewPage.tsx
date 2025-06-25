@@ -8,6 +8,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import ProfileImage from "../../assets/img/ProfileImage.png"
 
 interface PostInfo {
   userId: number;
@@ -23,6 +24,7 @@ interface PostInfo {
   referenceLink: string;
   extraContent: string;
   tags: string[];
+  writerProfileImage: string;
 }
 
 interface PostData {
@@ -57,6 +59,7 @@ export default function ViewPage() {
 
   const {
     postInfo: {
+      writerProfileImage,
       postTitle,
       problem,
       errorMessage,
@@ -69,7 +72,7 @@ export default function ViewPage() {
       tags
     },
     createdAt,
-    profileImageUrl,
+    // profileImageUrl,
     nickname
   } = data;
 
@@ -123,7 +126,7 @@ export default function ViewPage() {
         )}
         <div className="flex justify-between items-center mb-4 text-sm text-gray-500">
           <div className="flex items-center gap-2">
-            <img src={profileImageUrl} alt="프로필" className="w-6 h-6 rounded-full" />
+            <img src={writerProfileImage || ProfileImage} alt="프로필" className="w-6 h-6 rounded-full" />
             <span>{data.postInfo.nickname}</span>
             <span>|</span>
             <span>{createdAt}</span>

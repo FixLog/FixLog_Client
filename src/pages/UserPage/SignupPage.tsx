@@ -14,9 +14,9 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [agree, setAgree] = useState(false);
-
-  const [checkEmail, setCheckEmail] = useState(false);
-  const [checkNickname, setCheckNickname] = useState(false);
+  
+  const [checkEmail, setCheckEmail] = useState<null | boolean>(null);
+  const [checkNickname, setCheckNickname] = useState<null | boolean>(null);
 
   //const [showPassword, setShowPassword] = useState(false);
   //const [showCheckPassword, setShowCheckPassword] = useState(false);
@@ -39,11 +39,16 @@ function SignupPage() {
       const response = await fetch(`${apiUrl}/members/check-email?email=${encodeURIComponent(email)}`);
       const data = await response.json();
 
-      if (response.ok && data.success && !data.data.is_duplicate) {
-        alert(data.message); // 사용 가능한 이메일입니다
-        setCheckEmail(true);
+      if (response.ok && data.success) {
+        if (!data.data.duplicated) {
+          alert(data.message);  // 사용 가능한 이메일입니다
+          setCheckEmail(true);
+        } else {
+          alert(data.message);  // 이미 사용 중인 이메일입니다
+          setCheckEmail(false);
+        }
       } else {
-        alert(data.message); // 이미 사용 중인 이메일입니다
+        alert('이메일 중복 확인 실패');
         setCheckEmail(false);
       }
     } catch (error) {
@@ -64,11 +69,16 @@ function SignupPage() {
       const response = await fetch(`${apiUrl}/members/check-nickname?nickname=${encodeURIComponent(nickname)}`);
       const data = await response.json();
 
-      if (response.ok && data.success && !data.data.is_duplicate) {
-        alert(data.message); // 사용 가능한 닉네임입니다
-        setCheckNickname(true);
+      if (response.ok && data.success) {
+        if (!data.data.duplicated) {
+          alert(data.message);  // 사용 가능한 닉네임입니다
+          setCheckNickname(true);
+        } else {
+          alert(data.message);  // 이미 사용 중인 닉네임입니다
+          setCheckNickname(false);
+        }
       } else {
-        alert(data.message); // 이미 사용 중인 닉네임입니다
+        alert('닉네임 중복 확인 실패');
         setCheckNickname(false);
       }
     } catch (error) {
@@ -80,36 +90,16 @@ function SignupPage() {
 
   // 회원가입 버튼 (API)
   const handleSignup = async () => {
-    if (email.trim() === '') {
-      alert("이메일을 입력해주세요.");
-      return;
-    }
     if (!checkEmail) {
       alert("이메일 중복 확인을 해주세요.");
-      return;
-    }
-    if (nickname.trim() === '') {
-      alert("닉네임을 입력해주세요.");
       return;
     }
     if (!checkNickname) {
       alert("닉네임 중복 확인을 해주세요.");
       return;
     }
-    if (password.trim() === '') {
-      alert("비밀번호를 입력해주세요.");
-      return;
-    }
-    if (checkPassword.trim() === '') {
-      alert("비밀번호를 한 번 더 입력해주세요.");
-      return;
-    }
     if (password !== checkPassword) {
       alert("입력하신 비밀번호가 일치하지 않습니다.");
-      return;
-    }
-    if (!agree) {
-      alert("개인정보 제공에 동의해주세요.");
       return;
     }
 
@@ -127,8 +117,6 @@ function SignupPage() {
       });
 
       if (response.ok) {
-        console.log("회원가입 성공");
-
         // 회원가입 후 바로 로그인
         const login = await fetch(`${apiUrl}/auth/login`, {
           method: 'POST',
@@ -145,8 +133,6 @@ function SignupPage() {
           const loginData = await login.json();
 
           localStorage.setItem('accessToken', loginData.data.accessToken);
-          console.log("Access Token 저장:", loginData.data.accessToken);
-
           navigate('/signup-success');
         } else {
           alert('회원가입 성공, 로그인 실패.');
@@ -154,7 +140,6 @@ function SignupPage() {
         }
         
       } else {
-        console.error("회원가입 실패");
         alert("회원가입 실패");
       }
 
@@ -192,16 +177,16 @@ function SignupPage() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setCheckEmail(false);
+              setCheckEmail(null);
             }}
             required
           />
           <Button 
             text="중복 확인"
             onClick={handleEmail} 
-            isDisabled={checkEmail}
-            bgColor={checkEmail ? 'bg-gray-300' : 'bg-sub1'}
-            textColor={checkEmail ? 'text-gray-500' : 'text-gray-750'}
+            isDisabled={checkEmail === true}
+            bgColor={checkEmail === true ? 'bg-gray-300' : 'bg-sub1'}
+            textColor={checkEmail === true ? 'text-gray-500' : 'text-gray-750'}
           />
         </div>
       </div>
@@ -216,16 +201,16 @@ function SignupPage() {
             value={nickname}
             onChange={(e) => {
               setNickname(e.target.value);
-              setCheckNickname(false);
+              setCheckNickname(null);
             }}
             required
           />
           <Button 
             text="중복 확인"
             onClick={handleNickname} 
-            isDisabled={checkNickname}
-            bgColor={checkNickname ? 'bg-gray-300' : 'bg-sub1'}
-            textColor={checkNickname ? 'text-gray-500' : 'text-gray-750'}
+            isDisabled={checkNickname === true}
+            bgColor={checkNickname === true ? 'bg-gray-300' : 'bg-sub1'}
+            textColor={checkNickname === true ? 'text-gray-500' : 'text-gray-750'}
           />
         </div>
         <p className="text-[14px] text-gray-500 mt-[8px]">
