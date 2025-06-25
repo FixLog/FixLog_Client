@@ -77,7 +77,7 @@ const Header = ({ isLogin, setIsLogin }: HeaderProps) => {
   };
 
   const handleMyPageClick = () => {
-    if (myNickname && token) {
+    if (token) {
       navigate(`/my-page/${myNickname}`);
     } else {
       alert("접근 권한이 없습니다.");
